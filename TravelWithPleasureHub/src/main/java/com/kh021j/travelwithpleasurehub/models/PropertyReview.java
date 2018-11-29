@@ -23,7 +23,7 @@ public class PropertyReview {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User userTable;
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "property_id")

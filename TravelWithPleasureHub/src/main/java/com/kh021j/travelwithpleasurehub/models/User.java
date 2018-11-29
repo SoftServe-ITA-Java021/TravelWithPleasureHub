@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.math.BigInteger;
 
 @Entity
 @Data
@@ -32,5 +31,7 @@ public class User {
     private String location;
 
     private String additionalInfo;
+
+    private String phoneNumber;
 
 }
