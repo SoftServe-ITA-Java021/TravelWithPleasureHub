@@ -1,4 +1,4 @@
-﻿CREATE TABLE users
+CREATE TABLE users
 (
 
   user_id numeric NOT NULL,
@@ -74,6 +74,7 @@ CREATE TABLE property
   description text NOT NULL,
   locality text NOT NULL,
   address text NOT NULL,
+  price decimal(6,2) NOT NULL,
   user_id_users numeric,
   type_id_property_type integer,
   CONSTRAINT property_pk PRIMARY KEY (property_id),
