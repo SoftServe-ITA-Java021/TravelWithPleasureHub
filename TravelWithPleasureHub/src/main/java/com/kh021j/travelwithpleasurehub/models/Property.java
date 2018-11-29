@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.math.BigInteger;
 
 @Entity
 @Data
@@ -16,7 +15,7 @@ public class Property {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private BigInteger id;
+    private Integer id;
 
     private String title;
 
@@ -28,10 +27,12 @@ public class Property {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private Users userTable;
+    private User userTable;
 
     private String locality;
 
     private String address;
+
+    private Integer price;
 
 }

@@ -17,7 +17,7 @@ public class PropertyAvailability {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private BigInteger id;
+    private Integer id;
 
     private LocalDate bookedSince;
 

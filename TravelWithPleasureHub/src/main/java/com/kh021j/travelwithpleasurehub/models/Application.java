@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.math.BigInteger;
 import java.time.LocalDate;
 
 @Entity
@@ -17,7 +16,7 @@ public class Application {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private BigInteger id;
+    private Integer id;
 
     @ManyToOne
     @JoinColumn(name = "property_id")
@@ -25,7 +24,7 @@ public class Application {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private Users userTable;
+    private User userTable;
 
     private LocalDate rentSince;
 

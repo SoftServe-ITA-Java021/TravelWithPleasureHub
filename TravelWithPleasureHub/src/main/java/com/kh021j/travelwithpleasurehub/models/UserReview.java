@@ -15,7 +15,7 @@ public class UserReview {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private BigInteger id;
+    private Integer id;
 
     private String reviewText;
 
@@ -25,6 +25,6 @@ public class UserReview {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private Users userTable;
+    private User userTable;
 
 }

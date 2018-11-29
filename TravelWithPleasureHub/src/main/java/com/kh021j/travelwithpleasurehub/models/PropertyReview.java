@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.math.BigInteger;
 
 @Entity
 @Data
@@ -16,7 +15,7 @@ public class PropertyReview {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private BigInteger id;
+    private Integer id;
 
     private String reviewText;
 
@@ -24,7 +23,7 @@ public class PropertyReview {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private Users userTable;
+    private User userTable;
 
     @ManyToOne
     @JoinColumn(name = "property_id")
