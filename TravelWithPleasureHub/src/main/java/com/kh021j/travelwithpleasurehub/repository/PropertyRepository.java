@@ -17,8 +17,8 @@ public interface PropertyRepository extends JpaRepository<Property, Integer> {
 
     Optional<Iterable<Property>> findByAddress(String address);
 
-    @Query(value = "SELECT distinct property.id, title, description, locality, address, " +
-            "user_id, property_type_id, price, path_to_photo" +
+    @Query(value = "SELECT distinct property.id, title, description, locality, address," +
+            " user_id, property_type_id, price, path_to_photo" +
             " FROM property" +
             " LEFT JOIN property_availability ON property.id = property_availability.property_id" +
             " WHERE property_availability.id IS NULL" +
