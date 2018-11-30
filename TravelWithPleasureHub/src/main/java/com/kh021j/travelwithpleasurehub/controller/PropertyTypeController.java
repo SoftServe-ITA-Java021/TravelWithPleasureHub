@@ -14,8 +14,7 @@ public class PropertyTypeController {
     private PropertyTypeRepository propertyTypeRepository;
 
     @GetMapping
-    public @ResponseBody
-    Iterable<PropertyType> getAllPropertyTypes(){
+    public @ResponseBody Iterable<PropertyType> getAllPropertyTypes(){
         return propertyTypeRepository.findAll();
     }
 

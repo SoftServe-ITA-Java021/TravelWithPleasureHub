@@ -14,8 +14,7 @@ public class PropertyAvailabilityController {
     private PropertyAvailabilityRepository propertyAvailabilityRepository;
 
     @GetMapping
-    public @ResponseBody
-    Iterable<PropertyAvailability> getAllPropertyAvailabilities(){
+    public @ResponseBody Iterable<PropertyAvailability> getAllPropertyAvailabilities(){
         return propertyAvailabilityRepository.findAll();
     }
 
