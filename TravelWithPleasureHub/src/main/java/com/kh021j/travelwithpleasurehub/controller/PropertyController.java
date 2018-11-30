@@ -56,12 +56,8 @@ public class PropertyController {
 
     @GetMapping(params = {"since", "until"})
     public @ResponseBody Iterable<Property> getPropertiesByDate(@RequestParam String since, @RequestParam String until) {
-        System.out.println(since);
-        System.out.println(until);
         LocalDate sinceDate = LocalDate.parse(since);
         LocalDate untilDate = LocalDate.parse(until);
-        System.out.println(sinceDate);
-        System.out.println(untilDate);
         return propertyRepository.
                 findByAvailabilityInPeriod(sinceDate, untilDate)
                     .orElse(null);
