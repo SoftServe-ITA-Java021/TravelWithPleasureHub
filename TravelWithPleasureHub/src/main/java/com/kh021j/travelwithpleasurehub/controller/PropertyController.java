@@ -1,9 +1,11 @@
-package com.kh021j.travelwithpleasurehub.controllers;
+package com.kh021j.travelwithpleasurehub.controller;
 
-import com.kh021j.travelwithpleasurehub.models.Property;
-import com.kh021j.travelwithpleasurehub.repositories.PropertyRepository;
+import com.kh021j.travelwithpleasurehub.model.Property;
+import com.kh021j.travelwithpleasurehub.repository.PropertyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping(path = "/api/property")
@@ -39,7 +41,7 @@ public class PropertyController {
 
     @GetMapping(params = "price")
     public @ResponseBody Iterable<Property> getPropertiesByPriceLessThan(@RequestParam Integer price) {
-        return propertyRepository.findByPriceLessThan(price).orElse(null);
+        return propertyRepository.findByPriceLessThanEqual(price).orElse(null);
     }
 
     @GetMapping(params = "locality")
@@ -52,6 +54,17 @@ public class PropertyController {
         return propertyRepository.findByAddress(address).orElse(null);
     }
 
-    //TODO: filter by rent period
+    @GetMapping(params = {"since", "until"})
+    public @ResponseBody Iterable<Property> getPropertiesByDate(@RequestParam String since, @RequestParam String until) {
+        System.out.println(since);
+        System.out.println(until);
+        LocalDate sinceDate = LocalDate.parse(since);
+        LocalDate untilDate = LocalDate.parse(until);
+        System.out.println(sinceDate);
+        System.out.println(untilDate);
+        return propertyRepository.
+                findByAvailabilityInPeriod(sinceDate, untilDate)
+                    .orElse(null);
+    }
 
 }

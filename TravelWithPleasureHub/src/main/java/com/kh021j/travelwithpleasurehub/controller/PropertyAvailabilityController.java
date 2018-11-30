@@ -1,8 +1,8 @@
-package com.kh021j.travelwithpleasurehub.controllers;
+package com.kh021j.travelwithpleasurehub.controller;
 
 
-import com.kh021j.travelwithpleasurehub.models.PropertyAvailability;
-import com.kh021j.travelwithpleasurehub.repositories.PropertyAvailabilityRepository;
+import com.kh021j.travelwithpleasurehub.model.PropertyAvailability;
+import com.kh021j.travelwithpleasurehub.repository.PropertyAvailabilityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

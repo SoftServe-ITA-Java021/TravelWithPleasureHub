@@ -1,4 +1,4 @@
-package com.kh021j.travelwithpleasurehub.models;
+package com.kh021j.travelwithpleasurehub.model;
 
 
 import lombok.AllArgsConstructor;
@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.math.BigInteger;
 import java.time.LocalDate;
 
 @Entity

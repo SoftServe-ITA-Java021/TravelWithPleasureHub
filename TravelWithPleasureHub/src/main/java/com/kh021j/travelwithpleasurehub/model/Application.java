@@ -1,4 +1,4 @@
-package com.kh021j.travelwithpleasurehub.models;
+package com.kh021j.travelwithpleasurehub.model;
 
 
 import lombok.AllArgsConstructor;
@@ -6,27 +6,31 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PropertyReview {
+public class Application {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String reviewText;
-
-    private Integer rate;
+    @ManyToOne
+    @JoinColumn(name = "property_id")
+    private Property property;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "property_id")
-    private Property property;
+    private LocalDate rentSince;
 
+    private LocalDate rentUntil;
+
+    private String applicationText;
+
+    private Boolean isApproved;
 }

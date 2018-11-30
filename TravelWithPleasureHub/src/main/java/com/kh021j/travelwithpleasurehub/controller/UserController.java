@@ -1,7 +1,7 @@
-package com.kh021j.travelwithpleasurehub.controllers;
+package com.kh021j.travelwithpleasurehub.controller;
 
-import com.kh021j.travelwithpleasurehub.models.User;
-import com.kh021j.travelwithpleasurehub.repositories.UserRepository;
+import com.kh021j.travelwithpleasurehub.model.User;
+import com.kh021j.travelwithpleasurehub.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

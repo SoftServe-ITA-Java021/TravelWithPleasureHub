@@ -1,4 +1,4 @@
-package com.kh021j.travelwithpleasurehub.models;
+package com.kh021j.travelwithpleasurehub.model;
 
 
 import lombok.AllArgsConstructor;
@@ -33,5 +33,7 @@ public class User {
     private String additionalInfo;
 
     private String phoneNumber;
+
+    private String pathToPhoto;
 
 }
