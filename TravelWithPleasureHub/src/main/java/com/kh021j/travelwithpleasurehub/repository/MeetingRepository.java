@@ -16,5 +16,4 @@ public interface MeetingRepository extends JpaRepository<Meeting, Long> {
 
     List<Meeting> findAllByTimeOfActionAfter(LocalDateTime time);
 
-
 }

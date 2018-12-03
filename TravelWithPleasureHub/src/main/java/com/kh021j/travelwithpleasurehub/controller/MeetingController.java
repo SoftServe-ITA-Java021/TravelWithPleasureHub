@@ -1,4 +1,4 @@
-package com.kh021j.travelwithpleasurehub.web.rest;
+package com.kh021j.travelwithpleasurehub.controller;
 
 import com.kh021j.travelwithpleasurehub.service.MeetingService;
 import com.kh021j.travelwithpleasurehub.service.dto.MeetingDTO;
@@ -18,9 +18,9 @@ import java.util.Optional;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @RestController
 @RequestMapping("/api/meetings")
-public class MeetingResource {
+public class MeetingController {
 
-    private final Logger log = LoggerFactory.getLogger(MeetingResource.class);
+    private final Logger log = LoggerFactory.getLogger(MeetingController.class);
 
     private final MeetingService meetingService;
 
@@ -30,6 +30,26 @@ public class MeetingResource {
         MeetingDTO result = meetingService.save(meetingDTO);
         if (result != null) {
             return ResponseEntity.created(new URI("/api/meetings/" + result.getId())).build();
+        }
+        return ResponseEntity.badRequest().build();
+    }
+
+    @PostMapping(value = "/request-for-meeting", params = {"meeting-id", "user-id"})
+    public ResponseEntity<MeetingDTO> sendRequestForMeeting(@RequestParam Long meetingId, @RequestParam Long userId) {
+        log.debug("REST request to send request for Meeting with id : {} ,and wishing user id : {} ", meetingId, userId);
+        MeetingDTO result = meetingService.sendRequestForMeeting(meetingId, userId);
+        if (result != null) {
+            return ResponseEntity.ok(result);
+        }
+        return ResponseEntity.badRequest().build();
+    }
+
+    @PostMapping(value = "/request-for-meeting", params = {"owner-id", "meeting-id", "wishing-user-id"})
+    public ResponseEntity<MeetingDTO> confirmUserForMeeting(@RequestParam Long ownerId, @RequestParam Long meetingId, @RequestParam Long wishingUserId) {
+        log.debug("REST request to send request for Meeting with id : {} ,owner id : {} ,and wishing user id : {} ", meetingId, ownerId, wishingUserId);
+        MeetingDTO result = meetingService.confirmUserForMeeting(ownerId, meetingId, wishingUserId);
+        if (result != null) {
+            return ResponseEntity.ok(result);
         }
         return ResponseEntity.badRequest().build();
     }
