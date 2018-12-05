@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.math.BigInteger;
+import java.time.LocalDate;
 
 @Entity
 @Data
@@ -21,7 +22,9 @@ public class UserReview {
 
     private Integer rate;
 
-    private BigInteger madeByUserId;
+    private Integer madeByUserId;
+
+    private LocalDate dateRated;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
