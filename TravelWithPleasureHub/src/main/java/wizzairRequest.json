@@ -1,0 +1,20 @@
+{
+  "isFlightChange": false,
+  "isSeniorOrStudent": false,
+  "flightList": [
+    {
+      "departureStation": "SOF",
+      "arrivalStation": "BUD",
+      "departureDate": "2018-12-12"
+    },
+    {
+      "departureStation": "BUD",
+      "arrivalStation": "SOF",
+      "departureDate": "2018-12-26"
+    }
+  ],
+  "adultCount": 1,
+  "childCount": 0,
+  "infantCount": 0,
+  "wdc": true
+}

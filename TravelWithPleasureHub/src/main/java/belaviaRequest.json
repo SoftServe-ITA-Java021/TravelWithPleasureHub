@@ -1,0 +1,17 @@
+{
+  "currency": "USD",
+  "searchRoutes": [
+    {
+      "origin": "IEV",
+      "destination": "BUD",
+      "departing": "2018-12-08",
+      "direction": 0
+    }
+  ],
+  "passengerQuantities": [
+    {
+      "code": "ADT",
+      "quantity": 1
+    }
+  ]
+}
