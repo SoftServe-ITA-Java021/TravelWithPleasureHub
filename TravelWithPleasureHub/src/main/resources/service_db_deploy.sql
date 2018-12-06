@@ -241,6 +241,8 @@ CREATE TABLE meeting
 
   links_new_table text,
 
+  owner_id integer references users(user_id),
+
   CONSTRAINT meeting_pk PRIMARY KEY (meeting_id),
 
   CONSTRAINT new_table_fk FOREIGN KEY (type_id_new_table, links_new_table)
@@ -263,12 +265,12 @@ ALTER TABLE meeting
 OWNER TO postgres;
 
 
-CREATE TABLE many_users_has_many_meeting
+CREATE TABLE confirmed_users
 (
   user_id_users numeric NOT NULL,
   meeting_id_meeting numeric NOT NULL,
-  CONSTRAINT many_users_has_many_meeting_pk PRIMARY KEY (user_id_users, meeting_id_meeting),
-  CONSTRAINT meeting_fk FOREIGN KEY (meeting_id_meeting)
+  CONSTRAINT confirmed_users_pk PRIMARY KEY (user_id_users, meeting_id_meeting),
+  CONSTRAINT confirmed_users_fk FOREIGN KEY (meeting_id_meeting)
       REFERENCES meeting (meeting_id) MATCH FULL
       ON UPDATE CASCADE ON DELETE RESTRICT,
   CONSTRAINT users_fk FOREIGN KEY (user_id_users)
@@ -278,8 +280,28 @@ CREATE TABLE many_users_has_many_meeting
 WITH (
   OIDS=FALSE
 );
-ALTER TABLE many_users_has_many_meeting
+ALTER TABLE confirmed_users
   OWNER TO postgres;
+
+
+CREATE TABLE wishing_users
+(
+  user_id_users numeric NOT NULL,
+  meeting_id_meeting numeric NOT NULL,
+  CONSTRAINT wishing_users_pk PRIMARY KEY (user_id_users, meeting_id_meeting),
+  CONSTRAINT wishing_users_fk FOREIGN KEY (meeting_id_meeting)
+      REFERENCES meeting (meeting_id) MATCH FULL
+      ON UPDATE CASCADE ON DELETE RESTRICT,
+  CONSTRAINT users_fk FOREIGN KEY (user_id_users)
+      REFERENCES users (user_id) MATCH FULL
+      ON UPDATE CASCADE ON DELETE RESTRICT
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE wishing_users
+  OWNER TO postgres;
+
 
 
 CREATE TABLE meeting_feedback

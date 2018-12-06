@@ -3,6 +3,7 @@ package com.kh021j.travelwithpleasurehub.controller;
 import com.kh021j.travelwithpleasurehub.model.Property;
 import com.kh021j.travelwithpleasurehub.repository.PropertyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -44,6 +45,13 @@ public class PropertyController {
         return propertyRepository.findByPriceLessThanEqual(price).orElse(null);
     }
 
+    @GetMapping(params = "sortByPrice")
+    public @ResponseBody Iterable<Property> getPropertiesByPriceSortedBy(@RequestParam String sortBy) {
+        if(sortBy.equals("asc")) return propertyRepository.findAllByOrderOrderByPriceAsc().orElse(null);
+        else if(sortBy.equals("desc")) return propertyRepository.findAllByOrderOrderByPriceDesc().orElse(null);
+        else return propertyRepository.findAll();
+    }
+
     @GetMapping(params = "locality")
     public @ResponseBody Iterable<Property> getPropertiesByLocality(@RequestParam String locality) {
         return propertyRepository.findByLocality(locality).orElse(null);
@@ -61,6 +69,21 @@ public class PropertyController {
         return propertyRepository.
                 findByAvailabilityInPeriod(sinceDate, untilDate)
                     .orElse(null);
+    }
+
+    @GetMapping(params = {"since", "until", "sortByPrice"})
+    public @ResponseBody Iterable<Property> getPropertiesByDateAndSortByPrice(@RequestParam String since,
+                                                                              @RequestParam String until,
+                                                                              @RequestParam String sortBy ) {
+        LocalDate sinceDate = LocalDate.parse(since);
+        LocalDate untilDate = LocalDate.parse(until);
+        if (sortBy.equals("asc")) return propertyRepository.findByAvailabilityInPeriodAndSort(sinceDate, untilDate,
+                new Sort(Sort.Direction.ASC, "price")).orElse(null);
+        else if (sortBy.equals("desc")) return propertyRepository.findByAvailabilityInPeriodAndSort(sinceDate, untilDate,
+                new Sort(Sort.Direction.DESC, "price")).orElse(null);
+        else return propertyRepository.
+                findByAvailabilityInPeriod(sinceDate, untilDate)
+                .orElse(null);
     }
 
 }

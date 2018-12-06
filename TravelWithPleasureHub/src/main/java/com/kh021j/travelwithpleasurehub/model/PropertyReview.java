@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Data
@@ -20,6 +21,8 @@ public class PropertyReview {
     private String reviewText;
 
     private Integer rate;
+
+    private LocalDate dateRated;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
