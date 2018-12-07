@@ -36,12 +36,12 @@ public interface PropertyRepository extends JpaRepository<Property, Integer> {
             " WHERE property_availability.id IS NULL" +
             " or property.id not in(select property_id from property_availability where" +
             " booked_since  between ?1 and ?2 or booked_until between ?1 and ?2 or" +
-            " (booked_since < ?1 and  booked_until > ?2))",
+            " (booked_since < ?1 and  booked_until > ?2)) order by price ?3",
             nativeQuery = true)
-    Optional<Iterable<Property>> findByAvailabilityInPeriodAndSort(LocalDate start, LocalDate end, Sort sort);
+    Optional<Iterable<Property>> findByAvailabilityInPeriodAndSort(LocalDate start, LocalDate end, String order);
 
-    Optional<Iterable<Property>> findAllByOrderOrderByPriceAsc();
+    Optional<Iterable<Property>> findAllByOrderByPriceAsc();
 
-    Optional<Iterable<Property>> findAllByOrderOrderByPriceDesc();
+    Optional<Iterable<Property>> findAllByOrderByPriceDesc();
 
 }

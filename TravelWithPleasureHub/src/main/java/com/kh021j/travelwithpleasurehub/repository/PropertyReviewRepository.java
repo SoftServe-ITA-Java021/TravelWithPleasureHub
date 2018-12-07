@@ -11,8 +11,8 @@ public interface PropertyReviewRepository extends JpaRepository<PropertyReview, 
 
     Optional<Iterable<PropertyReview>> findByPropertyId(Integer propertyId);
 
-    Optional<Iterable<PropertyReview>> findAllByOrderOrderByDateRatedAsc();
+    Optional<Iterable<PropertyReview>> findAllByOrderByDateRatedAsc();
 
-    Optional<Iterable<PropertyReview>> findAllByOrderOrderByDateRatedDesc();
+    Optional<Iterable<PropertyReview>> findAllByOrderByDateRatedDesc();
 
 }

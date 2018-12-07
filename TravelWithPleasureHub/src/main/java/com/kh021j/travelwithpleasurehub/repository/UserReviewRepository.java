@@ -11,8 +11,8 @@ public interface UserReviewRepository extends JpaRepository<UserReview, Integer>
 
     Optional<Iterable<UserReview>> findByUserId(Integer userId);
 
-    Optional<Iterable<UserReview>> findAllByOrderOrderByDateRatedAsc();
+    Optional<Iterable<UserReview>> findAllByOrderByDateRatedAsc();
 
-    Optional<Iterable<UserReview>> findAllByOrderOrderByDateRatedDesc();
+    Optional<Iterable<UserReview>> findAllByOrderByDateRatedDesc();
 
 }

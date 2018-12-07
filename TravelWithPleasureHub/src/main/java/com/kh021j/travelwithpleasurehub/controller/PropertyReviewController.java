@@ -1,5 +1,6 @@
 package com.kh021j.travelwithpleasurehub.controller;
 
+import com.kh021j.travelwithpleasurehub.controller.enumeration.SortType;
 import com.kh021j.travelwithpleasurehub.model.PropertyReview;
 import com.kh021j.travelwithpleasurehub.repository.PropertyReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +29,15 @@ public class PropertyReviewController {
     }
 
     @GetMapping(params = "sortByDateRated")
-    public @ResponseBody Iterable<PropertyReview> getPropertyReviewsSortedByDateRated(@RequestParam String sortBy) {
-        if(sortBy.equals("asc")) return propertyReviewRepository.findAllByOrderOrderByDateRatedAsc().orElse(null);
-        else if(sortBy.equals("desc")) return propertyReviewRepository.findAllByOrderOrderByDateRatedDesc().orElse(null);
-        else return propertyReviewRepository.findAll();
+    public @ResponseBody Iterable<PropertyReview> getPropertyReviewsSortedByDateRated(@RequestParam String sortByDateRated) {
+        switch (SortType.valueOf(sortByDateRated.toUpperCase())) {
+            case ASC:
+                return propertyReviewRepository.findAllByOrderByDateRatedAsc().orElse(null);
+            case DESC:
+                return propertyReviewRepository.findAllByOrderByDateRatedDesc().orElse(null);
+            default:
+                return propertyReviewRepository.findAll();
+        }
     }
 
     @PostMapping

@@ -1,12 +1,13 @@
 package com.kh021j.travelwithpleasurehub.controller;
 
+import com.kh021j.travelwithpleasurehub.controller.enumeration.SortType;
 import com.kh021j.travelwithpleasurehub.model.UserReview;
 import com.kh021j.travelwithpleasurehub.repository.UserReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(path = "/api/propertyReview")
+@RequestMapping(path = "/api/userReview")
 public class UserReviewController {
 
     @Autowired
@@ -28,10 +29,15 @@ public class UserReviewController {
     }
 
     @GetMapping(params = "sortByDateRated")
-    public @ResponseBody Iterable<UserReview> getUserReviewsSortedByDateRated(@RequestParam String sortBy) {
-        if(sortBy.equals("asc")) return userReviewRepository.findAllByOrderOrderByDateRatedAsc().orElse(null);
-        else if(sortBy.equals("desc")) return userReviewRepository.findAllByOrderOrderByDateRatedDesc().orElse(null);
-        else return userReviewRepository.findAll();
+    public @ResponseBody Iterable<UserReview> getUserReviewsSortedByDateRated(@RequestParam String sortByDateRated) {
+        switch (SortType.valueOf(sortByDateRated.toUpperCase())) {
+            case ASC:
+                return userReviewRepository.findAllByOrderByDateRatedAsc().orElse(null);
+            case DESC:
+                return userReviewRepository.findAllByOrderByDateRatedDesc().orElse(null);
+            default:
+                return userReviewRepository.findAll();
+        }
     }
 
     @PostMapping

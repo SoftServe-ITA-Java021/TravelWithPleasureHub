@@ -28,6 +28,6 @@ public class UserReview {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User userTable;
+    private User user;
 
 }
