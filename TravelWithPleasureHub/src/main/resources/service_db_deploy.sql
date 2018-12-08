@@ -1,369 +1,199 @@
-﻿CREATE TABLE users
+﻿create table if not exists users
 (
-
-  user_id numeric NOT NULL,
-
-  name text NOT NULL,
-
-  surname text NOT NULL,
-
-  phone text,
-
-  status text NOT NULL,
-
-  password text NOT NULL,
-
-  photo text NOT NULL,
-
-  role text,
-
-  CONSTRAINT users_pk PRIMARY KEY (user_id)
-
-)
-
-WITH (
-  OIDS=FALSE
+	id serial not null
+		constraint "User_pkey"
+			primary key,
+	username varchar(40) not null,
+	password varchar(40) not null,
+	first_name varchar(40),
+	second_name varchar(40),
+	email varchar(255) not null,
+	location varchar(255),
+	additional_info text,
+	phone_number varchar(20),
+	status text NOT NULL,
+	role text
 );
 
-ALTER TABLE users
+alter table users owner to postgres;
 
-  OWNER TO postgres;
-
-
-  CREATE TABLE user_feedback
+create table if not exists property_type
 (
-  u_feedback_id integer NOT NULL,
-  text text NOT NULL,
-  rate smallint NOT NULL,
-  user_id_users numeric,
-  CONSTRAINT user_feedback_pk PRIMARY KEY (u_feedback_id),
-  CONSTRAINT users_fk FOREIGN KEY (user_id_users)
-      REFERENCES users (user_id) MATCH FULL
-      ON UPDATE CASCADE ON DELETE SET NULL
-)
-WITH (
-  OIDS=FALSE
-);
-ALTER TABLE user_feedback
-  OWNER TO postgres;
-  
-  
-CREATE TABLE property_type
-(
-
-  type_id integer NOT NULL,
-
-  title text NOT NULL,
-
-  CONSTRAINT property_type_pk PRIMARY KEY (type_id)
-
-)
-
-WITH (
-  OIDS=FALSE
+	id serial not null
+		constraint "Property_type_pkey"
+			primary key,
+	title varchar(255) not null
 );
 
-ALTER TABLE property_type
+alter table property_type owner to postgres;
 
-  OWNER TO postgres;
-
-CREATE TABLE property
+create table if not exists user_review
 (
-  property_id numeric NOT NULL,
-  title text NOT NULL,
-  description text NOT NULL,
-  locality text NOT NULL,
-  address text NOT NULL,
-  user_id_users numeric,
-  type_id_property_type integer,
-  CONSTRAINT property_pk PRIMARY KEY (property_id),
-  CONSTRAINT property_type_fk FOREIGN KEY (type_id_property_type)
-      REFERENCES property_type (type_id) MATCH FULL
-      ON UPDATE CASCADE ON DELETE SET NULL,
-  CONSTRAINT users_fk FOREIGN KEY (user_id_users)
-      REFERENCES users (user_id) MATCH FULL
-      ON UPDATE CASCADE ON DELETE SET NULL
-)
-WITH (
-  OIDS=FALSE
-);
-ALTER TABLE property
-  OWNER TO postgres;
-
-CREATE TABLE property_availability
-(
-
-  availability_id integer NOT NULL,
-
-  booked_since date NOT NULL,
-
-  booked_to date NOT NULL,
-
-  property_id_property numeric,
-
-  CONSTRAINT property_availability_pk PRIMARY KEY (availability_id),
-
-  CONSTRAINT property_fk FOREIGN KEY (property_id_property)
-
-      REFERENCES property (property_id) MATCH FULL
-
-      ON UPDATE CASCADE ON DELETE SET NULL,
-
-  CONSTRAINT property_availability_uq
- UNIQUE (property_id_property)
-
-)
-
-WITH (
-  OIDS=FALSE
+	id serial not null
+		constraint "User_review_pkey"
+			primary key,
+	made_by_user_id integer not null,
+	review_text text not null,
+	rate integer not null,
+	date_rated timeOfAction not null,
+	user_id integer not null
+		constraint user_id
+			references users
 );
 
-ALTER TABLE property_availability
+alter table user_review owner to postgres;
 
-  OWNER TO postgres;
-
-
-CREATE TABLE property_feedback
+create table if not exists property
 (
-
-  p_feedback_id integer NOT NULL,
-
-  text text NOT NULL,
-
-  rate smallint NOT NULL,
-
-  property_id_property numeric,
-
-  user_id_users numeric,
-
-  CONSTRAINT property_feedback_pk PRIMARY KEY (p_feedback_id),
-  CONSTRAINT property_fk FOREIGN KEY (property_id_property)
-
-      REFERENCES property (property_id) MATCH FULL
-
-      ON UPDATE CASCADE ON DELETE SET NULL,
-
-  CONSTRAINT users_fk FOREIGN KEY (user_id_users)
-
-      REFERENCES users (user_id) MATCH FULL
-
-      ON UPDATE CASCADE ON DELETE SET NULL
-)
-
-WITH (
-  OIDS=FALSE
+	id serial not null
+		constraint property_pkey
+			primary key,
+	title varchar(255) not null,
+	description text not null,
+	locality varchar(255) not null,
+	address varchar(255) not null,
+	user_id integer not null
+		constraint user_id
+			references users,
+	property_type_id integer not null
+		constraint property_type_id
+			references property_type,
+	price integer not null
 );
 
-ALTER TABLE property_feedback
+alter table property owner to postgres;
 
-  OWNER TO postgres;
+create index if not exists fki_user_id
+	on property (user_id);
 
-
-CREATE TABLE application
+create table if not exists property_review
 (
-
-  application_id numeric NOT NULL,
-
-  rent_since date NOT NULL,
-
-  rent_until date NOT NULL,
-
-  application_text text NOT NULL,
-
-  is_approved boolean NOT NULL,
-
-  user_id_users numeric,
-
-  property_id_property numeric,
-
-  CONSTRAINT application_pk PRIMARY KEY (application_id),
-
-  CONSTRAINT property_fk FOREIGN KEY (property_id_property)
-
-      REFERENCES property (property_id) MATCH FULL
-
-      ON UPDATE CASCADE ON DELETE SET NULL,
-
-  CONSTRAINT users_fk FOREIGN KEY (user_id_users)
-
-      REFERENCES users (user_id) MATCH FULL
-
-      ON UPDATE CASCADE ON DELETE SET NULL,
-
-  CONSTRAINT application_uq UNIQUE (property_id_property)
-
-)
-
-WITH (
-  OIDS=FALSE
+	id serial not null
+		constraint "Property_review_pkey"
+			primary key,
+	review_text text not null,
+	rate integer not null,
+	date_rated timeOfAction not null,
+	user_id integer not null
+		constraint user_id
+			references users,
+	property_id integer not null
+		constraint property_id
+			references property
 );
 
-ALTER TABLE application
+alter table property_review owner to postgres;
 
-  OWNER TO postgres;
-
-
-  CREATE TABLE link
+create table if not exists application
 (
-  
-type_id integer NOT NULL,
-  
-links text NOT NULL,
-  
-CONSTRAINT new_table_pk 
-PRIMARY KEY (type_id, links)
-
-)
-
-WITH (
-  OIDS=FALSE
+	id serial not null
+		constraint "Application_pkey"
+			primary key,
+	rent_since timeOfAction not null,
+	rent_until timeOfAction not null,
+	application_text text,
+	is_approved boolean,
+	property_id integer not null
+		constraint property_id
+			references property,
+	user_id integer not null
+		constraint user_id
+			references users
 );
 
-ALTER TABLE link
-  
-OWNER TO postgres;
+alter table application owner to postgres;
 
+create index if not exists fki_property_id
+	on application (property_id);
 
-CREATE TABLE meeting
+create table if not exists property_availability
 (
-
-  meeting_id numeric NOT NULL,
-
-  header text NOT NULL,
-
-  content text NOT NULL,
-
-  location text NOT NULL,
-
-  date date NOT NULL,
-
-  type_id_new_table integer,
-
-  links_new_table text,
-
-  owner_id integer references users(user_id),
-
-  CONSTRAINT meeting_pk PRIMARY KEY (meeting_id),
-
-  CONSTRAINT new_table_fk FOREIGN KEY (type_id_new_table, links_new_table)
-
-      REFERENCES link (type_id, links) MATCH FULL
-
-      ON UPDATE CASCADE ON DELETE SET NULL,
-
-  CONSTRAINT meeting_uq
- UNIQUE (type_id_new_table, links_new_table)
-
-)
-
-WITH (
-  OIDS=FALSE
+	id serial not null
+		constraint "Availability_of_property_pkey"
+			primary key,
+	booked_since timeOfAction not null,
+	booked_until timeOfAction not null,
+	property_id integer not null
+		constraint property_id
+			references property
 );
 
-ALTER TABLE meeting
-  
-OWNER TO postgres;
+alter table property_availability owner to postgres;
 
 
-CREATE TABLE confirmed_users
+create table if not exists meeting
 (
-  user_id_users numeric NOT NULL,
-  meeting_id_meeting numeric NOT NULL,
-  CONSTRAINT confirmed_users_pk PRIMARY KEY (user_id_users, meeting_id_meeting),
-  CONSTRAINT confirmed_users_fk FOREIGN KEY (meeting_id_meeting)
-      REFERENCES meeting (meeting_id) MATCH FULL
+
+  id serial not null constraint "Meeting_pkey"
+   primary key,
+
+  header varchar(40) not null,
+
+  meeting_type varchar(30) not null,
+
+  content varchar not null,
+
+  location varchar not null,
+
+  date_time timestamp not null,
+
+  owner_id serial not null
+    constraint owner_id
+      references users
+
+);
+alter table meeting OWNER to postgres;
+
+  create table if not exists link
+(
+
+  id serial not null constraint "link_pkey"
+    primary key,
+
+  link varchar not null,
+
+  meeting_id integer
+    constraint meeting_id
+    not null references meeting
+);
+alter table link OWNER to postgres;
+
+create table if not exists users_meetings
+(
+  user_id serial NOT NULL,
+  meeting_id serial NOT NULL,
+  constraint many_users_has_many_meeting_pk PRIMARY KEY (user_id, meeting_id),
+
+  constraint meeting_fk FOREIGN KEY (meeting_id)
+      REFERENCES meeting (id) MATCH FULL
       ON UPDATE CASCADE ON DELETE RESTRICT,
-  CONSTRAINT users_fk FOREIGN KEY (user_id_users)
-      REFERENCES users (user_id) MATCH FULL
+
+  constraint users_fk FOREIGN KEY (user_id)
+      REFERENCES users (id) MATCH FULL
       ON UPDATE CASCADE ON DELETE RESTRICT
 )
 WITH (
   OIDS=FALSE
 );
-ALTER TABLE confirmed_users
+ALTER TABLE users_meetings
   OWNER TO postgres;
 
 
-CREATE TABLE wishing_users
+create table if not exists meeting_feedback
 (
-  user_id_users numeric NOT NULL,
-  meeting_id_meeting numeric NOT NULL,
-  CONSTRAINT wishing_users_pk PRIMARY KEY (user_id_users, meeting_id_meeting),
-  CONSTRAINT wishing_users_fk FOREIGN KEY (meeting_id_meeting)
-      REFERENCES meeting (meeting_id) MATCH FULL
-      ON UPDATE CASCADE ON DELETE RESTRICT,
-  CONSTRAINT users_fk FOREIGN KEY (user_id_users)
-      REFERENCES users (user_id) MATCH FULL
-      ON UPDATE CASCADE ON DELETE RESTRICT
-)
-WITH (
-  OIDS=FALSE
-);
-ALTER TABLE wishing_users
-  OWNER TO postgres;
+  id serial NOT NULL constraint "meeting_feedback_pkey"
+    primary key,
 
+  text varchar NOT NULL,
 
+  feedback_type varchar  not null,
 
-CREATE TABLE meeting_feedback
-(
-
-  m_feedback_id integer NOT NULL,
-
-  text text NOT NULL,
-
-  rate smallint NOT NULL,
-
-  meeting_id_meeting numeric,
-
-  CONSTRAINT meeting_fk FOREIGN KEY (meeting_id_meeting)
-
-      REFERENCES meeting (meeting_id) MATCH FULL
-
-      ON UPDATE CASCADE ON DELETE SET NULL
-
-)
-
-WITH (
-  OIDS=FALSE
+  meeting_id integer not null constraint meeting_id
+    not null references meeting
+  ON UPDATE CASCADE ON DELETE SET NULL
 );
 
 ALTER TABLE meeting_feedback
-  
+
 OWNER TO postgres;
 
-CREATE TABLE meeting_held
-(
-
-  meeting_held_id integer NOT NULL,
-
-  organized_by_user numeric NOT NULL,
-
-  meeting_id_meeting numeric,
-
-  user_id_users numeric,
-
-  CONSTRAINT meeting_held_pk PRIMARY KEY (meeting_held_id),
-
-  CONSTRAINT meeting_fk FOREIGN KEY (meeting_id_meeting)
-
-      REFERENCES meeting (meeting_id) MATCH FULL
-
-      ON UPDATE CASCADE ON DELETE SET NULL,
-
-  CONSTRAINT users_fk FOREIGN KEY (user_id_users)
-
-      REFERENCES users (user_id) MATCH FULL
-
-      ON UPDATE CASCADE ON DELETE SET NULL,
-
-  CONSTRAINT meeting_held_uq UNIQUE (meeting_id_meeting)
-
-)
-
-WITH (
-  OIDS=FALSE
-);
-
-ALTER TABLE meeting_held
-  
-OWNER TO postgres;

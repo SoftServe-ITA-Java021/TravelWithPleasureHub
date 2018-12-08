@@ -13,7 +13,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,8 +38,8 @@ public class MeetingService {
                 .id(meetingDTO.getId())
                 .content(meetingDTO.getContent())
                 .header(meetingDTO.getContent())
-                .link(meetingDTO.getLink())
                 .location(meetingDTO.getLocation())
+                .links(meetingDTO.getLinks())
                 .meetingType(meetingDTO.getMeetingType())
                 .timeOfAction(meetingDTO.getTimeOfAction())
                 .owner(userRepository.findById(meetingDTO.getOwnerId().intValue()).get())
@@ -57,7 +60,7 @@ public class MeetingService {
                 .id(meeting.getId())
                 .content(meeting.getContent())
                 .header(meeting.getContent())
-                .link(meeting.getLink())
+                .links(meeting.getLinks())
                 .location(meeting.getLocation())
                 .meetingType(meeting.getMeetingType())
                 .timeOfAction(meeting.getTimeOfAction())
@@ -82,7 +85,7 @@ public class MeetingService {
     @Transactional
     public MeetingDTO save(MeetingDTO meetingDTO) {
         log.debug("Request to save Meeting : {}", meetingDTO);
-        if (!meetingRepository.existsById(meetingDTO.getId())) {
+        if (!meetingRepository.existsById(meetingDTO.getId().longValue())) {
             Meeting meeting = fromDTO(meetingDTO);
             return toDTO(meetingRepository.saveAndFlush(meeting));
         }
@@ -93,7 +96,7 @@ public class MeetingService {
     @Transactional
     public MeetingDTO update(MeetingDTO meetingDTO) {
         log.debug("Request to update Meeting : {}", meetingDTO);
-        if (meetingRepository.existsById(meetingDTO.getId())) {
+        if (meetingRepository.existsById(meetingDTO.getId().longValue())) {
             Meeting meeting = fromDTO(meetingDTO);
             return toDTO(meetingRepository.saveAndFlush(meeting));
         }
@@ -126,7 +129,7 @@ public class MeetingService {
         }
         User owner = userRepository.findById(ownerId.intValue()).get();
         Meeting meeting = meetingRepository.findById(meetingId).get();
-        if (owner.getId().equals(meeting.getId().intValue())) {
+        if (owner.getId().equals(meeting.getId())) {
             User confirmedUser = userRepository.findById(wishingUserId.intValue()).get();
             meeting = meeting.toBuilder()
                     .confirmedUsers(addUserInList(confirmedUser, meeting))

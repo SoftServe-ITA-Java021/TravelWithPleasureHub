@@ -1,6 +1,6 @@
 package com.kh021j.travelwithpleasurehub.model;
 
-
+import com.kh021j.travelwithpleasurehub.model.enumiration.FeedbackType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -8,34 +8,24 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-@Table(name = "users")
-public class User {
-
+@Entity
+@Table(name = "meeting_feedback")
+public class MeetingFeedback {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String username;
+    @Column(name = "text")
+    private String text;
 
-    private String password;
+    @Column(name = "feedback_type")
+    private FeedbackType feedbackType;
 
-    private String email;
-
-    private String firstName;
-
-    private String secondName;
-
-    private String location;
-
-    private String additionalInfo;
-
-    private String phoneNumber;
-
-    private String pathToPhoto;
-
+    @OneToOne
+    @JoinColumn(name = "meeting_id")
+    private Meeting meeting;
 }
