@@ -36,4 +36,8 @@ public class User {
 
     private String pathToPhoto;
 
+    private String status;
+
+    private String role;
+
 }
