@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +32,6 @@ public class MeetingService {
         if (meetingDTO == null) {
             return null;
         }
-
         return Meeting.builder()
                 .id(meetingDTO.getId())
                 .content(meetingDTO.getContent())
@@ -151,15 +149,12 @@ public class MeetingService {
         return meetingRepository.findAll().stream()
                 .map(this::toDTO)
                 .collect(Collectors.toList());
-
     }
 
     public List<MeetingDTO> findAllByHeaderFilter(String header) {
         log.debug("Request to get all Meetings by header filter : {} ", header);
         return meetingRepository.findAllByHeaderContaining(header).stream()
                 .map(this::toDTO).collect(Collectors.toList());
-
-
     }
 
     public List<MeetingDTO> findAllByDateAfter(LocalDateTime time) {
@@ -167,9 +162,7 @@ public class MeetingService {
         return meetingRepository.findAllByTimeOfActionAfter(time).stream()
                 .map(this::toDTO)
                 .collect(Collectors.toList());
-
     }
-
 
     private List<User> getListOfUsersById(List<Long> ids) {
         List<User> users = new ArrayList<>();
@@ -184,10 +177,10 @@ public class MeetingService {
         users.add(user);
         return users;
     }
-
     private List<User> removeUserFromList(User user, Meeting meeting) {
         List<User> users = new ArrayList<>(meeting.getConfirmedUsers());
         users.remove(user);
         return users;
     }
+
 }

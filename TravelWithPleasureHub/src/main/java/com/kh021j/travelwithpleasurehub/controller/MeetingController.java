@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
@@ -45,8 +44,10 @@ public class MeetingController {
     }
 
     @PostMapping(value = "/request-for-meeting", params = {"owner-id", "meeting-id", "wishing-user-id"})
-    public ResponseEntity<MeetingDTO> confirmUserForMeeting(@RequestParam Long ownerId, @RequestParam Long meetingId, @RequestParam Long wishingUserId) {
-        log.debug("REST request to send request for Meeting with id : {} ,owner id : {} ,and wishing user id : {} ", meetingId, ownerId, wishingUserId);
+    public ResponseEntity<MeetingDTO> confirmUserForMeeting
+            (@RequestParam Long ownerId, @RequestParam Long meetingId, @RequestParam Long wishingUserId) {
+        log.debug("REST request to send request for Meeting with id : {} ,owner id : {} ,and wishing user id : {} ",
+                meetingId, ownerId, wishingUserId);
         MeetingDTO result = meetingService.confirmUserForMeeting(ownerId, meetingId, wishingUserId);
         if (result != null) {
             return ResponseEntity.ok(result);
@@ -88,4 +89,5 @@ public class MeetingController {
         log.debug("REST request to get Meetings after time : {}", time);
         return meetingService.findAllByDateAfter(time);
     }
+
 }
