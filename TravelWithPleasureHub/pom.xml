@@ -65,6 +65,7 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+<<<<<<< HEAD
 
 
         <dependency>
@@ -83,6 +84,13 @@
             <version>2.9.7</version>
         </dependency>
 
+=======
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>5.1.1.RELEASE</version>
+        </dependency>
+>>>>>>> 3e2ad77254d1615609a437dded495e3f11c5a80c
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
