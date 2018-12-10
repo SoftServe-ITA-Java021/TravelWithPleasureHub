@@ -147,23 +147,26 @@ public class TurkishAirlinesJSONConverter implements JSONConvertible {
         cabinPreferencesList.add(cabinPreferences);
         cabinPreferencesList.add(cabinPreferences1);
 
-        OriginDestinationInformation originDestinationInformation = new OriginDestinationInformation(departureDateTime, originLocation, destinationLocation, cabinPreferencesList);
+        OriginDestinationInformation originDestinationInformation = new OriginDestinationInformation(departureDateTime,
+                originLocation, destinationLocation, cabinPreferencesList);
 
         boolean onCheck = false;
-
         List<OriginDestinationInformation> originDestinationInformationList = null;
         if (!onCheck) {
             DepartureDateTime departureDateTime1 = new DepartureDateTime(departureDate, "P0D", "P0D");
             OriginLocation originLocation1 = new OriginLocation(destinationLocationCode, destinationAirportCityInd);
             DestinationLocation destinationLocation1 = new DestinationLocation(originLocationCode, originMultiAirportCityInd);
-            OriginDestinationInformation originDestinationInformation1 = new OriginDestinationInformation(departureDateTime1, originLocation1, destinationLocation1, cabinPreferencesList);
+            OriginDestinationInformation originDestinationInformation1 =
+                    new OriginDestinationInformation(departureDateTime1, originLocation1, destinationLocation1,
+                            cabinPreferencesList);
             originDestinationInformationList = new ArrayList<>();
             originDestinationInformationList.add(originDestinationInformation);
             originDestinationInformationList.add(originDestinationInformation1);
         }
 
         ObjectMapper mapper = new ObjectMapper();
-        TurkishAirlinesPojoModel queryModel = new TurkishAirlinesPojoModel("r", false, passengerList, originDestinationInformationList);
+        TurkishAirlinesPojoModel queryModel = new TurkishAirlinesPojoModel("r", false,
+                passengerList, originDestinationInformationList);
 
         return mapper.writeValueAsString(queryModel);
     }

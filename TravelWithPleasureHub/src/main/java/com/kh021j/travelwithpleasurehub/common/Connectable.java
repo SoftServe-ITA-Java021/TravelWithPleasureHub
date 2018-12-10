@@ -1,7 +1,8 @@
 package com.kh021j.travelwithpleasurehub.common;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
 
 public interface Connectable {
-    void toConnect() throws IOException;
+    HttpURLConnection setConnection() throws IOException;
 }
