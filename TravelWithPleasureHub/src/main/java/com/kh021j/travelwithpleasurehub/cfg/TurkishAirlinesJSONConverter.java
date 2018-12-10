@@ -1,15 +1,15 @@
 package com.kh021j.travelwithpleasurehub.cfg;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kh021j.travelwithpleasurehub.common.JSONConvertible;
-import com.kh021j.travelwithpleasurehub.model.TurkishAirlinesPojoModel;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.kh021j.travelwithpleasurehub.common.JSONConvertible;
+import com.kh021j.travelwithpleasurehub.model.preferences.tur.*;
+import com.kh021j.travelwithpleasurehub.model.TurkishAirlinesPojoModel;
 import com.kh021j.travelwithpleasurehub.model.preferences.enums.CabinType;
 import com.kh021j.travelwithpleasurehub.model.preferences.enums.PassengerType;
-import com.kh021j.travelwithpleasurehub.model.preferences.tur.*;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
 
 public class TurkishAirlinesJSONConverter implements JSONConvertible {
 

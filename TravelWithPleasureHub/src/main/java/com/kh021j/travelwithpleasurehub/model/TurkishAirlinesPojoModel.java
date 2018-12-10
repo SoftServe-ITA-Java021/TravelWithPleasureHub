@@ -1,19 +1,17 @@
 package com.kh021j.travelwithpleasurehub.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.kh021j.travelwithpleasurehub.common.IJSONFile;
-import com.kh021j.travelwithpleasurehub.model.preferences.tur.OriginDestinationInformation;
 import com.kh021j.travelwithpleasurehub.model.preferences.tur.PassengerTypeQuantity;
+import com.kh021j.travelwithpleasurehub.model.preferences.tur.OriginDestinationInformation;
 
-import java.util.Arrays;
 import java.util.List;
+import java.util.Arrays;
 
 /**
  * @routingType gets "O" for one way, "R" for round trip and "M" for multicity.
  */
 
-public class TurkishAirlinesPojoModel implements IJSONFile {
+public class TurkishAirlinesPojoModel {
 
     @JsonProperty("RoutingType")
     private String routingType;
@@ -74,10 +72,5 @@ public class TurkishAirlinesPojoModel implements IJSONFile {
                 ", passengerPreferences=" + Arrays.toString(new List[]{passengerPreferences}) +
                 ", originDestinationInformation=" + Arrays.toString(new List[]{originDestinationInformation}) +
                 '}';
-    }
-
-    @Override
-    public void deserialize() throws JsonProcessingException {
-        // TODO: 12/5/2018 . . .
     }
 }

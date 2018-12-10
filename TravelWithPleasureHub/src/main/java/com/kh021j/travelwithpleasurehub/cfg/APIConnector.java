@@ -1,7 +1,6 @@
-package com.kh021j.travelwithpleasurehub;
+package com.kh021j.travelwithpleasurehub.cfg;
 
 import com.kh021j.travelwithpleasurehub.common.Connectable;
-import com.kh021j.travelwithpleasurehub.cfg.TurkishAirlinesJSONConverter;
 
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
@@ -50,7 +49,7 @@ public class APIConnector implements Connectable {
         return flag;
     }
 
-    private String getRequest() throws IOException {
+    private String gerResponse() throws IOException {
         HttpURLConnection httpURLConnection = setConnection();
         boolean status = sendRequest(httpURLConnection);
 
