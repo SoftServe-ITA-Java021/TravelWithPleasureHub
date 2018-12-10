@@ -3,10 +3,7 @@ package com.kh021j.travelwithpleasurehub.controller;
 import com.kh021j.travelwithpleasurehub.model.User;
 import com.kh021j.travelwithpleasurehub.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,4 +25,10 @@ public class UserControllerRegistration {
     public List<User> getUserByName(@PathVariable String name) {
         return userService.findUserByName(name);
     }
+
+    @PostMapping (path = "")
+    public void createUser (@RequestBody User user ){
+        userService.create(user);
+    }
+
 }
