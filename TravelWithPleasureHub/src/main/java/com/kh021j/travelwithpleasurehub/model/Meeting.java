@@ -33,7 +33,7 @@ public class Meeting {
 
 
    @ElementCollection
-   @CollectionTable(name = "link",joinColumns = @JoinColumn(name = "type_id"))
+   @CollectionTable(name = "link",joinColumns = @JoinColumn(name = "meeting_id"))
     private List<String> links;
 
     @Column(name = "date_time", nullable = false)

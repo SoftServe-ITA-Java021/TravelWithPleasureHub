@@ -150,7 +150,7 @@ alter table meeting OWNER to postgres;
   id serial not null constraint "link_pkey"
     primary key,
 
-  link varchar not null,
+  links varchar not null,
 
   meeting_id integer
     constraint meeting_id
