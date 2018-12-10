@@ -13,6 +13,16 @@ public class SearchRoutes {
     @JsonProperty
     private int direction;
 
+    public SearchRoutes() {
+    }
+
+    public SearchRoutes(String origin, String destination, String departing, int direction) {
+        this.origin = origin;
+        this.destination = destination;
+        this.departing = departing;
+        this.direction = direction;
+    }
+
     public String getOrigin() {
         return origin;
     }
@@ -47,11 +57,11 @@ public class SearchRoutes {
 
     @Override
     public String toString() {
-        return "SearchRoutes{" +
+        return "SearchRoutes {" +
                 "origin='" + origin + '\'' +
                 ", destination='" + destination + '\'' +
                 ", departing='" + departing + '\'' +
                 ", direction=" + direction +
-                '}';
+                "}";
     }
 }

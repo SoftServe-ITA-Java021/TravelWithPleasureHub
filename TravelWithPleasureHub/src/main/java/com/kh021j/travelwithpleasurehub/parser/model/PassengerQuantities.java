@@ -10,6 +10,14 @@ public class PassengerQuantities {
     @JsonProperty
     private int quantity;
 
+    public PassengerQuantities() {
+    }
+
+    public PassengerQuantities(String code, int quantity) {
+        this.code = code;
+        this.quantity = quantity;
+    }
+
     public String getCode() {
         return code;
     }

@@ -11,6 +11,7 @@
 	location varchar(255),
 	additional_info text,
 	phone_number varchar(20),
+	path_to_photo text,
 	status text NOT NULL,
 	role text
 );
@@ -57,7 +58,8 @@ create table if not exists property
 	property_type_id integer not null
 		constraint property_type_id
 			references property_type,
-	price integer not null
+	price integer not null,
+	path_to_photo text
 );
 
 alter table property owner to postgres;

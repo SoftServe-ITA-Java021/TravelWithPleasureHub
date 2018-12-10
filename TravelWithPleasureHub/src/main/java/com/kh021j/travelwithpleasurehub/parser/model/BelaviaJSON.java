@@ -11,6 +11,15 @@ public class BelaviaJSON {
     @JsonProperty
     private PassengerQuantities passengerQuantities;
 
+    public BelaviaJSON() {
+    }
+
+    public BelaviaJSON(String currency, SearchRoutes searchRoutes, PassengerQuantities passengerQuantities) {
+        this.currency = currency;
+        this.searchRoutes = searchRoutes;
+        this.passengerQuantities = passengerQuantities;
+    }
+
     public String getCurrency() {
         return currency;
     }
