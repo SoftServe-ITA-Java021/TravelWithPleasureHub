@@ -36,6 +36,7 @@ create table if not exists user_review
 	made_by_user_id integer not null,
 	review_text text not null,
 	rate integer not null,
+	date_rated date not null,
 	user_id integer not null
 		constraint user_id
 			references users
@@ -74,6 +75,7 @@ create table if not exists property_review
 			primary key,
 	review_text text not null,
 	rate integer not null,
+	date_rated date not null,
 	user_id integer not null
 		constraint user_id
 			references users,
