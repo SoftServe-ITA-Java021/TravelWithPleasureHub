@@ -8,11 +8,11 @@ import java.net.ProtocolException;
 import java.net.URL;
 
 public class BelaviaConnection implements Connection {
-    private static final String queryUrl = "https://ibe.belavia.by/api/flightsv2/outbound";
+    private static final String QUERY_URL = "https://ibe.belavia.by/api/flightsv2/outbound";
 
     @Override
     public HttpURLConnection getConnection() throws IOException {
-        URL url = new URL(queryUrl);
+        URL url = new URL(QUERY_URL);
         return (HttpURLConnection) url.openConnection();
     }
 

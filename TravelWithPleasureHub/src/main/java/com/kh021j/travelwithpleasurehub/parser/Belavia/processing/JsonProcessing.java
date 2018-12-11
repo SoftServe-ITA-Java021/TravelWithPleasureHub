@@ -42,8 +42,8 @@ public class JsonProcessing {
         return new String(jsonBuilder);
     }
 
-    public void getPricefromResponce() throws IOException {
+    /*public void getPricefromResponce() throws IOException {
        ObjectMapper objectMapper = new ObjectMapper();
        JsonNode rootNode = objectMapper.readTree("asd");
-    }
+    }*/
 }

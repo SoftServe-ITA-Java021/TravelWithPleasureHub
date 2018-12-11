@@ -6,7 +6,6 @@ import com.kh021j.travelwithpleasurehub.parser.Belavia.model.BelaviaJSON;
 import com.kh021j.travelwithpleasurehub.parser.Belavia.model.PassengerQuantities;
 import com.kh021j.travelwithpleasurehub.parser.Belavia.model.SearchRoutes;
 import com.kh021j.travelwithpleasurehub.parser.Belavia.processing.JsonProcessing;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,9 +15,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 public class BelaviaParserDemo {
     private static final String queryUrl = "https://ibe.belavia.by/api/flightsv2/outbound";
@@ -64,9 +61,10 @@ public class BelaviaParserDemo {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode rootNode = objectMapper.readTree(new String(queryBuilder));
         String prettyPrintEmployee = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(rootNode);
-        JsonNode personalInformationNode = rootNode.get("total");
-        System.out.println(personalInformationNode);
-        /*JSONObject jsonObject = new JSONObject(new String(queryBuilder));
+
+        System.out.println(prettyPrintEmployee);
+        /*JsonNode personalInformationNode = rootNode.get("total");
+        JSONObject jsonObject = new JSONObject(new String(queryBuilder));
         System.out.println("AirLowFares: " + jsonObject.get("total"));*/
         bufferedReader.close();
         connection.disconnect();
