@@ -24,7 +24,7 @@ public class UserReviewController {
     }
 
     @GetMapping(params = "userId")
-    public @ResponseBody Iterable<UserReview> getUserReviewsByPropertyId(@RequestParam Integer userId) {
+    public @ResponseBody Iterable<UserReview> getUserReviewsByUserId(@RequestParam Integer userId) {
         return userReviewRepository.findByUserId(userId).orElse(null);
     }
 
