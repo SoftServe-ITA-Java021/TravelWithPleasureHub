@@ -19,6 +19,6 @@ public class MeetingDTO {
     private List<String> links;
     private LocalDateTime timeOfAction;
     private Integer ownerId;
-    private List<Long> confirmedUserIds;
-    private List<Long> wishingUserIds;
+    private List<Integer> confirmedUserIds;
+    private List<Integer> wishingUserIds;
 }

@@ -41,7 +41,7 @@ public class MeetingService {
                 .links(meetingDTO.getLinks())
                 .meetingType(meetingDTO.getMeetingType())
                 .timeOfAction(meetingDTO.getTimeOfAction())
-                .owner(userRepository.findById(meetingDTO.getOwnerId().intValue()).get())
+                .owner(userRepository.findById(meetingDTO.getOwnerId()).get())
                 .confirmedUsers(Objects.nonNull(meetingDTO.getConfirmedUserIds()) ?
                         getListOfUsersById(meetingDTO.getConfirmedUserIds())
                         : null)
@@ -68,14 +68,12 @@ public class MeetingService {
                         meeting.getConfirmedUsers().stream()
                                 .filter(Objects::nonNull)
                                 .map(User::getId)
-                                .map(Integer::longValue)
                                 .collect(Collectors.toList())
                         : null)
                 .wishingUserIds(Objects.nonNull(meeting.getWishingUsers()) ?
                         meeting.getWishingUsers().stream()
                                 .filter(Objects::nonNull)
                                 .map(User::getId)
-                                .map(Integer::longValue)
                                 .collect(Collectors.toList())
                         : null)
                 .build();
@@ -140,6 +138,15 @@ public class MeetingService {
         return null;
     }
 
+    public List<MeetingDTO> findHistoryOfMeetingsByUserId(Integer id) {
+        log.debug("Request to get history Meetings by user id : {} ", id);
+        User user = userRepository.findById(id).get();
+        return meetingRepository.findAllByConfirmedUsersContainsAndTimeOfActionIsBefore(user, LocalDateTime.now())
+                .stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
+    }
+
     public boolean deleteById(Integer id) {
         log.debug("Request to remove meeting with id : {} ", id);
         if (meetingRepository.existsById(id.longValue())) {
@@ -176,10 +183,10 @@ public class MeetingService {
                 .collect(Collectors.toList());
     }
 
-    private List<User> getListOfUsersById(List<Long> ids) {
+    private List<User> getListOfUsersById(List<Integer> ids) {
         List<User> users = new ArrayList<>();
-        for (Long id : ids) {
-            users.add(userRepository.findById(id.intValue()).get());
+        for (Integer id : ids) {
+            users.add(userRepository.findById(id).get());
         }
         return users;
     }

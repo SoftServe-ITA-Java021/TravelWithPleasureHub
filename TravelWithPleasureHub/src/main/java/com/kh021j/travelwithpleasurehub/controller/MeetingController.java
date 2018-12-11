@@ -6,8 +6,10 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
@@ -92,9 +94,17 @@ public class MeetingController {
     }
 
     @GetMapping(params = "time")
-    public List<MeetingDTO> findMeetingByTimeAfterFilter(@RequestParam LocalDateTime time) {
+    public List<MeetingDTO> findMeetingByTimeAfterFilter(@RequestParam
+                                                         @DateTimeFormat(pattern = "dd.MM.yyyyTHH:mm") LocalDateTime time) {
+        //	'21.12.2018T10:15'
         log.debug("REST request to get Meetings after time : {}", time);
         return meetingService.findAllByDateAfter(time);
+    }
+
+    @GetMapping("/history/{id}")
+    public List<MeetingDTO> findHistoryOfMeetingsForUser(@PathVariable Integer id) {
+        log.debug("REST request to get history of Meetings by user id : {}", id);
+        return meetingService.findHistoryOfMeetingsByUserId(id);
     }
 
 }
