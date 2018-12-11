@@ -1,20 +1,24 @@
-package com.kh021j.travelwithpleasurehub.parser.model;
+
+package com.kh021j.travelwithpleasurehub.parser.Belavia.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.List;
 
 public class BelaviaJSON {
 
     @JsonProperty
     private String currency;
     @JsonProperty
-    private SearchRoutes searchRoutes;
+    private List<SearchRoutes> searchRoutes;
     @JsonProperty
-    private PassengerQuantities passengerQuantities;
+    private List<PassengerQuantities> passengerQuantities;
 
     public BelaviaJSON() {
     }
 
-    public BelaviaJSON(String currency, SearchRoutes searchRoutes, PassengerQuantities passengerQuantities) {
+    public BelaviaJSON(String currency, List<SearchRoutes> searchRoutes,
+                       List<PassengerQuantities> passengerQuantities) {
         this.currency = currency;
         this.searchRoutes = searchRoutes;
         this.passengerQuantities = passengerQuantities;
@@ -28,19 +32,19 @@ public class BelaviaJSON {
         this.currency = currency;
     }
 
-    public SearchRoutes getSearchRoutes() {
+    public List<SearchRoutes> getSearchRoutes() {
         return searchRoutes;
     }
 
-    public void setSearchRoutes(SearchRoutes searchRoutes) {
+    public void setSearchRoutes(List<SearchRoutes> searchRoutes) {
         this.searchRoutes = searchRoutes;
     }
 
-    public PassengerQuantities getPassengerQuantities() {
+    public List<PassengerQuantities> getPassengerQuantities() {
         return passengerQuantities;
     }
 
-    public void setPassengerQuantities(PassengerQuantities passengerQuantities) {
+    public void setPassengerQuantities(List<PassengerQuantities> passengerQuantities) {
         this.passengerQuantities = passengerQuantities;
     }
 

@@ -1,4 +1,4 @@
-package com.kh021j.travelwithpleasurehub.parser.model;
+package com.kh021j.travelwithpleasurehub.parser.Belavia.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
