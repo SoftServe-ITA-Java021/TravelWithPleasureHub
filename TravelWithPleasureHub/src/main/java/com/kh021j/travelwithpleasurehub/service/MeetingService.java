@@ -2,16 +2,21 @@ package com.kh021j.travelwithpleasurehub.service;
 
 import com.kh021j.travelwithpleasurehub.model.Meeting;
 import com.kh021j.travelwithpleasurehub.model.User;
+import com.kh021j.travelwithpleasurehub.model.enumiration.MeetingType;
 import com.kh021j.travelwithpleasurehub.repository.MeetingRepository;
 import com.kh021j.travelwithpleasurehub.repository.UserRepository;
 import com.kh021j.travelwithpleasurehub.service.dto.MeetingDTO;
 import lombok.RequiredArgsConstructor;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -80,7 +85,10 @@ public class MeetingService {
     }
 
     @Transactional
-    public MeetingDTO save(MeetingDTO meetingDTO) {
+    public MeetingDTO save(MeetingDTO meetingDTO) throws IOException {
+        meetingDTO = meetingDTO.toBuilder()
+                .links(findLinksForMeeting(meetingDTO))
+                .build();
         log.debug("Request to save Meeting : {}", meetingDTO);
         if (!meetingRepository.existsById(meetingDTO.getId().longValue())) {
             Meeting meeting = fromDTO(meetingDTO);
@@ -201,6 +209,22 @@ public class MeetingService {
         List<User> users = new ArrayList<>(meeting.getConfirmedUsers());
         users.remove(user);
         return users;
+    }
+
+    private List<String> findLinksForMeeting(MeetingDTO meetingDTO) throws IOException {
+        if (meetingDTO.getMeetingType().equals(MeetingType.WALKING)) {
+            return null;
+        }
+        List<String> links = new ArrayList<>();
+        String[] countryAndCity = meetingDTO.getLocation().split(",");
+        String reference = "https://search.yahoo.com/search?p=" + countryAndCity[0].trim() + "+" + countryAndCity[1].trim()
+                + "+buy+" + meetingDTO.getMeetingType() + "+tickets&fr=yfp-t&fp=1&toggle=1&cop=mss&ei=UTF-8";
+        Document document = Jsoup.connect(reference).timeout(10000).get();
+        Elements elements = document.select("h3").select(".title").select("a");
+        for (int i = 0; i < 4; i++) {
+            links.add(elements.get(i).attr("href"));
+        }
+        return links;
     }
 
 }
