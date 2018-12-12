@@ -18,22 +18,35 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(name = "username")
     private String username;
 
+    @Column(name = "password")
     private String password;
 
+    @Column(name = "email")
     private String email;
 
+    @Column(name = "first_name")
     private String firstName;
 
+    @Column(name = "second_name")
     private String secondName;
 
+    @Column(name = "location")
     private String location;
 
+    @Column(name = "additional_info")
     private String additionalInfo;
 
+    @Column(name = "phone_number")
     private String phoneNumber;
 
+    @Column(name = "path_to_photo")
     private String pathToPhoto;
+
+    public User(String username){
+        this.username = username;
+    }
 
 }
