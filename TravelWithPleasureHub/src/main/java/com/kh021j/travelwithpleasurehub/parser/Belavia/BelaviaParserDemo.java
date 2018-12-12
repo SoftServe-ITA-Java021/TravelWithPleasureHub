@@ -15,7 +15,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 public class BelaviaParserDemo {
     private static final String queryUrl = "https://ibe.belavia.by/api/flightsv2/outbound";
@@ -63,8 +65,19 @@ public class BelaviaParserDemo {
         String prettyPrintEmployee = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(rootNode);
 
         System.out.println(prettyPrintEmployee);
-        /*JsonNode personalInformationNode = rootNode.get("total");
-        JSONObject jsonObject = new JSONObject(new String(queryBuilder));
+
+        JsonNode itineraries = rootNode.path("itineraries");
+        Iterator<JsonNode> elements = itineraries.elements();
+        while(elements.hasNext()){
+            JsonNode brands = elements.next().path("brands");
+            Iterator<JsonNode> newElements = brands.elements();
+            while (newElements.hasNext()){
+                JsonNode total = newElements.next();
+                System.out.println("\n----------------------------\nPhone Numbers = "+total.get("total"));
+            }
+        }
+
+        /*JSONObject jsonObject = new JSONObject(new String(queryBuilder));
         System.out.println("AirLowFares: " + jsonObject.get("total"));*/
         bufferedReader.close();
         connection.disconnect();

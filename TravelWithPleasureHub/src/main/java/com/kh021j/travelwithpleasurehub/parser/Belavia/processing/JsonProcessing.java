@@ -4,6 +4,7 @@ package com.kh021j.travelwithpleasurehub.parser.Belavia.processing;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kh021j.travelwithpleasurehub.parser.Belavia.BelaviaConnection;
 import com.kh021j.travelwithpleasurehub.parser.Belavia.model.BelaviaJSON;
 
 import java.io.BufferedReader;
@@ -12,6 +13,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.nio.charset.StandardCharsets;
+import java.util.Iterator;
 
 public class JsonProcessing {
 
@@ -25,13 +27,15 @@ public class JsonProcessing {
         return mapper.readValue(json, BelaviaJSON.class);
     }
 
-    public void sendJsonRequest(HttpURLConnection connection, String jsonQuery) throws IOException {
+    public void sendJsonRequest(String jsonQuery) throws IOException {
+        HttpURLConnection connection = new BelaviaConnection().createConnection();
         OutputStream os = connection.getOutputStream();
         os.write(jsonQuery.getBytes(StandardCharsets.UTF_8));
         os.close();
     }
 
-    public String getJsonResponse(HttpURLConnection connection) throws IOException {
+    public String getJsonResponse() throws IOException {
+        HttpURLConnection connection = new BelaviaConnection().getConnection();
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
         StringBuilder jsonBuilder = new StringBuilder();
         String jsonString;
@@ -42,8 +46,21 @@ public class JsonProcessing {
         return new String(jsonBuilder);
     }
 
-    /*public void getPricefromResponce() throws IOException {
-       ObjectMapper objectMapper = new ObjectMapper();
-       JsonNode rootNode = objectMapper.readTree("asd");
-    }*/
+    public String getMinPriceFromResponce() throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode rootNode = objectMapper.readTree(getJsonResponse());
+        JsonNode itineraries = rootNode.path("itineraries");
+        Iterator<JsonNode> elements = itineraries.elements();
+        StringBuilder priceBuilder = new StringBuilder();
+        while (elements.hasNext()) {
+            JsonNode brands = elements.next().path("brands");
+            Iterator<JsonNode> newElements = brands.elements();
+            while (newElements.hasNext()) {
+                JsonNode total = newElements.next();
+                   priceBuilder.append(total.get("total")).append(" ");
+            }
+        }
+        return new String(priceBuilder).trim();
+    }
+
 }

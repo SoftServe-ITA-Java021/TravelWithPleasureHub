@@ -1,261 +1,263 @@
 {
-  "airLowFares": [
-    {
-      "departing": "2018-12-20T00:00:00",
-      "currency": "USD",
-      "fareBrand": {
-        "brand": "SF",
-        "cabin": "Economy"
-      },
-      "total": 425.4
+  "airLowFares" : [ {
+    "departing" : "2018-12-12T00:00:00",
+    "currency" : "USD",
+    "fareBrand" : {
+      "brand" : "ER",
+      "cabin" : "Economy"
     },
-    {
-      "departing": "2018-12-17T00:00:00",
-      "currency": "USD",
-      "fareBrand": {
-        "brand": "ER",
-        "cabin": "Economy"
-      },
-      "total": 325.4
+    "total" : 214.3
+  }, {
+    "departing" : "2018-12-13T00:00:00",
+    "currency" : "USD",
+    "fareBrand" : {
+      "brand" : "ER",
+      "cabin" : "Economy"
     },
-    {
-      "departing": "2018-12-19T00:00:00",
-      "currency": "USD",
-      "fareBrand": {
-        "brand": "SF",
-        "cabin": "Economy"
-      },
-      "total": 425.4
+    "total" : 215.3
+  }, {
+    "departing" : "2018-12-15T00:00:00",
+    "currency" : "USD",
+    "fareBrand" : {
+      "brand" : "ER",
+      "cabin" : "Economy"
     },
-    {
-      "departing": "2018-12-22T00:00:00",
-      "currency": "USD",
-      "fareBrand": {
-        "brand": "ER",
-        "cabin": "Economy"
+    "total" : 214.3
+  } ],
+  "itineraries" : [ {
+    "origin" : "KBP",
+    "destination" : "BUD",
+    "departureDateTime" : "2018-12-12T19:05:00",
+    "arrivalDateTime" : "2018-12-13T13:05:00",
+    "connections" : 1,
+    "stopQuantity" : 0,
+    "duration" : "19:00:00",
+    "flights" : [ {
+      "departureDateTimeUtc" : "2018-12-12T17:05:00Z",
+      "arrivalDateTimeUtc" : "2018-12-12T18:05:00Z",
+      "duration" : "01:00:00",
+      "rph" : 0,
+      "operatingAirline" : "B2",
+      "marketingAirline" : "B2",
+      "flightNumber" : 846,
+      "marketingFlightNumber" : 846,
+      "departureDateTime" : "2018-12-12T19:05:00",
+      "arrivalDateTime" : "2018-12-12T21:05:00",
+      "isCodeShare" : false,
+      "equipment" : "735",
+      "isConnection" : false,
+      "stopQuantity" : 0,
+      "origin" : "KBP",
+      "destination" : "MSQ"
+    }, {
+      "departureDateTimeUtc" : "2018-12-13T10:20:00Z",
+      "arrivalDateTimeUtc" : "2018-12-13T12:05:00Z",
+      "duration" : "01:45:00",
+      "rph" : 1,
+      "operatingAirline" : "B2",
+      "marketingAirline" : "B2",
+      "flightNumber" : 811,
+      "marketingFlightNumber" : 811,
+      "departureDateTime" : "2018-12-13T13:20:00",
+      "arrivalDateTime" : "2018-12-13T13:05:00",
+      "isCodeShare" : false,
+      "equipment" : "CR2",
+      "isConnection" : true,
+      "stopQuantity" : 0,
+      "origin" : "MSQ",
+      "destination" : "BUD"
+    } ],
+    "brands" : [ {
+      "brand" : "ER",
+      "cabin" : "Economy",
+      "seats" : 4,
+      "exchange" : {
+        "isExchangeable" : true,
+        "amount" : 60.0,
+        "currency" : "EUR"
       },
-      "total": 320.4
-    },
-    {
-      "departing": "2018-12-23T00:00:00",
-      "currency": "USD",
-      "fareBrand": {
-        "brand": "ER",
-        "cabin": "Economy"
+      "refund" : {
+        "isRefundable" : true,
+        "amount" : 100.0,
+        "currency" : "EUR"
       },
-      "total": 325.4
-    }
-  ],
-  "itineraries": [
-    {
-      "origin": "KBP",
-      "destination": "BUD",
-      "departureDateTime": "2018-12-20T09:20:00",
-      "arrivalDateTime": "2018-12-20T13:05:00",
-      "connections": 1,
-      "stopQuantity": 0,
-      "duration": "04:45:00",
-      "flights": [
-        {
-          "departureDateTimeUtc": "2018-12-20T07:20:00Z",
-          "arrivalDateTimeUtc": "2018-12-20T08:20:00Z",
-          "duration": "01:00:00",
-          "rph": 0,
-          "operatingAirline": "B2",
-          "marketingAirline": "B2",
-          "flightNumber": 844,
-          "marketingFlightNumber": 844,
-          "departureDateTime": "2018-12-20T09:20:00",
-          "arrivalDateTime": "2018-12-20T11:20:00",
-          "isCodeShare": false,
-          "equipment": "735",
-          "isConnection": false,
-          "stopQuantity": 0,
-          "origin": "KBP",
-          "destination": "MSQ"
-        },
-        {
-          "departureDateTimeUtc": "2018-12-20T10:20:00Z",
-          "arrivalDateTimeUtc": "2018-12-20T12:05:00Z",
-          "duration": "01:45:00",
-          "rph": 1,
-          "operatingAirline": "B2",
-          "marketingAirline": "B2",
-          "flightNumber": 811,
-          "marketingFlightNumber": 811,
-          "departureDateTime": "2018-12-20T13:20:00",
-          "arrivalDateTime": "2018-12-20T13:05:00",
-          "isCodeShare": false,
-          "equipment": "E75",
-          "isConnection": true,
-          "stopQuantity": 0,
-          "origin": "MSQ",
-          "destination": "BUD"
-        }
-      ],
-      "brands": [
-        {
-          "brand": "SF",
-          "cabin": "Economy",
-          "seats": 5,
-          "exchange": {
-            "isExchangeable": true,
-            "amount": 60.00,
-            "currency": "EUR"
-          },
-          "refund": {
-            "isRefundable": true,
-            "amount": 100.00,
-            "currency": "EUR"
-          },
-          "total": 425.4,
-          "currency": "USD",
-          "earnPoints": 1080.0,
-          "fares": [
-            {
-              "rph": 0,
-              "rbd": "H",
-              "fareBasis": "HSP6M"
-            },
-            {
-              "rph": 1,
-              "rbd": "H",
-              "fareBasis": "HSP6M"
-            }
-          ]
-        },
-        {
-          "brand": "EF",
-          "cabin": "Economy",
-          "seats": 5,
-          "exchange": {
-            "isExchangeable": true
-          },
-          "refund": {
-            "isRefundable": true
-          },
-          "total": 601.4,
-          "currency": "USD",
-          "earnPoints": 1350.0,
-          "fares": [
-            {
-              "rph": 0,
-              "rbd": "Y",
-              "fareBasis": "YTR"
-            },
-            {
-              "rph": 1,
-              "rbd": "Y",
-              "fareBasis": "YTR"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "origin": "IEV",
-      "destination": "BUD",
-      "departureDateTime": "2018-12-20T05:00:00",
-      "arrivalDateTime": "2018-12-20T13:05:00",
-      "connections": 1,
-      "stopQuantity": 0,
-      "duration": "09:05:00",
-      "flights": [
-        {
-          "departureDateTimeUtc": "2018-12-20T03:00:00Z",
-          "arrivalDateTimeUtc": "2018-12-20T03:55:00Z",
-          "duration": "00:55:00",
-          "rph": 0,
-          "operatingAirline": "B2",
-          "marketingAirline": "B2",
-          "flightNumber": 848,
-          "marketingFlightNumber": 848,
-          "departureDateTime": "2018-12-20T05:00:00",
-          "arrivalDateTime": "2018-12-20T06:55:00",
-          "isCodeShare": false,
-          "equipment": "733",
-          "isConnection": false,
-          "stopQuantity": 0,
-          "origin": "IEV",
-          "destination": "MSQ"
-        },
-        {
-          "departureDateTimeUtc": "2018-12-20T10:20:00Z",
-          "arrivalDateTimeUtc": "2018-12-20T12:05:00Z",
-          "duration": "01:45:00",
-          "rph": 1,
-          "operatingAirline": "B2",
-          "marketingAirline": "B2",
-          "flightNumber": 811,
-          "marketingFlightNumber": 811,
-          "departureDateTime": "2018-12-20T13:20:00",
-          "arrivalDateTime": "2018-12-20T13:05:00",
-          "isCodeShare": false,
-          "equipment": "E75",
-          "isConnection": true,
-          "stopQuantity": 0,
-          "origin": "MSQ",
-          "destination": "BUD"
-        }
-      ],
-      "brands": [
-        {
-          "brand": "SF",
-          "cabin": "Economy",
-          "seats": 5,
-          "exchange": {
-            "isExchangeable": true,
-            "amount": 60.00,
-            "currency": "EUR"
-          },
-          "refund": {
-            "isRefundable": true,
-            "amount": 100.00,
-            "currency": "EUR"
-          },
-          "total": 430.4,
-          "currency": "USD",
-          "earnPoints": 1080.0,
-          "fares": [
-            {
-              "rph": 0,
-              "rbd": "H",
-              "fareBasis": "HSP6M"
-            },
-            {
-              "rph": 1,
-              "rbd": "H",
-              "fareBasis": "HSP6M"
-            }
-          ]
-        },
-        {
-          "brand": "EF",
-          "cabin": "Economy",
-          "seats": 5,
-          "exchange": {
-            "isExchangeable": true
-          },
-          "refund": {
-            "isRefundable": true
-          },
-          "total": 606.4,
-          "currency": "USD",
-          "earnPoints": 1350.0,
-          "fares": [
-            {
-              "rph": 0,
-              "rbd": "Y",
-              "fareBasis": "YTR"
-            },
-            {
-              "rph": 1,
-              "rbd": "Y",
-              "fareBasis": "YTR"
-            }
-          ]
-        }
-      ]
-    }
-  ]
+      "total" : 214.3,
+      "currency" : "USD",
+      "earnPoints" : 810.0,
+      "fares" : [ {
+        "rph" : 0,
+        "rbd" : "S",
+        "fareBasis" : "SOWP"
+      }, {
+        "rph" : 1,
+        "rbd" : "S",
+        "fareBasis" : "SOWP"
+      } ],
+      "grandTotal" : {
+        "total" : 214.3,
+        "taxTotal" : 54.3,
+        "currency" : "USD",
+        "passengerTotal" : [ {
+          "fareAmount" : 160.0,
+          "taxes" : [ {
+            "code" : "YQF",
+            "amount" : 28.5,
+            "currency" : "USD"
+          }, {
+            "code" : "YRI",
+            "amount" : 6.8,
+            "currency" : "USD"
+          }, {
+            "country" : "UA",
+            "code" : "UA",
+            "amount" : 4.0,
+            "currency" : "USD"
+          }, {
+            "country" : "UA",
+            "code" : "UD",
+            "amount" : 2.0,
+            "currency" : "USD"
+          }, {
+            "country" : "UA",
+            "code" : "YK",
+            "amount" : 13.0,
+            "currency" : "USD"
+          } ],
+          "fareTotal" : 160.0,
+          "taxesAmount" : 54.3,
+          "taxesTotal" : 54.3,
+          "total" : 214.3,
+          "currency" : "USD",
+          "code" : "ADT",
+          "quantity" : 1
+        } ]
+      }
+    }, {
+      "brand" : "SF",
+      "cabin" : "Economy",
+      "seats" : 4,
+      "exchange" : {
+        "isExchangeable" : true,
+        "amount" : 60.0,
+        "currency" : "EUR"
+      },
+      "refund" : {
+        "isRefundable" : true,
+        "amount" : 100.0,
+        "currency" : "EUR"
+      },
+      "total" : 314.3,
+      "currency" : "USD",
+      "earnPoints" : 1080.0,
+      "fares" : [ {
+        "rph" : 0,
+        "rbd" : "H",
+        "fareBasis" : "HOWP"
+      }, {
+        "rph" : 1,
+        "rbd" : "H",
+        "fareBasis" : "HOWP"
+      } ],
+      "grandTotal" : {
+        "total" : 314.3,
+        "taxTotal" : 54.3,
+        "currency" : "USD",
+        "passengerTotal" : [ {
+          "fareAmount" : 260.0,
+          "taxes" : [ {
+            "code" : "YQF",
+            "amount" : 28.5,
+            "currency" : "USD"
+          }, {
+            "code" : "YRI",
+            "amount" : 6.8,
+            "currency" : "USD"
+          }, {
+            "country" : "UA",
+            "code" : "UA",
+            "amount" : 4.0,
+            "currency" : "USD"
+          }, {
+            "country" : "UA",
+            "code" : "UD",
+            "amount" : 2.0,
+            "currency" : "USD"
+          }, {
+            "country" : "UA",
+            "code" : "YK",
+            "amount" : 13.0,
+            "currency" : "USD"
+          } ],
+          "fareTotal" : 260.0,
+          "taxesAmount" : 54.3,
+          "taxesTotal" : 54.3,
+          "total" : 314.3,
+          "currency" : "USD",
+          "code" : "ADT",
+          "quantity" : 1
+        } ]
+      }
+    }, {
+      "brand" : "EF",
+      "cabin" : "Economy",
+      "seats" : 4,
+      "exchange" : {
+        "isExchangeable" : true
+      },
+      "refund" : {
+        "isRefundable" : true
+      },
+      "total" : 424.3,
+      "currency" : "USD",
+      "earnPoints" : 1350.0,
+      "fares" : [ {
+        "rph" : 0,
+        "rbd" : "Y",
+        "fareBasis" : "YTROW"
+      }, {
+        "rph" : 1,
+        "rbd" : "Y",
+        "fareBasis" : "YTROW"
+      } ],
+      "grandTotal" : {
+        "total" : 424.3,
+        "taxTotal" : 54.3,
+        "currency" : "USD",
+        "passengerTotal" : [ {
+          "fareAmount" : 370.0,
+          "taxes" : [ {
+            "code" : "YQF",
+            "amount" : 28.5,
+            "currency" : "USD"
+          }, {
+            "code" : "YRI",
+            "amount" : 6.8,
+            "currency" : "USD"
+          }, {
+            "country" : "UA",
+            "code" : "UA",
+            "amount" : 4.0,
+            "currency" : "USD"
+          }, {
+            "country" : "UA",
+            "code" : "UD",
+            "amount" : 2.0,
+            "currency" : "USD"
+          }, {
+            "country" : "UA",
+            "code" : "YK",
+            "amount" : 13.0,
+            "currency" : "USD"
+          } ],
+          "fareTotal" : 370.0,
+          "taxesAmount" : 54.3,
+          "taxesTotal" : 54.3,
+          "total" : 424.3,
+          "currency" : "USD",
+          "code" : "ADT",
+          "quantity" : 1
+        } ]
+      }
+    } ]
+  } ]
 }
