@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
@@ -35,7 +34,7 @@ public class MeetingController {
     }
 
     @PostMapping(value = "/request-for-meeting", params = {"meeting-id", "user-id"})
-    public ResponseEntity<MeetingDTO> sendRequestForMeeting(@RequestParam Long meetingId, @RequestParam Long userId) {
+    public ResponseEntity<MeetingDTO> sendRequestForMeeting(@RequestParam Integer meetingId, @RequestParam Integer userId) {
         log.debug("REST request to send request for Meeting with id : {} ,and wishing user id : {} ", meetingId, userId);
         MeetingDTO result = meetingService.sendRequestForMeeting(meetingId, userId);
         if (result != null) {
@@ -45,8 +44,10 @@ public class MeetingController {
     }
 
     @PostMapping(value = "/request-for-meeting", params = {"owner-id", "meeting-id", "wishing-user-id"})
-    public ResponseEntity<MeetingDTO> confirmUserForMeeting(@RequestParam Long ownerId, @RequestParam Long meetingId, @RequestParam Long wishingUserId) {
-        log.debug("REST request to send request for Meeting with id : {} ,owner id : {} ,and wishing user id : {} ", meetingId, ownerId, wishingUserId);
+    public ResponseEntity<MeetingDTO> confirmUserForMeeting
+            (@RequestParam Integer ownerId, @RequestParam Integer meetingId, @RequestParam Integer wishingUserId) {
+        log.debug("REST request to send request for Meeting with id : {} ,owner id : {} ,and wishing user id : {} ",
+                meetingId, ownerId, wishingUserId);
         MeetingDTO result = meetingService.confirmUserForMeeting(ownerId, meetingId, wishingUserId);
         if (result != null) {
             return ResponseEntity.ok(result);
@@ -64,8 +65,15 @@ public class MeetingController {
         return ResponseEntity.badRequest().build();
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteMeeting(@PathVariable Integer id) {
+        log.debug("REST request to remove Meeting with id : {}", id);
+        if (meetingService.deleteById(id)) return ResponseEntity.ok().build();
+        else return ResponseEntity.badRequest().build();
+    }
+
     @GetMapping("/{id}")
-    public ResponseEntity<MeetingDTO> findMeetingById(@PathVariable long id) {
+    public ResponseEntity<MeetingDTO> findMeetingById(@PathVariable Integer id) {
         log.debug("REST request to get Meeting by id : {}", id);
         Optional<MeetingDTO> meetingDTO = meetingService.findById(id);
         return meetingDTO.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
@@ -88,4 +96,5 @@ public class MeetingController {
         log.debug("REST request to get Meetings after time : {}", time);
         return meetingService.findAllByDateAfter(time);
     }
+
 }

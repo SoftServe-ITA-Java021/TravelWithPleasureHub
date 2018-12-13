@@ -1,35 +1,31 @@
 package com.kh021j.travelwithpleasurehub.model;
 
+import com.kh021j.travelwithpleasurehub.model.enumiration.FeedbackType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.math.BigInteger;
-import java.time.LocalDate;
 
-@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-public class UserReview {
-
+@Entity
+@Table(name = "meeting_feedback")
+public class MeetingFeedback {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String reviewText;
+    @Column(name = "text")
+    private String text;
 
-    private Integer rate;
+    @Column(name = "feedback_type")
+    private FeedbackType feedbackType;
 
-    private Integer madeByUserId;
-
-    private LocalDate dateRated;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
-
+    @OneToOne
+    @JoinColumn(name = "meeting_id")
+    private Meeting meeting;
 }

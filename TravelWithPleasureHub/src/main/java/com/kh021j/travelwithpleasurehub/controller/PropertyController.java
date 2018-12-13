@@ -1,5 +1,6 @@
 package com.kh021j.travelwithpleasurehub.controller;
 
+import com.kh021j.travelwithpleasurehub.controller.enumeration.SortType;
 import com.kh021j.travelwithpleasurehub.model.Property;
 import com.kh021j.travelwithpleasurehub.repository.PropertyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,18 @@ public class PropertyController {
         return propertyRepository.findByPriceLessThanEqual(price).orElse(null);
     }
 
+    @GetMapping(params = "sortByPrice")
+    public @ResponseBody Iterable<Property> getPropertiesByPriceSortedBy(@RequestParam String sortByPrice) {
+        switch (SortType.valueOf(sortByPrice.toUpperCase())) {
+            case ASC:
+                return propertyRepository.findAllByOrderByPriceAsc().orElse(null);
+            case DESC:
+                return propertyRepository.findAllByOrderByPriceDesc().orElse(null);
+            default:
+                return propertyRepository.findAll();
+        }
+    }
+
     @GetMapping(params = "locality")
     public @ResponseBody Iterable<Property> getPropertiesByLocality(@RequestParam String locality) {
         return propertyRepository.findByLocality(locality).orElse(null);
@@ -61,6 +74,26 @@ public class PropertyController {
         return propertyRepository.
                 findByAvailabilityInPeriod(sinceDate, untilDate)
                     .orElse(null);
+    }
+
+    @GetMapping(params = {"since", "until", "sortByPrice"})
+    public @ResponseBody Iterable<Property> getPropertiesByDateAndSortByPrice(@RequestParam String since,
+                                                                              @RequestParam String until,
+                                                                              @RequestParam String sortByPrice ) {
+        LocalDate sinceDate = LocalDate.parse(since);
+        LocalDate untilDate = LocalDate.parse(until);
+        switch (SortType.valueOf(sortByPrice.toUpperCase())) {
+            case ASC:
+                return propertyRepository.findByAvailabilityInPeriodAndSort(
+                        sinceDate, untilDate, SortType.ASC.name()).orElse(null);
+            case DESC:
+                return propertyRepository.findByAvailabilityInPeriodAndSort(
+                        sinceDate, untilDate, SortType.DESC.name()).orElse(null);
+            default:
+                return propertyRepository.
+                        findByAvailabilityInPeriod(sinceDate, untilDate)
+                        .orElse(null);
+        }
     }
 
 }

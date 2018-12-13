@@ -1,23 +1,23 @@
 package com.kh021j.travelwithpleasurehub.model;
 
 import com.kh021j.travelwithpleasurehub.model.enumiration.MeetingType;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Builder(toBuilder = true)
-@Data
+@AllArgsConstructor
 @NoArgsConstructor
+@Data
+@Builder(toBuilder = true)
 @Entity
 @Table(name = "meeting")
 public class Meeting {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @Column(name = "header", nullable = false)
     private String header;
@@ -31,10 +31,12 @@ public class Meeting {
     @Column(name = "location", nullable = false)
     private String location;
 
-    @Column(name = "link")
-    private String link;
 
-    @Column(columnDefinition = "date", nullable = false)
+   @ElementCollection
+   @CollectionTable(name = "link",joinColumns = @JoinColumn(name = "meeting_id"))
+    private List<String> links;
+
+    @Column(name = "date_time", nullable = false)
     private LocalDateTime timeOfAction;
 
     @OneToOne

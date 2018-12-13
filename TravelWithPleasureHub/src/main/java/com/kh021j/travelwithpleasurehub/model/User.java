@@ -2,6 +2,7 @@ package com.kh021j.travelwithpleasurehub.model;
 
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder(toBuilder = true)
 @Table(name = "users")
 public class User {
 
@@ -45,8 +47,14 @@ public class User {
     @Column(name = "path_to_photo")
     private String pathToPhoto;
 
+<<<<<<< HEAD
     public User(String username){
         this.username = username;
     }
+=======
+    private String status;
+
+    private String role;
+>>>>>>> origin/dev
 
 }

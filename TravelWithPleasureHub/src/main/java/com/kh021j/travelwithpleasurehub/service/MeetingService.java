@@ -13,7 +13,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,13 +33,12 @@ public class MeetingService {
         if (meetingDTO == null) {
             return null;
         }
-
         return Meeting.builder()
                 .id(meetingDTO.getId())
                 .content(meetingDTO.getContent())
                 .header(meetingDTO.getContent())
-                .link(meetingDTO.getLink())
                 .location(meetingDTO.getLocation())
+                .links(meetingDTO.getLinks())
                 .meetingType(meetingDTO.getMeetingType())
                 .timeOfAction(meetingDTO.getTimeOfAction())
                 .owner(userRepository.findById(meetingDTO.getOwnerId().intValue()).get())
@@ -57,7 +59,7 @@ public class MeetingService {
                 .id(meeting.getId())
                 .content(meeting.getContent())
                 .header(meeting.getContent())
-                .link(meeting.getLink())
+                .links(meeting.getLinks())
                 .location(meeting.getLocation())
                 .meetingType(meeting.getMeetingType())
                 .timeOfAction(meeting.getTimeOfAction())
@@ -82,7 +84,7 @@ public class MeetingService {
     @Transactional
     public MeetingDTO save(MeetingDTO meetingDTO) {
         log.debug("Request to save Meeting : {}", meetingDTO);
-        if (!meetingRepository.existsById(meetingDTO.getId())) {
+        if (!meetingRepository.existsById(meetingDTO.getId().longValue())) {
             Meeting meeting = fromDTO(meetingDTO);
             return toDTO(meetingRepository.saveAndFlush(meeting));
         }
@@ -93,7 +95,7 @@ public class MeetingService {
     @Transactional
     public MeetingDTO update(MeetingDTO meetingDTO) {
         log.debug("Request to update Meeting : {}", meetingDTO);
-        if (meetingRepository.existsById(meetingDTO.getId())) {
+        if (meetingRepository.existsById(meetingDTO.getId().longValue())) {
             Meeting meeting = fromDTO(meetingDTO);
             return toDTO(meetingRepository.saveAndFlush(meeting));
         }
@@ -102,14 +104,14 @@ public class MeetingService {
     }
 
     @Transactional
-    public MeetingDTO sendRequestForMeeting(Long meetingId, Long userId) {
+    public MeetingDTO sendRequestForMeeting(Integer meetingId, Integer userId) {
         log.debug("Request to send request for Meeting with id : {} , and user id : {}", meetingId, userId);
-        if (!meetingRepository.existsById(meetingId) || !userRepository.existsById(userId.intValue())) {
+        if (!meetingRepository.existsById(meetingId.longValue()) || !userRepository.existsById(userId.intValue())) {
             log.error("Request to send request for Meeting with id : {} , and user id : {} was failed", meetingId, userId);
             return null;
         }
-        User user = userRepository.findById(userId.intValue()).get();
-        Meeting meeting = meetingRepository.findById(meetingId).get();
+        User user = userRepository.findById(userId).get();
+        Meeting meeting = meetingRepository.findById(meetingId);
         meeting = meeting.toBuilder()
                 .wishingUsers(addUserInList(user, meeting))
                 .build();
@@ -117,17 +119,17 @@ public class MeetingService {
     }
 
     @Transactional
-    public MeetingDTO confirmUserForMeeting(Long ownerId, Long meetingId, Long wishingUserId) {
+    public MeetingDTO confirmUserForMeeting(Integer ownerId, Integer meetingId, Integer wishingUserId) {
         log.debug("Request to confirm for Meeting with id : {} ,owner id : {} , and wishing user id : {}", meetingId, ownerId, wishingUserId);
-        if (!meetingRepository.existsById(meetingId) || !userRepository.existsById(wishingUserId.intValue())
-                || !userRepository.existsById(ownerId.intValue())) {
+        if (!meetingRepository.existsById(meetingId.longValue()) || !userRepository.existsById(wishingUserId)
+                || !userRepository.existsById(ownerId)) {
             log.error("Request to confirm for Meeting with id : {} ,owner id : {} , and wishing user id : {} was failed", meetingId, ownerId, wishingUserId);
             return null;
         }
-        User owner = userRepository.findById(ownerId.intValue()).get();
-        Meeting meeting = meetingRepository.findById(meetingId).get();
-        if (owner.getId().equals(meeting.getId().intValue())) {
-            User confirmedUser = userRepository.findById(wishingUserId.intValue()).get();
+        User owner = userRepository.findById(ownerId).get();
+        Meeting meeting = meetingRepository.findById(meetingId);
+        if (owner.getId().equals(meeting.getId())) {
+            User confirmedUser = userRepository.findById(wishingUserId).get();
             meeting = meeting.toBuilder()
                     .confirmedUsers(addUserInList(confirmedUser, meeting))
                     .wishingUsers(removeUserFromList(confirmedUser, meeting))
@@ -138,7 +140,18 @@ public class MeetingService {
         return null;
     }
 
-    public Optional<MeetingDTO> findById(long id) {
+    public boolean deleteById(Integer id) {
+        log.debug("Request to remove meeting with id : {} ", id);
+        if (meetingRepository.existsById(id.longValue())) {
+            meetingRepository.deleteById(id.longValue());
+            log.debug("Meeting was removed");
+            return true;
+        }
+        log.debug("Meeting wasn't removed");
+        return false;
+    }
+
+    public Optional<MeetingDTO> findById(Integer id) {
         log.debug("Request to get Meeting by id : {}", id);
         return Optional.ofNullable(toDTO(meetingRepository.findById(id)));
     }
@@ -148,15 +161,12 @@ public class MeetingService {
         return meetingRepository.findAll().stream()
                 .map(this::toDTO)
                 .collect(Collectors.toList());
-
     }
 
     public List<MeetingDTO> findAllByHeaderFilter(String header) {
         log.debug("Request to get all Meetings by header filter : {} ", header);
         return meetingRepository.findAllByHeaderContaining(header).stream()
                 .map(this::toDTO).collect(Collectors.toList());
-
-
     }
 
     public List<MeetingDTO> findAllByDateAfter(LocalDateTime time) {
@@ -164,9 +174,7 @@ public class MeetingService {
         return meetingRepository.findAllByTimeOfActionAfter(time).stream()
                 .map(this::toDTO)
                 .collect(Collectors.toList());
-
     }
-
 
     private List<User> getListOfUsersById(List<Long> ids) {
         List<User> users = new ArrayList<>();
@@ -187,4 +195,5 @@ public class MeetingService {
         users.remove(user);
         return users;
     }
+
 }
