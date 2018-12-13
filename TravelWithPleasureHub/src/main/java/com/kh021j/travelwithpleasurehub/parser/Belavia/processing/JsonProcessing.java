@@ -46,7 +46,19 @@ public class JsonProcessing {
         return new String(jsonBuilder);
     }
 
-    public String getMinPriceFromResponce() throws IOException {
+    public String getPriceBeforAndAfter() throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode rootNode = objectMapper.readTree(getJsonResponse());
+        JsonNode itineraries = rootNode.path("airLowFares");
+        Iterator<JsonNode> elements = itineraries.elements();
+        StringBuilder priceBuilder = new StringBuilder();
+        while (elements.hasNext()) {
+            priceBuilder.append(elements.next().get("total"));
+        }
+        return new String(priceBuilder);
+    }
+
+    public String getPriceFromResponse() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode rootNode = objectMapper.readTree(getJsonResponse());
         JsonNode itineraries = rootNode.path("itineraries");
@@ -57,10 +69,37 @@ public class JsonProcessing {
             Iterator<JsonNode> newElements = brands.elements();
             while (newElements.hasNext()) {
                 JsonNode total = newElements.next();
-                   priceBuilder.append(total.get("total")).append(" ");
+                priceBuilder.append(total.get("total")).append(" ");
             }
         }
         return new String(priceBuilder).trim();
     }
 
+    public float getMinPrice() throws IOException {
+        String[] values;
+        float min = 0;
+        if (getPriceFromResponse() == null) {
+            values = getPriceBeforAndAfter().split(" ");
+            min = Float.parseFloat(values[0]);
+            for (String value : values) {
+                float tmp = Float.parseFloat(value);
+                if (tmp < min) {
+                    min = tmp;
+                }
+            }
+            return min;
+        } else if (getPriceFromResponse() == null && getPriceBeforAndAfter() == null) {
+            return min;
+        } else {
+            values = getPriceFromResponse().split(" ");
+            min = Float.parseFloat(values[0]);
+            for (String value : values) {
+                float tmp = Float.parseFloat(value);
+                if (tmp < min) {
+                    min = tmp;
+                }
+            }
+        }
+        return min;
+    }
 }
