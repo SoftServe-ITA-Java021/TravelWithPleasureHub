@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 
 @RestController
-@RequestMapping(path = "/api/property")
+@RequestMapping(path = "/api/properties")
 public class PropertyController {
 
     @Autowired

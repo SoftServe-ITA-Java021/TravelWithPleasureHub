@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/propertyType")
+@RequestMapping("api/property-types")
 public class PropertyTypeController {
 
     @Autowired

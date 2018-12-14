@@ -8,14 +8,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping(path = "/api/propertyphoto")
+@RequestMapping(path = "/api/property-photos")
 public class PropertyPhotoController {
 
     @Autowired
     private PropertyPhotoService propertyPhotoService;
-
-    @Autowired
-    private PropertyRepository propertyRepository;
 
     @PostMapping
     public @ResponseBody String uploadPhoto(
@@ -23,9 +20,20 @@ public class PropertyPhotoController {
         return propertyPhotoService.save(file, id);
     }
 
+    @PostMapping
+    public @ResponseBody String uploadPhotos(
+            @RequestParam("files") MultipartFile[] files, @RequestParam("ids") Integer[] ids) {
+        return propertyPhotoService.savePhotos(files, ids);
+    }
+
     @GetMapping
     public @ResponseBody ResponseEntity<byte[]> getPropertyPhoto(@RequestParam("id") Integer id) {
         return propertyPhotoService.getPropertyPhoto(id);
+    }
+
+    @GetMapping
+    public @ResponseBody ResponseEntity<byte[][]> getPropertyPhotos(@RequestParam("ids") Integer[] ids) {
+        return propertyPhotoService.getPropertyPhotos(ids);
     }
 
 }
