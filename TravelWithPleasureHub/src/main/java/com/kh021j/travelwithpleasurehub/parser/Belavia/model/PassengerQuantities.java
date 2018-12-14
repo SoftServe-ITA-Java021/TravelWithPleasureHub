@@ -2,7 +2,14 @@
 package com.kh021j.travelwithpleasurehub.parser.Belavia.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
 
+@Getter
+@Setter
+@ToString
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class PassengerQuantities {
 
     @JsonProperty
@@ -10,35 +17,4 @@ public class PassengerQuantities {
     @JsonProperty
     private int quantity;
 
-    public PassengerQuantities() {
-    }
-
-    public PassengerQuantities(String code, int quantity) {
-        this.code = code;
-        this.quantity = quantity;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
-    @Override
-    public String toString() {
-        return "PassengerQuantities{" +
-                "code='" + code + '\'' +
-                ", quantity=" + quantity +
-                '}';
-    }
 }
