@@ -4,10 +4,13 @@ import com.kh021j.travelwithpleasurehub.model.User;
 import com.kh021j.travelwithpleasurehub.repository.UserRepository;
 import com.kh021j.travelwithpleasurehub.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
+@Service
 public class UserServiceImpl implements UserService {
 
     @Autowired
@@ -25,9 +28,19 @@ public class UserServiceImpl implements UserService {
         return userRepository.findUsersByUsername(name);
     }
 
+    @Transactional
     @Override
-    public void create(User user) {
-        userRepository.save(user);
+    public User create(User user) {
+        return userRepository.save(user);
+    }
+
+    @Transactional
+    @Override
+    public Optional<User> getById(Integer id) {
+        if (userRepository.existsById(id)){
+            return Optional.of(userRepository.getOne(id));
+        }
+        return Optional.empty();
     }
 
 }
