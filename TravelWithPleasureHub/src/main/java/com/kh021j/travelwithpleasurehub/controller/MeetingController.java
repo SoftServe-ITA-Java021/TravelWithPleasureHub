@@ -73,7 +73,7 @@ public class MeetingController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MeetingDTO> findMeetingById(@PathVariable long id) {
+    public ResponseEntity<MeetingDTO> findMeetingById(@PathVariable Integer id) {
         log.debug("REST request to get Meeting by id : {}", id);
         Optional<MeetingDTO> meetingDTO = meetingService.findById(id);
         return meetingDTO.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());

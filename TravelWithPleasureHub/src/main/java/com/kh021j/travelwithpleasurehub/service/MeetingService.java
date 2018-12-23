@@ -151,7 +151,7 @@ public class MeetingService {
         return false;
     }
 
-    public Optional<MeetingDTO> findById(long id) {
+    public Optional<MeetingDTO> findById(Integer id) {
         log.debug("Request to get Meeting by id : {}", id);
         return Optional.ofNullable(toDTO(meetingRepository.findById(id)));
     }
