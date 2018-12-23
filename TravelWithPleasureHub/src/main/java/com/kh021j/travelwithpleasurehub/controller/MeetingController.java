@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,19 +35,19 @@ public class MeetingController {
         return ResponseEntity.badRequest().build();
     }
 
-    @PostMapping(value = "/request-for-meeting", params = {"meeting-id", "user-id"})
-    public ResponseEntity<MeetingDTO> sendRequestForMeeting(@RequestParam Integer meetingId, @RequestParam Integer userId) {
+    @GetMapping(value = "/request-for-meeting/{meetingId}/{userId}")
+    public ResponseEntity<MeetingDTO> sendRequestForMeeting(@PathVariable Integer meetingId, @PathVariable Integer userId) {
         log.debug("REST request to send request for Meeting with id : {} ,and wishing user id : {} ", meetingId, userId);
-        MeetingDTO result = meetingService.sendRequestForMeeting(meetingId, userId);
+        MeetingDTO result = meetingService.sendRequestForMeeting(meetingId,userId );
         if (result != null) {
             return ResponseEntity.ok(result);
         }
         return ResponseEntity.badRequest().build();
     }
 
-    @PostMapping(value = "/request-for-meeting", params = {"owner-id", "meeting-id", "wishing-user-id"})
+    @PostMapping(value = "/confirm-meeting/{ownerId}/{meetingId}/{wishingUserId}")
     public ResponseEntity<MeetingDTO> confirmUserForMeeting
-            (@RequestParam Integer ownerId, @RequestParam Integer meetingId, @RequestParam Integer wishingUserId) {
+            (@PathVariable Integer ownerId, @PathVariable Integer meetingId, @PathVariable Integer wishingUserId) {
         log.debug("REST request to send request for Meeting with id : {} ,owner id : {} ,and wishing user id : {} ",
                 meetingId, ownerId, wishingUserId);
         MeetingDTO result = meetingService.confirmUserForMeeting(ownerId, meetingId, wishingUserId);
@@ -95,17 +94,10 @@ public class MeetingController {
     }
 
     @GetMapping(params = "time")
-    public List<MeetingDTO> findMeetingByTimeAfterFilter(@RequestParam
-                                                         @DateTimeFormat(pattern = "dd.MM.yyyyTHH:mm") LocalDateTime time) {
-        //	'21.12.2018T10:15'
-        log.debug("REST request to get Meetings after time : {}", time);
-        return meetingService.findAllByDateAfter(time);
-    }
-
-    @GetMapping("/history/{id}")
-    public List<MeetingDTO> findHistoryOfMeetingsForUser(@PathVariable Integer id) {
-        log.debug("REST request to get history of Meetings by user id : {}", id);
-        return meetingService.findHistoryOfMeetingsByUserId(id);
+    public List<MeetingDTO> findMeetingByTimeAfterFilter(@RequestParam String time) {
+        LocalDateTime resTime = LocalDateTime.parse(time);
+        log.debug("REST request to get Meetings after time : {}", resTime);
+        return meetingService.findAllByDateAfter(resTime);
     }
 
 }

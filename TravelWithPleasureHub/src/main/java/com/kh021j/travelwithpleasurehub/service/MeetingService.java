@@ -90,7 +90,7 @@ public class MeetingService {
                 .links(findLinksForMeeting(meetingDTO))
                 .build();
         log.debug("Request to save Meeting : {}", meetingDTO);
-        if (!meetingRepository.existsById(meetingDTO.getId().longValue())) {
+        if (!meetingRepository.existsById(meetingDTO.getId())) {
             Meeting meeting = fromDTO(meetingDTO);
             return toDTO(meetingRepository.saveAndFlush(meeting));
         }
@@ -101,7 +101,7 @@ public class MeetingService {
     @Transactional
     public MeetingDTO update(MeetingDTO meetingDTO) {
         log.debug("Request to update Meeting : {}", meetingDTO);
-        if (meetingRepository.existsById(meetingDTO.getId().longValue())) {
+        if (meetingRepository.existsById(meetingDTO.getId())) {
             Meeting meeting = fromDTO(meetingDTO);
             return toDTO(meetingRepository.saveAndFlush(meeting));
         }
@@ -112,12 +112,12 @@ public class MeetingService {
     @Transactional
     public MeetingDTO sendRequestForMeeting(Integer meetingId, Integer userId) {
         log.debug("Request to send request for Meeting with id : {} , and user id : {}", meetingId, userId);
-        if (!meetingRepository.existsById(meetingId.longValue()) || !userRepository.existsById(userId.intValue())) {
+        if (!meetingRepository.existsById(meetingId) || !userRepository.existsById(userId)) {
             log.error("Request to send request for Meeting with id : {} , and user id : {} was failed", meetingId, userId);
             return null;
         }
         User user = userRepository.findById(userId).get();
-        Meeting meeting = meetingRepository.findById(meetingId);
+        Meeting meeting = meetingRepository.findById(meetingId).get();
         meeting = meeting.toBuilder()
                 .wishingUsers(addUserInList(user, meeting))
                 .build();
@@ -127,13 +127,13 @@ public class MeetingService {
     @Transactional
     public MeetingDTO confirmUserForMeeting(Integer ownerId, Integer meetingId, Integer wishingUserId) {
         log.debug("Request to confirm for Meeting with id : {} ,owner id : {} , and wishing user id : {}", meetingId, ownerId, wishingUserId);
-        if (!meetingRepository.existsById(meetingId.longValue()) || !userRepository.existsById(wishingUserId)
+        if (!meetingRepository.existsById(meetingId) || !userRepository.existsById(wishingUserId)
                 || !userRepository.existsById(ownerId)) {
             log.error("Request to confirm for Meeting with id : {} ,owner id : {} , and wishing user id : {} was failed", meetingId, ownerId, wishingUserId);
             return null;
         }
         User owner = userRepository.findById(ownerId).get();
-        Meeting meeting = meetingRepository.findById(meetingId);
+        Meeting meeting = meetingRepository.findById(meetingId).get();
         if (owner.getId().equals(meeting.getId())) {
             User confirmedUser = userRepository.findById(wishingUserId).get();
             meeting = meeting.toBuilder()
@@ -157,8 +157,8 @@ public class MeetingService {
 
     public boolean deleteById(Integer id) {
         log.debug("Request to remove meeting with id : {} ", id);
-        if (meetingRepository.existsById(id.longValue())) {
-            meetingRepository.deleteById(id.longValue());
+        if (meetingRepository.existsById(id)) {
+            meetingRepository.deleteById(id);
             log.debug("Meeting was removed");
             return true;
         }
@@ -168,7 +168,7 @@ public class MeetingService {
 
     public Optional<MeetingDTO> findById(Integer id) {
         log.debug("Request to get Meeting by id : {}", id);
-        return Optional.ofNullable(toDTO(meetingRepository.findById(id)));
+        return Optional.ofNullable(toDTO(meetingRepository.findById(id).get()));
     }
 
     public List<MeetingDTO> findAll() {
