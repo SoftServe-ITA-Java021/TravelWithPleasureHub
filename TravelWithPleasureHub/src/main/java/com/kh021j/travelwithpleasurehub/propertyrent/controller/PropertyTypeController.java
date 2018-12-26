@@ -3,6 +3,7 @@ package com.kh021j.travelwithpleasurehub.propertyrent.controller;
 
 import com.kh021j.travelwithpleasurehub.propertyrent.model.PropertyType;
 import com.kh021j.travelwithpleasurehub.propertyrent.repository.PropertyTypeRepository;
+import com.kh021j.travelwithpleasurehub.propertyrent.service.PropertyTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,31 +12,31 @@ import org.springframework.web.bind.annotation.*;
 public class PropertyTypeController {
 
     @Autowired
-    private PropertyTypeRepository propertyTypeRepository;
+    private PropertyTypeService propertyTypeService;
 
     @GetMapping
     public @ResponseBody Iterable<PropertyType> getAllPropertyTypes(){
-        return propertyTypeRepository.findAll();
-    }
-
-    @PostMapping
-    public @ResponseBody PropertyType addPropertyType(@RequestBody PropertyType propertyType) {
-        return propertyTypeRepository.save(propertyType);
-    }
-
-    @PutMapping
-    public @ResponseBody PropertyType updatePropertyType(@RequestBody PropertyType propertyType) {
-        return propertyTypeRepository.save(propertyType);
-    }
-
-    @DeleteMapping
-    public @ResponseBody void deletePropertyType(@RequestBody PropertyType propertyType) {
-        propertyTypeRepository.delete(propertyType);
+        return propertyTypeService.findAll();
     }
 
     @GetMapping("/{id}")
     public @ResponseBody PropertyType getPropertyTypeById(@PathVariable Integer id) {
-        return propertyTypeRepository.findById(id).orElse(null);
+        return propertyTypeService.findById(id);
+    }
+
+    @PostMapping
+    public @ResponseBody PropertyType addPropertyType(@RequestBody PropertyType propertyType) {
+        return propertyTypeService.add(propertyType);
+    }
+
+    @PutMapping
+    public @ResponseBody PropertyType updatePropertyType(@RequestBody PropertyType propertyType) {
+        return propertyTypeService.update(propertyType);
+    }
+
+    @DeleteMapping
+    public @ResponseBody void deletePropertyType(@RequestBody PropertyType propertyType) {
+        propertyTypeService.delete(propertyType);
     }
 
 }

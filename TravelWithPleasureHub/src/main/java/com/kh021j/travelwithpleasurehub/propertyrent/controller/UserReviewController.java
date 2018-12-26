@@ -3,6 +3,7 @@ package com.kh021j.travelwithpleasurehub.propertyrent.controller;
 import com.kh021j.travelwithpleasurehub.controller.enumeration.SortType;
 import com.kh021j.travelwithpleasurehub.propertyrent.model.UserReview;
 import com.kh021j.travelwithpleasurehub.propertyrent.repository.UserReviewRepository;
+import com.kh021j.travelwithpleasurehub.propertyrent.service.UserReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,48 +12,41 @@ import org.springframework.web.bind.annotation.*;
 public class UserReviewController {
 
     @Autowired
-    private UserReviewRepository userReviewRepository;
+    private UserReviewService userReviewService;
 
     @GetMapping
     public @ResponseBody Iterable<UserReview> getAllUserReviews(){
-        return userReviewRepository.findAll();
+        return userReviewService.findAll();
     }
 
     @GetMapping("/{id}")
     public @ResponseBody UserReview getUserReviewById(@PathVariable Integer id) {
-        return userReviewRepository.findById(id).orElse(null);
+        return userReviewService.findById(id);
     }
 
     @GetMapping(params = "userId")
     public @ResponseBody Iterable<UserReview> getUserReviewsByUserId(@RequestParam Integer userId) {
-        return userReviewRepository.findByUserId(userId).orElse(null);
+        return userReviewService.findByUserId(userId);
     }
 
     @GetMapping(params = "sortByDateRated")
     public @ResponseBody Iterable<UserReview> getUserReviewsSortedByDateRated(@RequestParam String sortByDateRated) {
-        switch (SortType.valueOf(sortByDateRated.toUpperCase())) {
-            case ASC:
-                return userReviewRepository.findAllByOrderByDateRatedAsc().orElse(null);
-            case DESC:
-                return userReviewRepository.findAllByOrderByDateRatedDesc().orElse(null);
-            default:
-                return userReviewRepository.findAll();
-        }
+        return userReviewService.findAllByOrderByDateRated(sortByDateRated);
     }
 
     @PostMapping
     public @ResponseBody UserReview addUserReview(@RequestBody UserReview userReview){
-        return userReviewRepository.save(userReview);
+        return userReviewService.add(userReview);
     }
 
     @PutMapping
     public @ResponseBody UserReview updateUserReview(@RequestBody UserReview userReview) {
-        return userReviewRepository.save(userReview);
+        return userReviewService.update(userReview);
     }
 
     @DeleteMapping
     public @ResponseBody void deleteUserReview(@RequestBody UserReview userReview) {
-        userReviewRepository.delete(userReview);
+        userReviewService.delete(userReview);
     }
 
 }

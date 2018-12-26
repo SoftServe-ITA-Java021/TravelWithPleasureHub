@@ -3,6 +3,7 @@ package com.kh021j.travelwithpleasurehub.propertyrent.controller;
 import com.kh021j.travelwithpleasurehub.controller.enumeration.SortType;
 import com.kh021j.travelwithpleasurehub.propertyrent.model.Property;
 import com.kh021j.travelwithpleasurehub.propertyrent.repository.PropertyRepository;
+import com.kh021j.travelwithpleasurehub.propertyrent.service.PropertyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,87 +14,64 @@ import java.time.LocalDate;
 public class PropertyController {
 
     @Autowired
-    private PropertyRepository propertyRepository;
+    private PropertyService propertyService;
 
     @GetMapping
     public @ResponseBody Iterable<Property> getAllProperties(){
-        return propertyRepository.findAll();
+        return propertyService.findAll();
     }
 
     @PostMapping
     public @ResponseBody Property addProperty(@RequestBody Property property){
-        return propertyRepository.save(property);
+        return propertyService.add(property);
     }
 
     @PutMapping
     public @ResponseBody Property updateProperty(@RequestBody Property property) {
-        return propertyRepository.save(property);
+        return propertyService.update(property);
     }
 
     @DeleteMapping
     public @ResponseBody void deleteProperty(@RequestBody Property property) {
-        propertyRepository.delete(property);
+        propertyService.delete(property);
     }
 
     @GetMapping("/{id}")
     public @ResponseBody Property getPropertyById(@PathVariable Integer id) {
-        return propertyRepository.findById(id).orElse(null);
+        return propertyService.findById(id);
     }
 
     @GetMapping(params = "price")
     public @ResponseBody Iterable<Property> getPropertiesByPriceLessThan(@RequestParam Integer price) {
-        return propertyRepository.findByPriceLessThanEqual(price).orElse(null);
+        return propertyService.findByPriceLessThanEqual(price);
     }
 
     @GetMapping(params = "sortByPrice")
     public @ResponseBody Iterable<Property> getPropertiesByPriceSortedBy(@RequestParam String sortByPrice) {
-        switch (SortType.valueOf(sortByPrice.toUpperCase())) {
-            case ASC:
-                return propertyRepository.findAllByOrderByPriceAsc().orElse(null);
-            case DESC:
-                return propertyRepository.findAllByOrderByPriceDesc().orElse(null);
-            default:
-                return propertyRepository.findAll();
-        }
+        return propertyService.findAllByOrderByPrice(sortByPrice);
     }
 
     @GetMapping(params = "locality")
     public @ResponseBody Iterable<Property> getPropertiesByLocality(@RequestParam String locality) {
-        return propertyRepository.findByLocality(locality).orElse(null);
+        return propertyService.findByLocality(locality);
     }
 
     @GetMapping(params = "address")
     public @ResponseBody Iterable<Property> getPropertiesByAddress(@RequestParam String address) {
-        return propertyRepository.findByAddress(address).orElse(null);
+        return propertyService.findByAddress(address);
     }
 
     @GetMapping(params = {"since", "until"})
     public @ResponseBody Iterable<Property> getPropertiesByDate(@RequestParam String since, @RequestParam String until) {
-        LocalDate sinceDate = LocalDate.parse(since);
-        LocalDate untilDate = LocalDate.parse(until);
-        return propertyRepository.
-                findByAvailabilityInPeriod(sinceDate, untilDate)
-                    .orElse(null);
+        return propertyService.findByAvailabilityInPeriod(since, until);
     }
 
     @GetMapping(params = {"since", "until", "sortByPrice"})
     public @ResponseBody Iterable<Property> getPropertiesByDateAndSortByPrice(@RequestParam String since,
                                                                               @RequestParam String until,
-                                                                              @RequestParam String sortByPrice ) {
-        LocalDate sinceDate = LocalDate.parse(since);
-        LocalDate untilDate = LocalDate.parse(until);
-        switch (SortType.valueOf(sortByPrice.toUpperCase())) {
-            case ASC:
-                return propertyRepository.findByAvailabilityInPeriodAndSort(
-                        sinceDate, untilDate, SortType.ASC.name()).orElse(null);
-            case DESC:
-                return propertyRepository.findByAvailabilityInPeriodAndSort(
-                        sinceDate, untilDate, SortType.DESC.name()).orElse(null);
-            default:
-                return propertyRepository.
-                        findByAvailabilityInPeriod(sinceDate, untilDate)
-                        .orElse(null);
-        }
+                                                                              @RequestParam String sortByPrice
+    ) {
+        return propertyService.findByAvailabilityInPeriodAndSort(since, until, sortByPrice);
     }
 
 }

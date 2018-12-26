@@ -2,6 +2,7 @@ package com.kh021j.travelwithpleasurehub.propertyrent.controller;
 
 import com.kh021j.travelwithpleasurehub.propertyrent.model.Application;
 import com.kh021j.travelwithpleasurehub.propertyrent.repository.ApplicationRepository;
+import com.kh021j.travelwithpleasurehub.propertyrent.service.ApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,31 +11,31 @@ import org.springframework.web.bind.annotation.*;
 public class ApplicationController {
 
     @Autowired
-    private ApplicationRepository applicationRepository;
+    private ApplicationService applicationService;
 
     @GetMapping
     public @ResponseBody Iterable<Application> getAllApplications(){
-        return applicationRepository.findAll();
+        return applicationService.findAll();
     }
 
     @GetMapping("/{id}")
     public @ResponseBody Application getApplicationById(@PathVariable Integer id) {
-        return applicationRepository.findById(id).orElse(null);
+        return applicationService.findById(id);
     }
 
     @PostMapping
     public @ResponseBody Application addApplication(@RequestBody Application application){
-        return applicationRepository.save(application);
+        return applicationService.add(application);
     }
 
     @PutMapping
     public @ResponseBody Application updateApplication(@RequestBody Application application) {
-        return applicationRepository.save(application);
+        return applicationService.update(application);
     }
 
     @DeleteMapping
     public @ResponseBody void deleteApplication(@RequestBody Application application) {
-        applicationRepository.delete(application);
+        applicationService.delete(application);
     }
 
 }
