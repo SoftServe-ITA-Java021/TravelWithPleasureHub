@@ -1,6 +1,7 @@
-package com.kh021j.travelwithpleasurehub.controller;
+package com.kh021j.travelwithpleasurehub.userrelated.controller;
 
-import com.kh021j.travelwithpleasurehub.model.User;
+import com.kh021j.travelwithpleasurehub.controller.UserControllerRaise;
+import com.kh021j.travelwithpleasurehub.userrelated.model.User;
 import com.kh021j.travelwithpleasurehub.service.UserService;
 import com.kh021j.travelwithpleasurehub.service.dto.UserDTO;
 import com.kh021j.travelwithpleasurehub.utils.FromDTO;

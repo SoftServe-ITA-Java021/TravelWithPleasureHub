@@ -1,9 +1,9 @@
 package com.kh021j.travelwithpleasurehub.service;
 
 import com.kh021j.travelwithpleasurehub.model.Meeting;
-import com.kh021j.travelwithpleasurehub.model.User;
+import com.kh021j.travelwithpleasurehub.userrelated.model.User;
 import com.kh021j.travelwithpleasurehub.repository.MeetingRepository;
-import com.kh021j.travelwithpleasurehub.repository.UserRepository;
+import com.kh021j.travelwithpleasurehub.userrelated.repository.UserRepository;
 import com.kh021j.travelwithpleasurehub.service.dto.MeetingDTO;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -105,9 +105,9 @@ public class MeetingService {
 
     @Transactional
     public MeetingDTO sendRequestForMeeting(Integer meetingId, Integer userId) {
-        log.debug("Request to send request for Meeting with id : {} , and user id : {}", meetingId, userId);
+        log.debug("Request to send request for Meeting with id : {} , and userrelated id : {}", meetingId, userId);
         if (!meetingRepository.existsById(meetingId.longValue()) || !userRepository.existsById(userId.intValue())) {
-            log.error("Request to send request for Meeting with id : {} , and user id : {} was failed", meetingId, userId);
+            log.error("Request to send request for Meeting with id : {} , and userrelated id : {} was failed", meetingId, userId);
             return null;
         }
         User user = userRepository.findById(userId).get();
@@ -120,10 +120,10 @@ public class MeetingService {
 
     @Transactional
     public MeetingDTO confirmUserForMeeting(Integer ownerId, Integer meetingId, Integer wishingUserId) {
-        log.debug("Request to confirm for Meeting with id : {} ,owner id : {} , and wishing user id : {}", meetingId, ownerId, wishingUserId);
+        log.debug("Request to confirm for Meeting with id : {} ,owner id : {} , and wishing userrelated id : {}", meetingId, ownerId, wishingUserId);
         if (!meetingRepository.existsById(meetingId.longValue()) || !userRepository.existsById(wishingUserId)
                 || !userRepository.existsById(ownerId)) {
-            log.error("Request to confirm for Meeting with id : {} ,owner id : {} , and wishing user id : {} was failed", meetingId, ownerId, wishingUserId);
+            log.error("Request to confirm for Meeting with id : {} ,owner id : {} , and wishing userrelated id : {} was failed", meetingId, ownerId, wishingUserId);
             return null;
         }
         User owner = userRepository.findById(ownerId).get();
@@ -136,7 +136,7 @@ public class MeetingService {
                     .build();
             return toDTO(meetingRepository.saveAndFlush(meeting));
         }
-        log.error("Request to confirm for Meeting with id : {} ,owner id : {} , and wishing user id : {} was failed", meetingId, ownerId, wishingUserId);
+        log.error("Request to confirm for Meeting with id : {} ,owner id : {} , and wishing userrelated id : {} was failed", meetingId, ownerId, wishingUserId);
         return null;
     }
 

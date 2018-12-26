@@ -1,4 +1,4 @@
-package com.kh021j.travelwithpleasurehub.model;
+package com.kh021j.travelwithpleasurehub.propertyrent.model;
 
 
 import lombok.AllArgsConstructor;

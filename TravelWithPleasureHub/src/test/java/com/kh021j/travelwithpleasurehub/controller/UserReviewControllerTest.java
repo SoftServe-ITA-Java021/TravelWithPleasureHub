@@ -1,11 +1,10 @@
 package com.kh021j.travelwithpleasurehub.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kh021j.travelwithpleasurehub.model.Property;
-import com.kh021j.travelwithpleasurehub.model.PropertyReview;
-import com.kh021j.travelwithpleasurehub.model.User;
-import com.kh021j.travelwithpleasurehub.model.UserReview;
-import com.kh021j.travelwithpleasurehub.repository.UserReviewRepository;
+import com.kh021j.travelwithpleasurehub.propertyrent.controller.UserReviewController;
+import com.kh021j.travelwithpleasurehub.userrelated.model.User;
+import com.kh021j.travelwithpleasurehub.propertyrent.model.UserReview;
+import com.kh021j.travelwithpleasurehub.propertyrent.repository.UserReviewRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

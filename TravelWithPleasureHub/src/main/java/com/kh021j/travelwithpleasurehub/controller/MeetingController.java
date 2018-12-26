@@ -33,9 +33,9 @@ public class MeetingController {
         return ResponseEntity.badRequest().build();
     }
 
-    @PostMapping(value = "/request-for-meeting", params = {"meeting-id", "user-id"})
+    @PostMapping(value = "/request-for-meeting", params = {"meeting-id", "userrelated-id"})
     public ResponseEntity<MeetingDTO> sendRequestForMeeting(@RequestParam Integer meetingId, @RequestParam Integer userId) {
-        log.debug("REST request to send request for Meeting with id : {} ,and wishing user id : {} ", meetingId, userId);
+        log.debug("REST request to send request for Meeting with id : {} ,and wishing userrelated id : {} ", meetingId, userId);
         MeetingDTO result = meetingService.sendRequestForMeeting(meetingId, userId);
         if (result != null) {
             return ResponseEntity.ok(result);
@@ -43,10 +43,10 @@ public class MeetingController {
         return ResponseEntity.badRequest().build();
     }
 
-    @PostMapping(value = "/request-for-meeting", params = {"owner-id", "meeting-id", "wishing-user-id"})
+    @PostMapping(value = "/request-for-meeting", params = {"owner-id", "meeting-id", "wishing-userrelated-id"})
     public ResponseEntity<MeetingDTO> confirmUserForMeeting
             (@RequestParam Integer ownerId, @RequestParam Integer meetingId, @RequestParam Integer wishingUserId) {
-        log.debug("REST request to send request for Meeting with id : {} ,owner id : {} ,and wishing user id : {} ",
+        log.debug("REST request to send request for Meeting with id : {} ,owner id : {} ,and wishing userrelated id : {} ",
                 meetingId, ownerId, wishingUserId);
         MeetingDTO result = meetingService.confirmUserForMeeting(ownerId, meetingId, wishingUserId);
         if (result != null) {

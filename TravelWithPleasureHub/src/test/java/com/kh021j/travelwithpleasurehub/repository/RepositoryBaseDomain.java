@@ -3,13 +3,12 @@ package com.kh021j.travelwithpleasurehub.repository;
 import com.kh021j.travelwithpleasurehub.TravelwithpleasurehubApplication;
 import com.kh021j.travelwithpleasurehub.model.*;
 import com.kh021j.travelwithpleasurehub.model.enumiration.MeetingType;
+import com.kh021j.travelwithpleasurehub.propertyrent.model.*;
+import com.kh021j.travelwithpleasurehub.userrelated.model.User;
 import org.junit.Before;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -74,7 +73,7 @@ public abstract class RepositoryBaseDomain {
 
 //        PropertyReview propertyReview = PropertyReview.builder()
 //                .property(property)
-//                .user(user)
+//                .userrelated(userrelated)
 //                .reviewText("review text")
 //                .dateRated(LocalDate.now())
 //                .rate(12)
@@ -83,9 +82,9 @@ public abstract class RepositoryBaseDomain {
 //
 //        UserReview userReview = UserReview.builder()
 //                .rate(12)
-//                .madeByUserId(user.getId())
+//                .madeByUserId(userrelated.getId())
 //                .reviewText("review text")
-//                .user(user)
+//                .userrelated(userrelated)
 //                .dateRated(LocalDate.now())
 //                .build();
 //        entityManager.persist(userReview);

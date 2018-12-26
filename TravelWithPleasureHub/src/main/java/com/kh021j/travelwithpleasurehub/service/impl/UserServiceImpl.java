@@ -1,7 +1,7 @@
 package com.kh021j.travelwithpleasurehub.service.impl;
 
-import com.kh021j.travelwithpleasurehub.model.User;
-import com.kh021j.travelwithpleasurehub.repository.UserRepository;
+import com.kh021j.travelwithpleasurehub.userrelated.model.User;
+import com.kh021j.travelwithpleasurehub.userrelated.repository.UserRepository;
 import com.kh021j.travelwithpleasurehub.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

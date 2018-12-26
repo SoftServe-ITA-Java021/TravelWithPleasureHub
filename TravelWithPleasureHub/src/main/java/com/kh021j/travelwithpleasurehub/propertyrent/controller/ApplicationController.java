@@ -1,7 +1,7 @@
-package com.kh021j.travelwithpleasurehub.controller;
+package com.kh021j.travelwithpleasurehub.propertyrent.controller;
 
-import com.kh021j.travelwithpleasurehub.model.Application;
-import com.kh021j.travelwithpleasurehub.repository.ApplicationRepository;
+import com.kh021j.travelwithpleasurehub.propertyrent.model.Application;
+import com.kh021j.travelwithpleasurehub.propertyrent.repository.ApplicationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

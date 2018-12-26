@@ -1,6 +1,6 @@
-package com.kh021j.travelwithpleasurehub.repository;
+package com.kh021j.travelwithpleasurehub.userrelated.repository;
 
-import com.kh021j.travelwithpleasurehub.model.User;
+import com.kh021j.travelwithpleasurehub.userrelated.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

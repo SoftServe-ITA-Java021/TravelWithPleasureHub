@@ -1,6 +1,6 @@
 //package com.kh021j.travelwithpleasurehub.controller;
 //
-//import com.kh021j.travelwithpleasurehub.model.User;
+//import com.kh021j.travelwithpleasurehub.userrelated.model.User;
 //import com.kh021j.travelwithpleasurehub.service.UserService;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.web.bind.annotation.*;
@@ -27,8 +27,8 @@
 //    }
 //
 //    @PostMapping (path = "")
-//    public void createUser (@RequestBody User user ){
-//        userService.create(user);
+//    public void createUser (@RequestBody User userrelated ){
+//        userService.create(userrelated);
 //    }
 //
 //}

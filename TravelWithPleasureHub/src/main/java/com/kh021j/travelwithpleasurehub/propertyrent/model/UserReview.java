@@ -1,12 +1,12 @@
-package com.kh021j.travelwithpleasurehub.model;
+package com.kh021j.travelwithpleasurehub.propertyrent.model;
 
+import com.kh021j.travelwithpleasurehub.userrelated.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.math.BigInteger;
 import java.time.LocalDate;
 
 @Entity
