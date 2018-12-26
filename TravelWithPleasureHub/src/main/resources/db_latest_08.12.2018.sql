@@ -160,26 +160,6 @@ alter table meeting OWNER to postgres;
 );
 alter table link OWNER to postgres;
 
-create table if not exists users_meetings
-(
-  user_id serial NOT NULL,
-  meeting_id serial NOT NULL,
-  constraint many_users_has_many_meeting_pk PRIMARY KEY (user_id, meeting_id),
-
-  constraint meeting_fk FOREIGN KEY (meeting_id)
-      REFERENCES meeting (id) MATCH FULL
-      ON UPDATE CASCADE ON DELETE RESTRICT,
-
-  constraint users_fk FOREIGN KEY (user_id)
-      REFERENCES users (id) MATCH FULL
-      ON UPDATE CASCADE ON DELETE RESTRICT
-)
-WITH (
-  OIDS=FALSE
-);
-ALTER TABLE users_meetings
-  OWNER TO postgres;
-
 
 create table if not exists meeting_feedback
 (
@@ -190,6 +170,9 @@ create table if not exists meeting_feedback
 
   feedback_type varchar  not null,
 
+  owner_id integer not null constraint owner_id
+   references users,
+
   meeting_id integer not null constraint meeting_id
     not null references meeting
   ON UPDATE CASCADE ON DELETE SET NULL
@@ -198,3 +181,40 @@ create table if not exists meeting_feedback
 ALTER TABLE meeting_feedback
 
 OWNER TO postgres;
+
+
+create table if not exists wishing_users
+(
+  meeting_id integer not null constraint meeting_id
+     references meeting
+       ON UPDATE CASCADE ON DELETE SET NULL,
+
+  user_id integer not null constraint user_id
+     references users
+       ON UPDATE CASCADE ON DELETE SET NULL,
+
+    primary key(meeting_id,user_id)
+);
+
+ALTER TABLE wishing_users
+
+OWNER TO postgres;
+
+
+create table if not exists confirmed_users
+(
+  meeting_id integer not null constraint meeting_id
+     references meeting
+       ON UPDATE CASCADE ON DELETE SET NULL,
+
+  user_id integer not null constraint user_id
+     references users
+       ON UPDATE CASCADE ON DELETE SET NULL,
+
+    primary key(meeting_id,user_id)
+);
+
+ALTER TABLE confirmed_users
+
+OWNER TO postgres;
+

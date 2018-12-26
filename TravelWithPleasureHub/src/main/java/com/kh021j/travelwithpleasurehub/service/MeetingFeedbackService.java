@@ -36,7 +36,7 @@ public class MeetingFeedbackService {
                 .feedbackType(meetingFeedbackDTO.getFeedbackType() != null ?
                         FeedbackType.valueOf(meetingFeedbackDTO.getFeedbackType().toUpperCase()) : null)
                 .meeting(meetingFeedbackDTO.getMeetingId() != null ?
-                        meetingRepository.findById(meetingFeedbackDTO.getMeetingId()) : null)
+                        meetingRepository.findById(meetingFeedbackDTO.getMeetingId()).get() : null)
                 .text(meetingFeedbackDTO.getText())
                 .build();
     }
@@ -111,7 +111,7 @@ public class MeetingFeedbackService {
 
     public List<MeetingFeedbackDTO> findAllByMeeting(Integer id){
         log.debug("Request to get  MeetingFeedback by Meeting's id : {} ", id);
-        return meetingFeedbackRepository.getAllByMeeting(meetingRepository.findById(id)).stream()
+        return meetingFeedbackRepository.getAllByMeeting(meetingRepository.findById(id).get()).stream()
                 .map(this::toDTO)
                 .collect(Collectors.toList());
 

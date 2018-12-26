@@ -72,23 +72,23 @@ public abstract class RepositoryBaseDomain {
                 .build();
         entityManager.persist(propertyAvailability);
 
-//        PropertyReview propertyReview = PropertyReview.builder()
-//                .property(property)
-//                .user(user)
-//                .reviewText("review text")
-//                .dateRated(LocalDate.now())
-//                .rate(12)
-//                .build();
-//        entityManager.persist(propertyReview);
-//
-//        UserReview userReview = UserReview.builder()
-//                .rate(12)
-//                .madeByUserId(user.getId())
-//                .reviewText("review text")
-//                .user(user)
-//                .dateRated(LocalDate.now())
-//                .build();
-//        entityManager.persist(userReview);
+        PropertyReview propertyReview = PropertyReview.builder()
+                .property(property)
+                .user(user)
+                .reviewText("review text")
+                .dateRated(LocalDate.now())
+                .rate(12)
+                .build();
+        entityManager.persist(propertyReview);
+
+        UserReview userReview = UserReview.builder()
+                .rate(12)
+                .madeByUserId(user.getId())
+                .reviewText("review text")
+                .user(user)
+                .dateRated(LocalDate.now())
+                .build();
+        entityManager.persist(userReview);
 
         Meeting meeting = Meeting.builder()
                 .header("simple")

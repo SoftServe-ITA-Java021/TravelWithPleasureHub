@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
@@ -24,7 +26,7 @@ public class MeetingController {
     private final MeetingService meetingService;
 
     @PostMapping
-    public ResponseEntity<MeetingDTO> createMeeting(@RequestBody MeetingDTO meetingDTO) throws URISyntaxException {
+    public ResponseEntity<MeetingDTO> createMeeting(@RequestBody MeetingDTO meetingDTO) throws URISyntaxException, IOException {
         log.debug("REST request to save Meeting : {}", meetingDTO);
         MeetingDTO result = meetingService.save(meetingDTO);
         if (result != null) {
@@ -33,19 +35,19 @@ public class MeetingController {
         return ResponseEntity.badRequest().build();
     }
 
-    @PostMapping(value = "/request-for-meeting", params = {"meeting-id", "user-id"})
-    public ResponseEntity<MeetingDTO> sendRequestForMeeting(@RequestParam Integer meetingId, @RequestParam Integer userId) {
+    @GetMapping(value = "/request-for-meeting/{meetingId}/{userId}")
+    public ResponseEntity<MeetingDTO> sendRequestForMeeting(@PathVariable Integer meetingId, @PathVariable Integer userId) {
         log.debug("REST request to send request for Meeting with id : {} ,and wishing user id : {} ", meetingId, userId);
-        MeetingDTO result = meetingService.sendRequestForMeeting(meetingId, userId);
+        MeetingDTO result = meetingService.sendRequestForMeeting(meetingId,userId );
         if (result != null) {
             return ResponseEntity.ok(result);
         }
         return ResponseEntity.badRequest().build();
     }
 
-    @PostMapping(value = "/request-for-meeting", params = {"owner-id", "meeting-id", "wishing-user-id"})
+    @PostMapping(value = "/confirm-meeting/{ownerId}/{meetingId}/{wishingUserId}")
     public ResponseEntity<MeetingDTO> confirmUserForMeeting
-            (@RequestParam Integer ownerId, @RequestParam Integer meetingId, @RequestParam Integer wishingUserId) {
+            (@PathVariable Integer ownerId, @PathVariable Integer meetingId, @PathVariable Integer wishingUserId) {
         log.debug("REST request to send request for Meeting with id : {} ,owner id : {} ,and wishing user id : {} ",
                 meetingId, ownerId, wishingUserId);
         MeetingDTO result = meetingService.confirmUserForMeeting(ownerId, meetingId, wishingUserId);
@@ -92,9 +94,10 @@ public class MeetingController {
     }
 
     @GetMapping(params = "time")
-    public List<MeetingDTO> findMeetingByTimeAfterFilter(@RequestParam LocalDateTime time) {
-        log.debug("REST request to get Meetings after time : {}", time);
-        return meetingService.findAllByDateAfter(time);
+    public List<MeetingDTO> findMeetingByTimeAfterFilter(@RequestParam String time) {
+        LocalDateTime resTime = LocalDateTime.parse(time);
+        log.debug("REST request to get Meetings after time : {}", resTime);
+        return meetingService.findAllByDateAfter(resTime);
     }
 
 }
