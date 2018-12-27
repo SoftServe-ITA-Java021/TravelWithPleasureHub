@@ -1,13 +1,16 @@
 package com.kh021j.travelwithpleasurehub.parser.Belavia;
 
+import com.kh021j.travelwithpleasurehub.parser.Connection;
+
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class BelaviaConnection {
+public class BelaviaConnection implements Connection {
     private final String QUERY_URL = "https://ibe.belavia.by/api/flightsv2/outbound";
     private HttpURLConnection connection;
 
+    @Override
     public HttpURLConnection createConnection() throws IOException {
         URL url = new URL(QUERY_URL);
         connection = (HttpURLConnection) url.openConnection();
@@ -18,10 +21,6 @@ public class BelaviaConnection {
         connection.setDoOutput(true);
         connection.setDoInput(true);
         connection.setRequestMethod("POST");
-        return connection;
-    }
-
-    public HttpURLConnection getConnection() {
         return connection;
     }
 }

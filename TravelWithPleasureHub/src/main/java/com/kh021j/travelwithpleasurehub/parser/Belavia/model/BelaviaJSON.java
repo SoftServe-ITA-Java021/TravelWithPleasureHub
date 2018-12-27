@@ -2,6 +2,7 @@
 package com.kh021j.travelwithpleasurehub.parser.Belavia.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.kh021j.travelwithpleasurehub.parser.Belavia.model.enums.Currency;
 import lombok.*;
 
 import java.util.List;
@@ -16,7 +17,7 @@ import java.util.List;
 public class BelaviaJSON {
 
     @JsonProperty
-    private String currency;
+    private Currency currency;
     @JsonProperty
     private List<SearchRoutes> searchRoutes;
     @JsonProperty

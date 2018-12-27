@@ -1,4 +1,4 @@
-package com.kh021j.travelwithpleasurehub.parser.Belavia.processing;
+package com.kh021j.travelwithpleasurehub.parser.Belavia.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
