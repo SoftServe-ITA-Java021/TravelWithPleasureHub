@@ -13,11 +13,13 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api/meetings")
 public class MeetingController {
 
@@ -38,7 +40,7 @@ public class MeetingController {
     @GetMapping(value = "/request-for-meeting/{meetingId}/{userId}")
     public ResponseEntity<MeetingDTO> sendRequestForMeeting(@PathVariable Integer meetingId, @PathVariable Integer userId) {
         log.debug("REST request to send request for Meeting with id : {} ,and wishing user id : {} ", meetingId, userId);
-        MeetingDTO result = meetingService.sendRequestForMeeting(meetingId,userId );
+        MeetingDTO result = meetingService.sendRequestForMeeting(meetingId, userId);
         if (result != null) {
             return ResponseEntity.ok(result);
         }
@@ -95,9 +97,14 @@ public class MeetingController {
 
     @GetMapping(params = "time")
     public List<MeetingDTO> findMeetingByTimeAfterFilter(@RequestParam String time) {
-        LocalDateTime resTime = LocalDateTime.parse(time);
+        LocalDateTime resTime = LocalDateTime.parse(time,DateTimeFormatter.ISO_DATE_TIME);
         log.debug("REST request to get Meetings after time : {}", resTime);
         return meetingService.findAllByDateAfter(resTime);
+    }
+
+    @GetMapping(params = "location")
+    public List<MeetingDTO> findMeetingByLocation(@RequestParam String location) {
+        return meetingService.findAllByLocation(location);
     }
 
 }
