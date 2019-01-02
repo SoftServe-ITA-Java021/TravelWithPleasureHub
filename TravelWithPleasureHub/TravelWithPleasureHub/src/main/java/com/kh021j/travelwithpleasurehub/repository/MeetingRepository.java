@@ -19,4 +19,9 @@ public interface MeetingRepository extends JpaRepository<Meeting, Integer> {
 
     List<Meeting> findAllByConfirmedUsersContainsAndTimeOfActionIsBefore(User user, LocalDateTime time);
 
+<<<<<<< HEAD:TravelWithPleasureHub/TravelWithPleasureHub/src/main/java/com/kh021j/travelwithpleasurehub/repository/MeetingRepository.java
+=======
+    List<Meeting> findAllByLocationContaining(String location);
+
+>>>>>>> origin/dev:TravelWithPleasureHub/src/main/java/com/kh021j/travelwithpleasurehub/repository/MeetingRepository.java
 }

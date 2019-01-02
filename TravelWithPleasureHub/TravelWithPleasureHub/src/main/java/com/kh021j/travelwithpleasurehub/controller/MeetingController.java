@@ -13,11 +13,13 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api/meetings")
 public class MeetingController {
 
@@ -95,9 +97,20 @@ public class MeetingController {
 
     @GetMapping(params = "time")
     public List<MeetingDTO> findMeetingByTimeAfterFilter(@RequestParam String time) {
+<<<<<<< HEAD:TravelWithPleasureHub/TravelWithPleasureHub/src/main/java/com/kh021j/travelwithpleasurehub/controller/MeetingController.java
         LocalDateTime resTime = LocalDateTime.parse(time);
         log.debug("REST request to get Meetings after time : {}", resTime);
         return meetingService.findAllByDateAfter(resTime);
+=======
+        LocalDateTime resTime = LocalDateTime.parse(time,DateTimeFormatter.ISO_DATE_TIME);
+        log.debug("REST request to get Meetings after time : {}", resTime);
+        return meetingService.findAllByDateAfter(resTime);
+    }
+
+    @GetMapping(params = "location")
+    public List<MeetingDTO> findMeetingByLocation(@RequestParam String location) {
+        return meetingService.findAllByLocation(location);
+>>>>>>> origin/dev:TravelWithPleasureHub/src/main/java/com/kh021j/travelwithpleasurehub/controller/MeetingController.java
     }
 
 }

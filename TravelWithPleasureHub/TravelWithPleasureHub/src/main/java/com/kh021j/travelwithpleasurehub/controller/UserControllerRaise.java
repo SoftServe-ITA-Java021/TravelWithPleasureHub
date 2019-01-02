@@ -1,7 +1,10 @@
 package com.kh021j.travelwithpleasurehub.controller;
 
 import com.kh021j.travelwithpleasurehub.model.User;
+<<<<<<< HEAD:TravelWithPleasureHub/TravelWithPleasureHub/src/main/java/com/kh021j/travelwithpleasurehub/controller/UserControllerRaise.java
 import com.kh021j.travelwithpleasurehub.repository.UserRepository;
+=======
+>>>>>>> origin/dev:TravelWithPleasureHub/src/main/java/com/kh021j/travelwithpleasurehub/controller/UserController.java
 import com.kh021j.travelwithpleasurehub.service.UserService;
 import com.kh021j.travelwithpleasurehub.service.dto.UserDTO;
 import com.kh021j.travelwithpleasurehub.utils.FromDTO;
@@ -17,36 +20,46 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
+<<<<<<< HEAD:TravelWithPleasureHub/TravelWithPleasureHub/src/main/java/com/kh021j/travelwithpleasurehub/controller/UserControllerRaise.java
 @RequestMapping(path = "/api/user")
 public class UserControllerRaise {
 
+=======
+@RequestMapping("/api/users")
+public class UserController {
+>>>>>>> origin/dev:TravelWithPleasureHub/src/main/java/com/kh021j/travelwithpleasurehub/controller/UserController.java
+
+    private final static Logger LOGGER = LoggerFactory.getLogger(UserControllerRaise.class);
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
-    @GetMapping
-    public @ResponseBody Iterable<User> getAllUsers(){
-        return userRepository.findAll();
+    @GetMapping(path = "")
+    public List<User> getAll() {
+        return userService.findAll();
     }
 
-    @PostMapping
-    public @ResponseBody User addUser(@RequestBody User user){
-        return userRepository.save(user);
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<UserDTO> getById(@PathVariable Integer id) {
+        Optional<User> user = userService.getById(id);
+        return user.map(body -> ResponseEntity.ok(ToDTO.toUserDTO(body))).orElseGet(()->ResponseEntity.notFound().build());
     }
 
-    @PutMapping
-    public @ResponseBody User updateUser(@RequestBody User user) {
-        return userRepository.save(user);
+    //is not correct according to Richardson model
+    @GetMapping(path = "/username/{username}")
+    @ResponseBody
+    public List<UserDTO> getUserByName(@PathVariable String username) {
+        List<User> users = userService.findUserByName(username);
+        return users.stream()
+                .map(ToDTO::toUserDTO)
+                .collect(Collectors.toList());
     }
 
-    @DeleteMapping
-    public @ResponseBody void deleteUser(@RequestBody User user) {
-        userRepository.delete(user);
-    }
-
-    @GetMapping("/{id}")
-    public @ResponseBody User getUserById(@PathVariable Integer id) {
-        return userRepository.findById(id).orElse(null);
+    @PostMapping(path = "")
+    @ResponseBody
+    public UserDTO createUser (@RequestBody UserDTO userDTO){
+        LOGGER.debug("REST request to save User : {}", userDTO);
+        return ToDTO.toUserDTO(userService.create(FromDTO.fromUserDTO(userDTO)));
     }
 
 }

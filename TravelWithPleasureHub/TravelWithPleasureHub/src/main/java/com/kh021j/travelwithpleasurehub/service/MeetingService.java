@@ -41,7 +41,7 @@ public class MeetingService {
         return Meeting.builder()
                 .id(meetingDTO.getId())
                 .content(meetingDTO.getContent())
-                .header(meetingDTO.getContent())
+                .header(meetingDTO.getHeader())
                 .location(meetingDTO.getLocation())
                 .links(meetingDTO.getLinks())
                 .meetingType(meetingDTO.getMeetingType())
@@ -63,7 +63,7 @@ public class MeetingService {
         return MeetingDTO.builder()
                 .id(meeting.getId())
                 .content(meeting.getContent())
-                .header(meeting.getContent())
+                .header(meeting.getHeader())
                 .links(meeting.getLinks())
                 .location(meeting.getLocation())
                 .meetingType(meeting.getMeetingType())
@@ -191,6 +191,15 @@ public class MeetingService {
                 .collect(Collectors.toList());
     }
 
+<<<<<<< HEAD:TravelWithPleasureHub/TravelWithPleasureHub/src/main/java/com/kh021j/travelwithpleasurehub/service/MeetingService.java
+=======
+    public List<MeetingDTO> findAllByLocation(String location){
+        return meetingRepository.findAllByLocationContaining(location).stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
+    }
+
+>>>>>>> origin/dev:TravelWithPleasureHub/src/main/java/com/kh021j/travelwithpleasurehub/service/MeetingService.java
     private List<User> getListOfUsersById(List<Integer> ids) {
         List<User> users = new ArrayList<>();
         for (Integer id : ids) {
