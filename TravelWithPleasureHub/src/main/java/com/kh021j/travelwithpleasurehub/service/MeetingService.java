@@ -41,7 +41,7 @@ public class MeetingService {
         return Meeting.builder()
                 .id(meetingDTO.getId())
                 .content(meetingDTO.getContent())
-                .header(meetingDTO.getContent())
+                .header(meetingDTO.getHeader())
                 .location(meetingDTO.getLocation())
                 .links(meetingDTO.getLinks())
                 .meetingType(meetingDTO.getMeetingType())
@@ -63,7 +63,7 @@ public class MeetingService {
         return MeetingDTO.builder()
                 .id(meeting.getId())
                 .content(meeting.getContent())
-                .header(meeting.getContent())
+                .header(meeting.getHeader())
                 .links(meeting.getLinks())
                 .location(meeting.getLocation())
                 .meetingType(meeting.getMeetingType())
@@ -187,6 +187,12 @@ public class MeetingService {
     public List<MeetingDTO> findAllByDateAfter(LocalDateTime time) {
         log.debug("Request to get all Meetings by time filter after : {} ", time);
         return meetingRepository.findAllByTimeOfActionAfter(time).stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<MeetingDTO> findAllByLocation(String location){
+        return meetingRepository.findAllByLocationContaining(location).stream()
                 .map(this::toDTO)
                 .collect(Collectors.toList());
     }
