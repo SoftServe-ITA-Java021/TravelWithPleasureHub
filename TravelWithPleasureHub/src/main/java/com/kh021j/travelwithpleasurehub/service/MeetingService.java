@@ -191,7 +191,7 @@ public class MeetingService {
                 .collect(Collectors.toList());
     }
 
-    public List<MeetingDTO> findAllByLocation(String location){
+    public List<MeetingDTO> findAllByLocation(String location) {
         return meetingRepository.findAllByLocationContaining(location).stream()
                 .map(this::toDTO)
                 .collect(Collectors.toList());
@@ -218,6 +218,9 @@ public class MeetingService {
     }
 
     private List<String> findLinksForMeeting(MeetingDTO meetingDTO) throws IOException {
+        if (meetingDTO == null) {
+            return null;
+        }
         if (meetingDTO.getMeetingType().equals(MeetingType.WALKING)) {
             return null;
         }
