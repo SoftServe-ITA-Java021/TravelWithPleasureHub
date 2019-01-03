@@ -18,4 +18,6 @@ public class MeetingFeedbackDTO {
     private String feedbackType;
 
     private Integer meetingId;
+
+    private Integer ownerId;
 }

@@ -46,14 +46,14 @@ public class Meeting {
 
     @ManyToMany
     @JoinTable(name = "confirmed_users",
-            joinColumns = @JoinColumn(name = "meeting_id_meeting"),
-            inverseJoinColumns = @JoinColumn(name = "user_id_users"))
+            joinColumns = @JoinColumn(name = "meeting_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<User> confirmedUsers;
 
     @ManyToMany
     @JoinTable(name = "wishing_users",
-            joinColumns = @JoinColumn(name = "meeting_id_meeting"),
-            inverseJoinColumns = @JoinColumn(name = "user_id_users"))
+            joinColumns = @JoinColumn(name = "meeting_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<User> wishingUsers;
 }
 

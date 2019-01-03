@@ -3,12 +3,13 @@ package com.kh021j.travelwithpleasurehub.repository;
 import com.kh021j.travelwithpleasurehub.TravelwithpleasurehubApplication;
 import com.kh021j.travelwithpleasurehub.model.*;
 import com.kh021j.travelwithpleasurehub.model.enumiration.MeetingType;
-import com.kh021j.travelwithpleasurehub.propertyrent.model.*;
-import com.kh021j.travelwithpleasurehub.userrelated.model.User;
 import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -71,23 +72,23 @@ public abstract class RepositoryBaseDomain {
                 .build();
         entityManager.persist(propertyAvailability);
 
-//        PropertyReview propertyReview = PropertyReview.builder()
-//                .property(property)
-//                .userrelated(userrelated)
-//                .reviewText("review text")
-//                .dateRated(LocalDate.now())
-//                .rate(12)
-//                .build();
-//        entityManager.persist(propertyReview);
-//
-//        UserReview userReview = UserReview.builder()
-//                .rate(12)
-//                .madeByUserId(userrelated.getId())
-//                .reviewText("review text")
-//                .userrelated(userrelated)
-//                .dateRated(LocalDate.now())
-//                .build();
-//        entityManager.persist(userReview);
+        PropertyReview propertyReview = PropertyReview.builder()
+                .property(property)
+                .user(user)
+                .reviewText("review text")
+                .dateRated(LocalDate.now())
+                .rate(12)
+                .build();
+        entityManager.persist(propertyReview);
+
+        UserReview userReview = UserReview.builder()
+                .rate(12)
+                .madeByUserId(user.getId())
+                .reviewText("review text")
+                .user(user)
+                .dateRated(LocalDate.now())
+                .build();
+        entityManager.persist(userReview);
 
         Meeting meeting = Meeting.builder()
                 .header("simple")

@@ -28,4 +28,8 @@ public class MeetingFeedback {
     @OneToOne
     @JoinColumn(name = "meeting_id")
     private Meeting meeting;
+
+    @OneToOne
+    @JoinColumn(name = "owner_id")
+    private User owner;
 }
