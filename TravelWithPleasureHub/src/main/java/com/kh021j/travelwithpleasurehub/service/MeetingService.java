@@ -44,9 +44,11 @@ public class MeetingService {
                 .header(meetingDTO.getHeader())
                 .location(meetingDTO.getLocation())
                 .links(meetingDTO.getLinks())
-                .meetingType(meetingDTO.getMeetingType())
-                .timeOfAction(meetingDTO.getTimeOfAction())
-                .owner(userRepository.findById(meetingDTO.getOwnerId()).get())
+                .meetingType(MeetingType.valueOf(meetingDTO.getMeetingType().toUpperCase()))
+                .timeOfAction(LocalDateTime.parse(meetingDTO.getTimeOfAction()))
+                .owner(meetingDTO.getOwnerId() != null ?
+                        userRepository.findById(meetingDTO.getOwnerId()).get()
+                        : null)
                 .confirmedUsers(Objects.nonNull(meetingDTO.getConfirmedUserIds()) ?
                         getListOfUsersById(meetingDTO.getConfirmedUserIds())
                         : null)
@@ -66,8 +68,8 @@ public class MeetingService {
                 .header(meeting.getHeader())
                 .links(meeting.getLinks())
                 .location(meeting.getLocation())
-                .meetingType(meeting.getMeetingType())
-                .timeOfAction(meeting.getTimeOfAction())
+                .meetingType(meeting.getMeetingType().toString())
+                .timeOfAction(meeting.getTimeOfAction().toString())
                 .ownerId(Objects.nonNull(meeting.getOwner()) ? meeting.getId() : null)
                 .confirmedUserIds(Objects.nonNull(meeting.getConfirmedUsers()) ?
                         meeting.getConfirmedUsers().stream()
@@ -90,12 +92,8 @@ public class MeetingService {
                 .links(findLinksForMeeting(meetingDTO))
                 .build();
         log.debug("Request to save Meeting : {}", meetingDTO);
-        if (!meetingRepository.existsById(meetingDTO.getId())) {
-            Meeting meeting = fromDTO(meetingDTO);
-            return toDTO(meetingRepository.saveAndFlush(meeting));
-        }
-        log.debug("Request to save Meeting was failed : {}", meetingDTO);
-        return null;
+        Meeting meeting = fromDTO(meetingDTO);
+        return toDTO(meetingRepository.saveAndFlush(meeting));
     }
 
     @Transactional
@@ -149,7 +147,7 @@ public class MeetingService {
     public List<MeetingDTO> findHistoryOfMeetingsByUserId(Integer id) {
         log.debug("Request to get history Meetings by user id : {} ", id);
         User user = userRepository.findById(id).get();
-        return meetingRepository.findAllByConfirmedUsersContainsAndTimeOfActionIsBefore(user, LocalDateTime.now())
+        return meetingRepository.findAllByConfirmedUsersContainingOrWishingUsersContaining(user, user)
                 .stream()
                 .map(this::toDTO)
                 .collect(Collectors.toList());
@@ -168,7 +166,8 @@ public class MeetingService {
 
     public Optional<MeetingDTO> findById(Integer id) {
         log.debug("Request to get Meeting by id : {}", id);
-        return Optional.ofNullable(toDTO(meetingRepository.findById(id).get()));
+        Optional<Meeting> meeting = meetingRepository.findById(id);
+        return meeting.map(value -> Optional.ofNullable(toDTO(value))).orElse(null);
     }
 
     public List<MeetingDTO> findAll() {
@@ -191,10 +190,24 @@ public class MeetingService {
                 .collect(Collectors.toList());
     }
 
-    public List<MeetingDTO> findAllByLocation(String location){
+    public List<MeetingDTO> findAllByLocation(String location) {
+        log.debug("Request to get all Meetings by by location : {} ", location);
+
         return meetingRepository.findAllByLocationContaining(location).stream()
                 .map(this::toDTO)
                 .collect(Collectors.toList());
+    }
+
+    public List<MeetingDTO> findAllByOwnerId(Integer id) {
+        log.debug("Request to get all Meetings by owner with id : {} ", id);
+        Optional<User> user = userRepository.findById(id);
+        if (!user.isPresent()) {
+            return new ArrayList<>();
+        }
+        return meetingRepository.findAllByOwner(user.get()).stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
+
     }
 
     private List<User> getListOfUsersById(List<Integer> ids) {
@@ -218,11 +231,17 @@ public class MeetingService {
     }
 
     private List<String> findLinksForMeeting(MeetingDTO meetingDTO) throws IOException {
-        if (meetingDTO.getMeetingType().equals(MeetingType.WALKING)) {
+        if (meetingDTO == null) {
+            return null;
+        }
+        if (meetingDTO.getMeetingType().toUpperCase().equals("WALKING")) {
             return null;
         }
         List<String> links = new ArrayList<>();
         String[] countryAndCity = meetingDTO.getLocation().split(",");
+        if (countryAndCity.length < 2) {
+            return null;
+        }
         String reference = "https://search.yahoo.com/search?p=" + countryAndCity[0].trim() + "+" + countryAndCity[1].trim()
                 + "+buy+" + meetingDTO.getMeetingType() + "+tickets&fr=yfp-t&fp=1&toggle=1&cop=mss&ei=UTF-8";
         Document document = Jsoup.connect(reference).timeout(10000).get();

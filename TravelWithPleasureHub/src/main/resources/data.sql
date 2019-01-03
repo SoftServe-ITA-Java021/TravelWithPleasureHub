@@ -4,3 +4,5 @@ insert into users (username, first_name,second_name, password, email, location, 
 
 insert into meeting (header, meeting_type, content, location, date_time, owner_id) VALUES ('meeting for cinema', 2, 'will be interesting', 'Ukraine, Kiev', '2018-12-11 14:00', 1);
 insert into meeting (header, meeting_type, content, location, date_time, owner_id) VALUES ('walking', 0, '..', 'Poland, Krakow', '2018-12-11 14:02', 1);
+insert into meeting (header, meeting_type, content, location, date_time, owner_id) VALUES ('theatre', 1, 'u should take a umbrella (???)', 'Ukraine, Odessa', '2018-12-28 21:20', 2);
+insert into meeting (header, meeting_type, content, location, date_time, owner_id) VALUES ('walking', 0, 'will be great weather', 'Ukraine, Dnipro', '2018-12-31 12:00', 2);
