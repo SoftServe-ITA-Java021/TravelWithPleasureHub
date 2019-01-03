@@ -16,13 +16,22 @@ import java.util.List;
 public class MeetingDTO {
 
     private Integer id;
+
     private String header;
-    private MeetingType meetingType;
+
+    private String meetingType;
+
     private String content;
+
     private String location;
+
     private List<String> links;
-    private LocalDateTime timeOfAction;
+
+    private String timeOfAction;
+
     private Integer ownerId;
+
     private List<Integer> confirmedUserIds;
+
     private List<Integer> wishingUserIds;
 }

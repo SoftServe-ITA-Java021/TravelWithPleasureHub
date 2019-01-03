@@ -20,4 +20,5 @@ public class MeetingFeedbackDTO {
     private Integer meetingId;
 
     private Integer ownerId;
+
 }

@@ -5,6 +5,7 @@ import com.kh021j.travelwithpleasurehub.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.security.acl.Owner;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -17,8 +18,10 @@ public interface MeetingRepository extends JpaRepository<Meeting, Integer> {
 
     List<Meeting> findAllByTimeOfActionAfter(LocalDateTime time);
 
-    List<Meeting> findAllByConfirmedUsersContainsAndTimeOfActionIsBefore(User user, LocalDateTime time);
+    List<Meeting> findAllByConfirmedUsersContainingOrWishingUsersContaining(User user1, User user2);
 
     List<Meeting> findAllByLocationContaining(String location);
+
+    List<Meeting> findAllByOwner(User user);
 
 }
