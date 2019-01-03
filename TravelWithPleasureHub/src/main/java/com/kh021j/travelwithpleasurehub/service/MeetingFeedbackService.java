@@ -68,12 +68,8 @@ public class MeetingFeedbackService {
     @Transactional
     public MeetingFeedbackDTO update(MeetingFeedbackDTO meetingFeedbackDTO) {
         log.debug("Request to update MeetingFeedback : {}", meetingFeedbackDTO);
-        if (meetingFeedbackRepository.existsById(meetingFeedbackDTO.getId())) {
-            MeetingFeedback meetingFeedback = fromDTO(meetingFeedbackDTO);
-            return toDTO(meetingFeedbackRepository.saveAndFlush(meetingFeedback));
-        }
-        log.debug("Request to update MeetingFeedback was failed : {}", meetingFeedbackDTO);
-        return null;
+        MeetingFeedback meetingFeedback = fromDTO(meetingFeedbackDTO);
+        return toDTO(meetingFeedbackRepository.saveAndFlush(meetingFeedback));
     }
 
     public boolean deleteById(Integer id) {
@@ -92,14 +88,14 @@ public class MeetingFeedbackService {
         return Optional.ofNullable(toDTO(meetingFeedbackRepository.findById(id).get()));
     }
 
-    public List<MeetingFeedbackDTO> findAll(){
+    public List<MeetingFeedbackDTO> findAll() {
         log.debug("Request to get all MeetingFeedbacks");
         return meetingFeedbackRepository.findAll().stream()
                 .map(this::toDTO)
                 .collect(Collectors.toList());
     }
 
-    public List<MeetingFeedbackDTO> findAllByFeedbackType(String type){
+    public List<MeetingFeedbackDTO> findAllByFeedbackType(String type) {
         log.debug("Request to get all MeetingFeedbacks by type : {} ", type);
         FeedbackType feedbackType = FeedbackType.valueOf(type.toUpperCase());
         return meetingFeedbackRepository.getAllByFeedbackType(feedbackType).stream()
@@ -108,7 +104,7 @@ public class MeetingFeedbackService {
 
     }
 
-    public List<MeetingFeedbackDTO> findAllByMeeting(Integer id){
+    public List<MeetingFeedbackDTO> findAllByMeeting(Integer id) {
         log.debug("Request to get  MeetingFeedback by Meeting's id : {} ", id);
         return meetingFeedbackRepository.getAllByMeeting(meetingRepository.findById(id).get()).stream()
                 .map(this::toDTO)
