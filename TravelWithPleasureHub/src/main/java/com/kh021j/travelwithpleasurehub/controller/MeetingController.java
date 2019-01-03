@@ -28,7 +28,7 @@ public class MeetingController {
     private final MeetingService meetingService;
 
     @PostMapping
-    public ResponseEntity<MeetingDTO> createMeeting(@RequestBody MeetingDTO meetingDTO) throws URISyntaxException, IOException {
+    public ResponseEntity<MeetingDTO> createMeeting(@ModelAttribute MeetingDTO meetingDTO) throws URISyntaxException, IOException {
         log.debug("REST request to save Meeting : {}", meetingDTO);
         MeetingDTO result = meetingService.save(meetingDTO);
         if (result != null) {
@@ -97,7 +97,7 @@ public class MeetingController {
 
     @GetMapping(params = "time")
     public List<MeetingDTO> findMeetingByTimeAfterFilter(@RequestParam String time) {
-        LocalDateTime resTime = LocalDateTime.parse(time,DateTimeFormatter.ISO_DATE_TIME);
+        LocalDateTime resTime = LocalDateTime.parse(time, DateTimeFormatter.ISO_DATE_TIME);
         log.debug("REST request to get Meetings after time : {}", resTime);
         return meetingService.findAllByDateAfter(resTime);
     }

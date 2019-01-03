@@ -12,12 +12,9 @@ import lombok.NoArgsConstructor;
 public class MeetingFeedbackDTO {
 
     private Integer id;
-
     private String text;
-
     private String feedbackType;
-
     private Integer meetingId;
-
     private Integer ownerId;
+
 }

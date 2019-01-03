@@ -38,15 +38,18 @@ public class MeetingService {
         if (meetingDTO == null) {
             return null;
         }
+
         return Meeting.builder()
                 .id(meetingDTO.getId())
                 .content(meetingDTO.getContent())
                 .header(meetingDTO.getHeader())
                 .location(meetingDTO.getLocation())
                 .links(meetingDTO.getLinks())
-                .meetingType(meetingDTO.getMeetingType())
-                .timeOfAction(meetingDTO.getTimeOfAction())
-                .owner(userRepository.findById(meetingDTO.getOwnerId()).get())
+                .meetingType(MeetingType.valueOf(meetingDTO.getMeetingType().toUpperCase()))
+                .timeOfAction(LocalDateTime.parse(meetingDTO.getTimeOfAction()))
+                .owner(meetingDTO.getOwnerId() != null ?
+                        userRepository.findById(meetingDTO.getOwnerId()).get()
+                        : null)
                 .confirmedUsers(Objects.nonNull(meetingDTO.getConfirmedUserIds()) ?
                         getListOfUsersById(meetingDTO.getConfirmedUserIds())
                         : null)
@@ -66,8 +69,8 @@ public class MeetingService {
                 .header(meeting.getHeader())
                 .links(meeting.getLinks())
                 .location(meeting.getLocation())
-                .meetingType(meeting.getMeetingType())
-                .timeOfAction(meeting.getTimeOfAction())
+                .meetingType(meeting.getMeetingType().toString())
+                .timeOfAction(meeting.getTimeOfAction().toString())
                 .ownerId(Objects.nonNull(meeting.getOwner()) ? meeting.getId() : null)
                 .confirmedUserIds(Objects.nonNull(meeting.getConfirmedUsers()) ?
                         meeting.getConfirmedUsers().stream()
@@ -84,18 +87,16 @@ public class MeetingService {
                 .build();
     }
 
+
     @Transactional
     public MeetingDTO save(MeetingDTO meetingDTO) throws IOException {
         meetingDTO = meetingDTO.toBuilder()
                 .links(findLinksForMeeting(meetingDTO))
                 .build();
+        Meeting meeting = fromDTO(meetingDTO);
+        System.err.println(meeting);
         log.debug("Request to save Meeting : {}", meetingDTO);
-        if (!meetingRepository.existsById(meetingDTO.getId())) {
-            Meeting meeting = fromDTO(meetingDTO);
-            return toDTO(meetingRepository.saveAndFlush(meeting));
-        }
-        log.debug("Request to save Meeting was failed : {}", meetingDTO);
-        return null;
+        return toDTO(meetingRepository.saveAndFlush(meeting));
     }
 
     @Transactional
@@ -221,8 +222,9 @@ public class MeetingService {
         if (meetingDTO == null) {
             return null;
         }
-        if (meetingDTO.getMeetingType().equals(MeetingType.WALKING)) {
-            return null;
+        if (meetingDTO.getMeetingType() == null ||
+                meetingDTO.getMeetingType().toUpperCase().equals("WALKING")) {
+            return new ArrayList<>();
         }
         List<String> links = new ArrayList<>();
         String[] countryAndCity = meetingDTO.getLocation().split(",");
