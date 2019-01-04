@@ -5,7 +5,7 @@ import com.kh021j.travelwithpleasurehub.propertyrent.controller.ApplicationContr
 import com.kh021j.travelwithpleasurehub.propertyrent.model.Application;
 import com.kh021j.travelwithpleasurehub.propertyrent.model.Property;
 import com.kh021j.travelwithpleasurehub.propertyrent.model.PropertyType;
-import com.kh021j.travelwithpleasurehub.userrelated.model.User;
+import com.kh021j.travelwithpleasurehub.model.User;
 import com.kh021j.travelwithpleasurehub.propertyrent.repository.ApplicationRepository;
 import org.junit.Before;
 import org.junit.Test;

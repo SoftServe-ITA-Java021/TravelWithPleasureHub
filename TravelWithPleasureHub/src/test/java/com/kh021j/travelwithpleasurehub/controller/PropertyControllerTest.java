@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kh021j.travelwithpleasurehub.propertyrent.controller.PropertyController;
 import com.kh021j.travelwithpleasurehub.propertyrent.model.Property;
 import com.kh021j.travelwithpleasurehub.propertyrent.model.PropertyType;
-import com.kh021j.travelwithpleasurehub.userrelated.model.User;
+import com.kh021j.travelwithpleasurehub.model.User;
 import com.kh021j.travelwithpleasurehub.propertyrent.repository.PropertyRepository;
 import org.junit.Before;
 import org.junit.Test;

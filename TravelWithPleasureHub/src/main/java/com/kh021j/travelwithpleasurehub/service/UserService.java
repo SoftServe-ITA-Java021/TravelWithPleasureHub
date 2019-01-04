@@ -1,6 +1,6 @@
 package com.kh021j.travelwithpleasurehub.service;
 
-import com.kh021j.travelwithpleasurehub.userrelated.model.User;
+import com.kh021j.travelwithpleasurehub.model.User;
 
 import java.util.List;
 import java.util.Optional;

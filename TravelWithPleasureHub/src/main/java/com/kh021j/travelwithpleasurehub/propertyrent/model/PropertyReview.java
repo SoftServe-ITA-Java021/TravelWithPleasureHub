@@ -1,7 +1,7 @@
 package com.kh021j.travelwithpleasurehub.propertyrent.model;
 
 
-import com.kh021j.travelwithpleasurehub.userrelated.model.User;
+import com.kh021j.travelwithpleasurehub.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

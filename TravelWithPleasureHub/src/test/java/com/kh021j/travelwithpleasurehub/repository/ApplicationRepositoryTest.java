@@ -3,7 +3,6 @@ package com.kh021j.travelwithpleasurehub.repository;
 import com.kh021j.travelwithpleasurehub.propertyrent.model.Application;
 import com.kh021j.travelwithpleasurehub.propertyrent.repository.ApplicationRepository;
 import com.kh021j.travelwithpleasurehub.propertyrent.repository.PropertyRepository;
-import com.kh021j.travelwithpleasurehub.userrelated.repository.UserRepository;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;

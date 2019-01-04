@@ -1,7 +1,6 @@
 package com.kh021j.travelwithpleasurehub.model;
 
 import com.kh021j.travelwithpleasurehub.model.enumiration.MeetingType;
-import com.kh021j.travelwithpleasurehub.userrelated.model.User;
 import lombok.*;
 
 import javax.persistence.*;

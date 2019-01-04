@@ -1,7 +1,7 @@
 package com.kh021j.travelwithpleasurehub.propertyrent.model;
 
 
-import com.kh021j.travelwithpleasurehub.userrelated.model.User;
+import com.kh021j.travelwithpleasurehub.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -38,6 +38,14 @@ public class Property {
 
     private Integer price;
 
-    private String pathToPhoto;
-
+    public Property(String title, String description, PropertyType propertyType,
+                    User userTable, String locality, String address, Integer price) {
+        this.title = title;
+        this.description = description;
+        this.propertyType = propertyType;
+        this.userTable = userTable;
+        this.locality = locality;
+        this.address = address;
+        this.price = price;
+    }
 }

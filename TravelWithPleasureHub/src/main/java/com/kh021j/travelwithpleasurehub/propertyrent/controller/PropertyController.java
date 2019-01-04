@@ -1,20 +1,34 @@
 package com.kh021j.travelwithpleasurehub.propertyrent.controller;
 
-import com.kh021j.travelwithpleasurehub.controller.enumeration.SortType;
 import com.kh021j.travelwithpleasurehub.propertyrent.model.Property;
-import com.kh021j.travelwithpleasurehub.propertyrent.repository.PropertyRepository;
+import com.kh021j.travelwithpleasurehub.propertyrent.model.PropertyImage;
+import com.kh021j.travelwithpleasurehub.propertyrent.service.PropertyImageService;
 import com.kh021j.travelwithpleasurehub.propertyrent.service.PropertyService;
+import com.kh021j.travelwithpleasurehub.propertyrent.service.PropertyTypeService;
+import com.kh021j.travelwithpleasurehub.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDate;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping(path = "/api/properties")
+@CrossOrigin
 public class PropertyController {
 
     @Autowired
     private PropertyService propertyService;
+
+    @Autowired
+    private PropertyTypeService propertyTypeService;
+
+    @Autowired
+    private UserServiceImpl userService;
+
+    @Autowired
+    private ImgurAPIController imgurAPIController;
+
+    @Autowired
+    private PropertyImageService propertyImageService;
 
     @GetMapping
     public @ResponseBody Iterable<Property> getAllProperties(){
@@ -22,8 +36,20 @@ public class PropertyController {
     }
 
     @PostMapping
-    public @ResponseBody Property addProperty(@RequestBody Property property){
-        return propertyService.add(property);
+    public @ResponseBody Property addProperty(@RequestParam String title,
+                                              @RequestParam String locality,
+                                              @RequestParam String address,
+                                              @RequestParam Integer price,
+                                              @RequestParam String description,
+                                              @RequestParam MultipartFile[] photos
+    ) {
+        Property property = new Property(title, description,
+                propertyTypeService.findById(1), userService.getById(1).get(), locality, address, price);
+        Property savedProperty = propertyService.add(property);
+        for(MultipartFile photo : photos) {
+            propertyImageService.add(new PropertyImage(imgurAPIController.uploadPictures(photo), savedProperty));
+        }
+        return savedProperty;
     }
 
     @PutMapping

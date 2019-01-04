@@ -1,6 +1,6 @@
 package com.kh021j.travelwithpleasurehub.utils;
 
-import com.kh021j.travelwithpleasurehub.userrelated.model.User;
+import com.kh021j.travelwithpleasurehub.model.User;
 import com.kh021j.travelwithpleasurehub.service.dto.UserDTO;
 
 public class FromDTO {

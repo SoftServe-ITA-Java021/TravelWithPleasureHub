@@ -1,4 +1,4 @@
-package com.kh021j.travelwithpleasurehub.userrelated.model;
+package com.kh021j.travelwithpleasurehub.model;
 
 
 import lombok.AllArgsConstructor;
