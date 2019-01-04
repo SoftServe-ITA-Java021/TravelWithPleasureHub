@@ -2,8 +2,9 @@ package com.kh021j.travelwithpleasurehub.controller;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kh021j.travelwithpleasurehub.model.PropertyType;
-import com.kh021j.travelwithpleasurehub.repository.PropertyTypeRepository;
+import com.kh021j.travelwithpleasurehub.propertyrent.controller.PropertyTypeController;
+import com.kh021j.travelwithpleasurehub.propertyrent.model.PropertyType;
+import com.kh021j.travelwithpleasurehub.propertyrent.repository.PropertyTypeRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -3,6 +3,7 @@ package com.kh021j.travelwithpleasurehub.repository;
 import com.kh021j.travelwithpleasurehub.TravelwithpleasurehubApplication;
 import com.kh021j.travelwithpleasurehub.model.*;
 import com.kh021j.travelwithpleasurehub.model.enumiration.MeetingType;
+import com.kh021j.travelwithpleasurehub.propertyrent.model.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
