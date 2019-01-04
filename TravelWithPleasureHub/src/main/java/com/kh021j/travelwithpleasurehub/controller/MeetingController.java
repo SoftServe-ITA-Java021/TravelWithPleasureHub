@@ -90,27 +90,18 @@ public class MeetingController {
         return meetingService.findAll();
     }
 
-    @GetMapping(params = "header")
-    public List<MeetingDTO> findMeetingByHeaderFilter(@RequestParam String header) {
-        log.debug("REST request to get Meetings with header : {}", header);
-        return meetingService.findAllByHeaderFilter(header);
-    }
-
-    @GetMapping(params = "time")
-    public List<MeetingDTO> findMeetingByTimeAfterFilter(@RequestParam String time) {
-        LocalDateTime resTime = LocalDateTime.parse(time, DateTimeFormatter.ISO_DATE_TIME);
-        log.debug("REST request to get Meetings after time : {}", resTime);
-        return meetingService.findAllByDateAfter(resTime);
-    }
-
-    @GetMapping(params = "location")
-    public List<MeetingDTO> findMeetingByLocation(@RequestParam String location) {
-        return meetingService.findAllByLocation(location);
-    }
-
     @GetMapping(params = "owner")
     public List<MeetingDTO> findMeetingByOwner(@RequestParam String owner) {
+        log.debug("REST request to get Meetings with owner : {}", owner);
         return meetingService.findAllByOwnerId(Integer.parseInt(owner));
+    }
+
+    @GetMapping(params = {"headerFilter", "locationFilter", "timeFilter"})
+    public List<MeetingDTO> findMeetingsByFilter(@RequestParam String headerFilter,
+                                                 @RequestParam String locationFilter,
+                                                 @RequestParam String timeFilter) {
+        log.debug("REST request to get Meetings with header : {} ,location : {} ,time : {} ", headerFilter, locationFilter, timeFilter);
+        return meetingService.findAllByFilter(headerFilter, locationFilter, timeFilter);
     }
 
 }
