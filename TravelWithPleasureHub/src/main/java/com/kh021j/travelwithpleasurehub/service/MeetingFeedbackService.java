@@ -4,7 +4,6 @@ import com.kh021j.travelwithpleasurehub.model.MeetingFeedback;
 import com.kh021j.travelwithpleasurehub.model.enumiration.FeedbackType;
 import com.kh021j.travelwithpleasurehub.repository.MeetingFeedbackRepository;
 import com.kh021j.travelwithpleasurehub.repository.MeetingRepository;
-import com.kh021j.travelwithpleasurehub.repository.UserRepository;
 import com.kh021j.travelwithpleasurehub.service.dto.MeetingFeedbackDTO;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;

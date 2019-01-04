@@ -1,6 +1,8 @@
 package com.kh021j.travelwithpleasurehub.repository;
 
-import com.kh021j.travelwithpleasurehub.model.PropertyAvailability;
+import com.kh021j.travelwithpleasurehub.propertyrent.model.PropertyAvailability;
+import com.kh021j.travelwithpleasurehub.propertyrent.repository.PropertyAvailabilityRepository;
+import com.kh021j.travelwithpleasurehub.propertyrent.repository.PropertyRepository;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;

@@ -1,6 +1,8 @@
 package com.kh021j.travelwithpleasurehub.repository;
 
-import com.kh021j.travelwithpleasurehub.model.Property;
+import com.kh021j.travelwithpleasurehub.propertyrent.model.Property;
+import com.kh021j.travelwithpleasurehub.propertyrent.repository.PropertyRepository;
+import com.kh021j.travelwithpleasurehub.propertyrent.repository.PropertyTypeRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;

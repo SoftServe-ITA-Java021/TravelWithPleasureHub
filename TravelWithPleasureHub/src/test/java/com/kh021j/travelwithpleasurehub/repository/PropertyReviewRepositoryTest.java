@@ -1,6 +1,8 @@
 package com.kh021j.travelwithpleasurehub.repository;
 
-import com.kh021j.travelwithpleasurehub.model.PropertyReview;
+import com.kh021j.travelwithpleasurehub.propertyrent.model.PropertyReview;
+import com.kh021j.travelwithpleasurehub.propertyrent.repository.PropertyRepository;
+import com.kh021j.travelwithpleasurehub.propertyrent.repository.PropertyReviewRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
