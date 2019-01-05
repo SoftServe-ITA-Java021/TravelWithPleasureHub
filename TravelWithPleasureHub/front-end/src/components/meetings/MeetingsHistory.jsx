@@ -1,8 +1,9 @@
 import React, {Component} from "react";
+import axios from "axios";
 import showList from './ShowList'
 
 
-export default class AllMeetings extends Component {
+export default class MeetingsHistory extends Component {
     constructor(props) {
         super(props);
         this.state =
@@ -11,7 +12,7 @@ export default class AllMeetings extends Component {
                     {
                         id: -1,
                         header: "",
-                        meetingType: "walking",
+                        meetingType: -1,
                         content: "",
                         location: "",
                         links: [],
@@ -22,24 +23,27 @@ export default class AllMeetings extends Component {
                     }
                 ]
             };
-
     }
 
     render() {
         const value = this.state;
         return <div className="container">
-            <div className="container alert alert-light bg-light row h-100 justify-content-center align-items-center"> You're
-                watching all meetings
+            <div className="alert alert-light bg-light row h-100 justify-content-center align-items-center"> You're
+                watching meetings where you sent request for participation or where you're are confirmed
             </div>
-            {value.meetings[0].id !== -1 && showList(value.meetings)}
+            {showList(value.meetings)}
         </div>
     }
 
 
     componentDidMount() {
-        fetch(`http://localhost:8080/api/meetings`)
-            .then(data => data.json())
-            .then(json => this.setState({meetings: json}));
+        axios.get(`http://localhost:8080/api/meetings`,
+            {
+                params: {
+                    historyByUser: "3"
+                }
+            })
+            .then(json => this.setState({meetings: json.data}));
     }
 
 }
