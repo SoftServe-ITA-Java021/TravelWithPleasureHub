@@ -78,7 +78,7 @@ export default class OneMeeting extends Component {
 
 
     componentDidMount() {
-        axios.get(`http://localhost:9000/api/meetings/${this.props.match.params.id}`,
+        axios.get(`http://localhost:8080/api/meetings/${this.props.match.params.id}`,
             {
                 headers: {
                     'Access-Control-Allow-Credentials': 'include'
@@ -94,7 +94,7 @@ export default class OneMeeting extends Component {
         formData.append("meetingId", value.meeting.id);
         formData.append("userId", "3");
 
-        axios.post("http://localhost:9000/api/meetings/request-for-meeting/",
+        axios.post("http://localhost:8080/api/meetings/request-for-meeting/",
             formData
         ).then(() => {
             this.setState({

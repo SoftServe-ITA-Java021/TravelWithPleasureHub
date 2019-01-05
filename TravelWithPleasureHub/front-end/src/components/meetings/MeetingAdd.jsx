@@ -81,7 +81,7 @@ export default class MeetingAdd extends Component {
         formData.append("timeOfAction", value.timeOfAction);
         formData.append("ownerId", JSON.stringify(1));
 
-        axios.post("http://localhost:9000/api/meetings",
+        axios.post("http://localhost:8080/api/meetings",
             formData
         ).then(response => {
             console.log("status = " + response.status);
