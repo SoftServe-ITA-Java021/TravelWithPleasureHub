@@ -177,26 +177,6 @@ public class MeetingService {
                 .collect(Collectors.toList());
     }
 
-    public List<MeetingDTO> findAllByHeaderFilter(String header) {
-        log.debug("Request to get all Meetings by header filter : {} ", header);
-        return meetingRepository.findAllByHeaderContaining(header).stream()
-                .map(this::toDTO).collect(Collectors.toList());
-    }
-
-    public List<MeetingDTO> findAllByDateAfter(LocalDateTime time) {
-        log.debug("Request to get all Meetings by time filter after : {} ", time);
-        return meetingRepository.findAllByTimeOfActionAfter(time).stream()
-                .map(this::toDTO)
-                .collect(Collectors.toList());
-    }
-
-    public List<MeetingDTO> findAllByLocation(String location) {
-        log.debug("Request to get all Meetings by by location : {} ", location);
-
-        return meetingRepository.findAllByLocationContaining(location).stream()
-                .map(this::toDTO)
-                .collect(Collectors.toList());
-    }
 
     public List<MeetingDTO> findAllByOwnerId(Integer id) {
         log.debug("Request to get all Meetings by owner with id : {} ", id);
@@ -208,6 +188,15 @@ public class MeetingService {
                 .map(this::toDTO)
                 .collect(Collectors.toList());
 
+    }
+
+    public List<MeetingDTO> findAllByFilter(String headerFilter, String locationFilter, String timeFilter) {
+        log.debug("REST request to get Meetings with header : {} ,location : {} ,time : {} ", headerFilter, locationFilter, timeFilter);
+        return meetingRepository.findAllByFilter(headerFilter,
+                locationFilter,
+                timeFilter.replace("T", " ")).stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
     }
 
     private List<User> getListOfUsersById(List<Integer> ids) {
