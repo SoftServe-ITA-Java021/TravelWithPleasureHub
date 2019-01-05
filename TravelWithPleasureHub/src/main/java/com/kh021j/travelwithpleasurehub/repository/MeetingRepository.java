@@ -2,14 +2,11 @@ package com.kh021j.travelwithpleasurehub.repository;
 
 import com.kh021j.travelwithpleasurehub.model.Meeting;
 import com.kh021j.travelwithpleasurehub.model.User;
-import com.kh021j.travelwithpleasurehub.model.enumiration.MeetingType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.security.acl.Owner;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository

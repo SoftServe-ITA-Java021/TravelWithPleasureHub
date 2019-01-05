@@ -7,7 +7,7 @@ export default class MeetingNavbar extends Component {
         return (
 	        <div className="container">
 		        <div className="row justify-content-center">
-		            <nav className="navbar navbar-expand-lg navbar-light bg-light">
+		            <nav className="navbar navbar-expand-lg navbar-light">
 			            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
 			                    aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
 			                <span className="navbar-toggler-icon"/>
@@ -23,30 +23,23 @@ export default class MeetingNavbar extends Component {
 			                        </NavLink>
 			                    </li>
 			                    <li className="nav-item">
-			                        <NavLink className="nav-link" to="/meetings/show-all-meetings-by-date">
+			                        <NavLink className="nav-link" to="/meetings/find-meetings">
 			                            <button className="btn btn-secondary">
-			                                Find meetings by date and time
+			                                Find meetings
 			                            </button>
 			                        </NavLink>
 			                    </li>
 			                    <li className="nav-item">
-			                        <NavLink className="nav-link" to="/meetings/show-all-meetings-by-location">
+			                        <NavLink className="nav-link" to="/meetings/show-history">
 			                            <button className="btn btn-secondary">
-			                                Find meetings by address
-			                            </button>
-			                        </NavLink>
-			                    </li>
-			                    <li className="nav-item dropdown">
-			                        <NavLink className="nav-link" to="/meetings/show-all-meetings-by-header">
-			                            <button className="btn btn-secondary">
-			                                Find meetings by header
+			                                View history
 			                            </button>
 			                        </NavLink>
 			                    </li>
 			                    <li className="nav-item dropdown">
 			                        <NavLink className="nav-link" to="/meetings/show-all-created-meetings">
 			                            <button className="btn btn-secondary">
-			                                Created meetings
+			                                Your meetings
 			                            </button>
 			                        </NavLink>
 			                    </li>
