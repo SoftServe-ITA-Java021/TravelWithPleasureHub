@@ -11,9 +11,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.nio.charset.StandardCharsets;
-import java.util.Iterator;
 
-public class JsonProcessing {
+public class JsonService {
 
     private static HttpURLConnection connection;
 
@@ -58,7 +57,7 @@ public class JsonProcessing {
     }
 
     private String getInfoFromItineraries(String key, String json) throws IOException {
-        JsonNode itineraries = new JsonProcessing().getNodeFromMainKey("itineraries", json);
+        JsonNode itineraries = new JsonService().getNodeFromMainKey("itineraries", json);
         String departureDateTime = itineraries.get(0).
                 get(key).toString().replace("\"", "");
         return departureDateTime.replace("T", " ");

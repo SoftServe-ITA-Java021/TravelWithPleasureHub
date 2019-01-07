@@ -14,7 +14,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class BelaviaJSON {
+public class BelaviaJson {
 
     @JsonProperty
     private Currency currency;

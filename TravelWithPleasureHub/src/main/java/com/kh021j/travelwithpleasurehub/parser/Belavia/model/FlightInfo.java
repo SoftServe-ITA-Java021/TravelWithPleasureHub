@@ -16,5 +16,7 @@ public class FlightInfo {
    private String departureDateTime;
    private String arrivalDateTime;
    private String duration;
+   private String origin;
+   private String destination;
 
 }

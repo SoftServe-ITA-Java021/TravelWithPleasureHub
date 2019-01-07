@@ -2,7 +2,7 @@ package com.kh021j.travelwithpleasurehub.parser.Belavia.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kh021j.travelwithpleasurehub.parser.Belavia.model.BelaviaJSON;
+import com.kh021j.travelwithpleasurehub.parser.Belavia.model.BelaviaJson;
 
 import java.io.IOException;
 
@@ -15,6 +15,6 @@ public class JsonConverter {
 
     public Object jsonToObject(String json) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        return mapper.readValue(json, BelaviaJSON.class);
+        return mapper.readValue(json, BelaviaJson.class);
     }
 }
