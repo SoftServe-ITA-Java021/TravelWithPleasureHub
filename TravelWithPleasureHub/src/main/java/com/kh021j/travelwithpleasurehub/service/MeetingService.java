@@ -195,6 +195,7 @@ public class MeetingService {
         return meetingRepository.findAllByFilter(headerFilter,
                 locationFilter,
                 timeFilter.replace("T", " ")).stream()
+                .filter(o -> o.getTimeOfAction().isAfter(LocalDateTime.now()))
                 .map(this::toDTO)
                 .collect(Collectors.toList());
     }
@@ -223,7 +224,7 @@ public class MeetingService {
         if (meetingDTO == null) {
             return null;
         }
-        if (meetingDTO.getMeetingType().toUpperCase().equals("WALKING")) {
+        if (meetingDTO.getMeetingType().toUpperCase().equals("WALKING") || meetingDTO.getMeetingType().toUpperCase().equals("OTHER")) {
             return null;
         }
         List<String> links = new ArrayList<>();
