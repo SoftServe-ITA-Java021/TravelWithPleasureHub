@@ -41,7 +41,6 @@ class Property extends Component {
 		fetch(`http://localhost:8080/api/property-availability/${this.props.match.params.id}`)
 			.then(response => response.json())
 			.then(response => {
-				// this.setState({propertyBookedPeriods: this.parsePropertyBookedIntoPeriods(response)})
 				this.setState({
 					propertyBookedDates: this.getAllBookedDates(response)
 				})

@@ -45,7 +45,6 @@ class PropertyList extends Component {
 			body: formData
 		})
 			.then(response => response.json())
-			// .then(response => console.log(response))
 			.then(properties => this.setState({properties : properties}))
 	};
 

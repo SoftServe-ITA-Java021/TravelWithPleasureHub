@@ -54,21 +54,13 @@ public class PropertyService {
     }
 
     public Iterable<Property> filterProperties(String locality, String address, String checkIn, String checkOut) {
-        System.out.println(locality);
-        System.out.println(address);
-        System.out.println(checkIn);
-        System.out.println(checkOut);
         if(!locality.equals("") && address.equals("") && checkIn.equals("") && checkOut.equals("")) {
-            System.out.println("1");
             return propertyRepository.findByLocality(locality).orElse(new ArrayList<>());
         } else if(locality.equals("") && !address.equals("") && checkIn.equals("") && checkOut.equals("")) {
-            System.out.println("2");
             return propertyRepository.findByAddress(address).orElse(new ArrayList<>());
         } else if(!locality.equals("") && !address.equals("") && checkIn.equals("") && checkOut.equals("")) {
-            System.out.println("3");
             return propertyRepository.findByLocalityAndAddress(locality, address).orElse(new ArrayList<>());
         } else if(!locality.equals("") && address.equals("") && !checkIn.equals("") && !checkOut.equals("")) {
-            System.out.println("4");
             LocalDate checkInDate = LocalDate.parse(checkIn);
             LocalDate checkOutDate = LocalDate.parse(checkOut);
             return propertyRepository.findByAvailabilityInPeriodAndLocality(checkInDate, checkOutDate, locality)
