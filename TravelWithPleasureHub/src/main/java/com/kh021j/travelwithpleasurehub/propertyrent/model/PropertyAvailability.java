@@ -28,4 +28,9 @@ public class PropertyAvailability {
     @JoinColumn(name = "property_id")
     private Property property;
 
+    public PropertyAvailability(LocalDate bookedSince, LocalDate bookedUntil, Property property) {
+        this.bookedSince = bookedSince;
+        this.bookedUntil = bookedUntil;
+        this.property = property;
+    }
 }

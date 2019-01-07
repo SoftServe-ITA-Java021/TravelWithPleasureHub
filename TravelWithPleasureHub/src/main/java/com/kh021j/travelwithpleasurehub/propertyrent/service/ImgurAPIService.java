@@ -1,4 +1,4 @@
-package com.kh021j.travelwithpleasurehub.propertyrent.controller;
+package com.kh021j.travelwithpleasurehub.propertyrent.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONException;
@@ -18,7 +18,7 @@ import java.util.Map;
 
 
 @Service
-public class ImgurAPIController {
+public class ImgurAPIService {
 
     private static String token;
 

@@ -6,12 +6,12 @@
 	bottom: 0;
 	width: 100%;
 	position: absolute;
-	opacity: 0.5;
+	background: rgba(255, 255, 255, .5);
 	transition: 0.3s;
 }
 
 #thumbnail-container:hover > #thumbnail-info {
-	opacity: 1;
+	background: rgba(255, 255, 255, 1);
 }
 
 .text-black {
