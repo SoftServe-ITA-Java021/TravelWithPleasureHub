@@ -12,11 +12,8 @@ export default class MeetingAdd extends Component {
                 meetingType: "walking",
                 content: "",
                 location: "",
-                links: [],
                 timeOfAction: "",
                 ownerId: -1,
-                confirmedUserIds: [],
-                wishingUserIds: [],
 
                 isCreated: false,
                 status: ""
