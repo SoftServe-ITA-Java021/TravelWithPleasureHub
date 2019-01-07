@@ -11,14 +11,8 @@ export default class MeetingsFind extends Component {
                     {
                         id: -1,
                         header: "",
-                        meetingType: -1,
-                        content: "",
                         location: "",
-                        links: [],
-                        timeOfAction: "",
-                        ownerId: -1,
-                        confirmedUserIds: [],
-                        wishingUserIds: [],
+                        timeOfAction: ""
                     }
                 ],
                 showAll: false,

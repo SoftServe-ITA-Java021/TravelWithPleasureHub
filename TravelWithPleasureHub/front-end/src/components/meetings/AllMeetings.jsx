@@ -11,14 +11,8 @@ export default class AllMeetings extends Component {
                     {
                         id: -1,
                         header: "",
-                        meetingType: "walking",
-                        content: "",
                         location: "",
-                        links: [],
                         timeOfAction: "",
-                        ownerId: -1,
-                        confirmedUserIds: [],
-                        wishingUserIds: [],
                     }
                 ]
             };
