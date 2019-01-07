@@ -15,8 +15,6 @@ public class PropertyImageService {
     @Autowired
     private PropertyImageRepository propertyImageRepository;
 
-    @Autowired
-    private PropertyRepository propertyRepository;
 
     public Iterable<PropertyImage> findAll(){
         return propertyImageRepository.findAll();
