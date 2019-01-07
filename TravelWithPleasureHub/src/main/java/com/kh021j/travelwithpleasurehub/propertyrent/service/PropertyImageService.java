@@ -7,6 +7,8 @@ import com.kh021j.travelwithpleasurehub.propertyrent.repository.PropertyReposito
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+
 @Service
 public class PropertyImageService {
 
@@ -25,7 +27,7 @@ public class PropertyImageService {
     }
 
     public Iterable<PropertyImage> findByPropertyId(Integer propertyId) {
-        return propertyImageRepository.findByPropertyId(propertyId).orElse(null);
+        return propertyImageRepository.findByPropertyId(propertyId).orElse(new ArrayList<>());
     }
 
     public PropertyImage findFirstByPropertyId(Integer propertyId) {

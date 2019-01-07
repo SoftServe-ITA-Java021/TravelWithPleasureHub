@@ -1,37 +1,6 @@
 import React, {Component} from 'react';
 import {NavLink} from "react-router-dom";
 
-// class NavBar extends Component {
-// 	render() {
-// 		return (
-// 			<nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-// 				<button
-// 					className="navbar-toggler"
-// 					type="button"
-// 					data-toggle="collapse"
-// 					data-target="#navbarNav"
-// 					aria-controls="navbarNav"
-// 					aria-expanded="false"
-// 					aria-label="Toggle navigation"
-// 				>
-// 					<span className="navbar-toggler-icon" />
-// 				</button>
-// 				<div
-// 					className="collapse navbar-collapse d-flex justify-content-center"
-// 					id="navbarNav"
-// 				>
-// 					<ul className="navbar-nav ">
-// 						<li className="nav-item">
-// 							<NavLink activeClassName="active" className="nav-link" to="/properties">
-// 								Rent properties
-// 							</NavLink >
-// 						</li>
-// 					</ul>
-// 				</div>
-// 			</nav>
-// 		);
-// 	}
-// }
 
 class NavBar extends Component {
 	render() {
@@ -47,10 +16,10 @@ class NavBar extends Component {
 						<div className="collapse navbar-collapse" id="menu">
 							<ul className="navbar-nav mr-auto">
 								<li className="nav-item">
-									<NavLink className="nav-link" to="/tickets">Ticket search</NavLink>
+									<NavLink className="nav-link" to="/tickets">Purchase a plane ticket</NavLink>
 								</li>
 								<li className="nav-item">
-									<NavLink className="nav-link" to="/properties">Rental property</NavLink>
+									<NavLink className="nav-link" to="/properties">Rent a property</NavLink>
 								</li>
 								<li className="nav-item">
 									<NavLink className="nav-link" to="/meetings">Arrange a meeting</NavLink>
