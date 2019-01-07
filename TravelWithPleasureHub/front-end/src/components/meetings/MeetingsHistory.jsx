@@ -12,14 +12,8 @@ export default class MeetingsHistory extends Component {
                     {
                         id: -1,
                         header: "",
-                        meetingType: -1,
-                        content: "",
                         location: "",
-                        links: [],
-                        timeOfAction: "",
-                        ownerId: -1,
-                        confirmedUserIds: [],
-                        wishingUserIds: [],
+                        timeOfAction: ""
                     }
                 ]
             };
@@ -31,7 +25,7 @@ export default class MeetingsHistory extends Component {
             <div className="alert alert-light bg-light row h-100 justify-content-center align-items-center"> You're
                 watching meetings where you sent request for participation or where you're are confirmed
             </div>
-            {showList(value.meetings)}
+            {value.meetings.length > 0 && value.meetings[0].id !== -1 && showList(value.meetings)}
         </div>
     }
 
