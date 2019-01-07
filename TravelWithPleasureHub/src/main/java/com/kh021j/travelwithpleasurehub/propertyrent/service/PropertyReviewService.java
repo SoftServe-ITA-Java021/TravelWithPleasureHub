@@ -6,6 +6,8 @@ import com.kh021j.travelwithpleasurehub.propertyrent.repository.PropertyReviewRe
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+
 @Service
 public class PropertyReviewService {
 
@@ -22,15 +24,15 @@ public class PropertyReviewService {
     }
 
     public Iterable<PropertyReview> findByPropertyId(Integer propertyId) {
-        return propertyReviewRepository.findByPropertyId(propertyId).orElse(null);
+        return propertyReviewRepository.findByPropertyId(propertyId).orElse(new ArrayList<>());
     }
 
     public Iterable<PropertyReview> findAllByOrderByDateRated(String sortByDateRated) {
         switch (SortType.valueOf(sortByDateRated.toUpperCase())) {
             case ASC:
-                return propertyReviewRepository.findAllByOrderByDateRatedAsc().orElse(null);
+                return propertyReviewRepository.findAllByOrderByDateRatedAsc().orElse(new ArrayList<>());
             case DESC:
-                return propertyReviewRepository.findAllByOrderByDateRatedDesc().orElse(null);
+                return propertyReviewRepository.findAllByOrderByDateRatedDesc().orElse(new ArrayList<>());
             default:
                 return propertyReviewRepository.findAll();
         }

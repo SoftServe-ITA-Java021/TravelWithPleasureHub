@@ -2,6 +2,7 @@ package com.kh021j.travelwithpleasurehub.propertyrent.controller;
 
 import com.kh021j.travelwithpleasurehub.propertyrent.model.Property;
 import com.kh021j.travelwithpleasurehub.propertyrent.model.PropertyImage;
+import com.kh021j.travelwithpleasurehub.propertyrent.service.ImgurAPIService;
 import com.kh021j.travelwithpleasurehub.propertyrent.service.PropertyImageService;
 import com.kh021j.travelwithpleasurehub.propertyrent.service.PropertyService;
 import com.kh021j.travelwithpleasurehub.propertyrent.service.PropertyTypeService;
@@ -25,7 +26,7 @@ public class PropertyController {
     private UserServiceImpl userService;
 
     @Autowired
-    private ImgurAPIController imgurAPIController;
+    private ImgurAPIService imgurAPIService;
 
     @Autowired
     private PropertyImageService propertyImageService;
@@ -33,6 +34,14 @@ public class PropertyController {
     @GetMapping
     public @ResponseBody Iterable<Property> getAllProperties(){
         return propertyService.findAll();
+    }
+
+    @PostMapping("/search")
+    public @ResponseBody Iterable<Property> filterProperties(@RequestParam String locality,
+                                                                  @RequestParam String address,
+                                                                  @RequestParam String checkIn,
+                                                                  @RequestParam String checkOut){
+        return propertyService.filterProperties(locality, address, checkIn, checkOut);
     }
 
     @PostMapping
@@ -47,7 +56,7 @@ public class PropertyController {
                 propertyTypeService.findById(1), userService.getById(1).get(), locality, address, price);
         Property savedProperty = propertyService.add(property);
         for(MultipartFile photo : photos) {
-            propertyImageService.add(new PropertyImage(imgurAPIController.uploadPictures(photo), savedProperty));
+            propertyImageService.add(new PropertyImage(imgurAPIService.uploadPictures(photo), savedProperty));
         }
         return savedProperty;
     }
@@ -75,16 +84,6 @@ public class PropertyController {
     @GetMapping(params = "sortByPrice")
     public @ResponseBody Iterable<Property> getPropertiesByPriceSortedBy(@RequestParam String sortByPrice) {
         return propertyService.findAllByOrderByPrice(sortByPrice);
-    }
-
-    @GetMapping(params = "locality")
-    public @ResponseBody Iterable<Property> getPropertiesByLocality(@RequestParam String locality) {
-        return propertyService.findByLocality(locality);
-    }
-
-    @GetMapping(params = "address")
-    public @ResponseBody Iterable<Property> getPropertiesByAddress(@RequestParam String address) {
-        return propertyService.findByAddress(address);
     }
 
     @GetMapping(params = {"since", "until"})

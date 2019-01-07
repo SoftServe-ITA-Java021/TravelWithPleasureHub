@@ -27,8 +27,8 @@ class PropertyThumbnail extends Component {
 		return (
 			<Link to={`/properties/` + this.props.id}>
 				<div className="thumbnail-container" id="thumbnail-container">
-					<div className="thumbnail-info rounded p-2 bg-light text-black" id="thumbnail-info">
-						{this.props.title}, ${this.props.price}
+					<div className="thumbnail-info rounded p-2 text-black" id="thumbnail-info">
+						<div>{this.props.title}, ${this.props.price}</div>
 					</div>
 					<img className="img-fluid mt-3 rounded" src={this.state.imageLink}/>
 				</div>

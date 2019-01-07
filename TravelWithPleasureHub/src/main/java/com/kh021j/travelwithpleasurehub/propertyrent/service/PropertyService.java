@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 @Service
 public class PropertyService {
@@ -52,19 +53,28 @@ public class PropertyService {
         }
     }
 
-    public Iterable<Property> findByLocality(String locality) {
-        return propertyRepository.findByLocality(locality).orElse(null);
+    public Iterable<Property> filterProperties(String locality, String address, String checkIn, String checkOut) {
+        if(!locality.equals("") && address.equals("") && checkIn.equals("") && checkOut.equals("")) {
+            return propertyRepository.findByLocality(locality).orElse(new ArrayList<>());
+        } else if(locality.equals("") && !address.equals("") && checkIn.equals("") && checkOut.equals("")) {
+            return propertyRepository.findByAddress(address).orElse(new ArrayList<>());
+        } else if(!locality.equals("") && !address.equals("") && checkIn.equals("") && checkOut.equals("")) {
+            return propertyRepository.findByLocalityAndAddress(locality, address).orElse(new ArrayList<>());
+        } else if(!locality.equals("") && address.equals("") && !checkIn.equals("") && !checkOut.equals("")) {
+            LocalDate checkInDate = LocalDate.parse(checkIn);
+            LocalDate checkOutDate = LocalDate.parse(checkOut);
+            return propertyRepository.findByAvailabilityInPeriodAndLocality(checkInDate, checkOutDate, locality)
+                    .orElse(new ArrayList<>());
+        }
+        return propertyRepository.findAll();
     }
 
-    public Iterable<Property> findByAddress(String address) {
-        return propertyRepository.findByAddress(address).orElse(null);
-    }
 
     public Iterable<Property> findByAvailabilityInPeriod(String since, String until) {
         LocalDate sinceDate = LocalDate.parse(since);
         LocalDate untilDate = LocalDate.parse(until);
         return propertyRepository.
-                findByAvailabilityInPeriod(sinceDate, untilDate).orElse(null);
+                findByAvailabilityInPeriod(sinceDate, untilDate).orElse(new ArrayList<>());
     }
 
     public Iterable<Property> findByAvailabilityInPeriodAndSort(String since, String until, String sortByPrice) {
@@ -73,14 +83,14 @@ public class PropertyService {
         switch (SortType.valueOf(sortByPrice.toUpperCase())) {
             case ASC:
                 return propertyRepository.findByAvailabilityInPeriodAndSort(
-                        sinceDate, untilDate, SortType.ASC.name()).orElse(null);
+                        sinceDate, untilDate, SortType.ASC.name()).orElse(new ArrayList<>());
             case DESC:
                 return propertyRepository.findByAvailabilityInPeriodAndSort(
-                        sinceDate, untilDate, SortType.DESC.name()).orElse(null);
+                        sinceDate, untilDate, SortType.DESC.name()).orElse(new ArrayList<>());
             default:
                 return propertyRepository.
                         findByAvailabilityInPeriod(sinceDate, untilDate)
-                        .orElse(null);
+                        .orElse(new ArrayList<>());
         }
     }
 
