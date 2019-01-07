@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import axios from "axios";
 
 
-export default class CreateMeeting extends Component {
+export default class MeetingAdd extends Component {
     constructor(props) {
         super(props);
         this.state =
@@ -37,8 +37,8 @@ export default class CreateMeeting extends Component {
     }
 
     render() {
-        return <div>
-            <div className="alert alert-light bg-light row h-100 justify-content-center align-items-center">Creating of meeting
+        return <div className="container">
+            <div className="alert alert-light row h-100 justify-content-center align-items-center">Creating of meeting
             </div>
 
             {!this.state.isCreated ? <div className="row h-100 justify-content-center align-items-center">
@@ -82,16 +82,8 @@ export default class CreateMeeting extends Component {
         formData.append("ownerId", JSON.stringify(1));
 
         axios.post("http://localhost:8080/api/meetings",
-            formData,
-            {
-                headers:
-                    {
-                        'Access-Control-Allow-Credentials':
-                            'include'
-                    }
-            }
+            formData
         ).then(response => {
-            console.log(response);
             console.log("status = " + response.status);
             if (response.status === 201) {
                 this.setState({
@@ -106,6 +98,7 @@ export default class CreateMeeting extends Component {
         return <div className="form-group row h-100 justify-content-center align-items-center">
             <label>Header:</label>
             <input
+                required
                 type="text"
                 className="form-control"
                 value={this.state.header}
@@ -139,6 +132,10 @@ export default class CreateMeeting extends Component {
                     value="Football_match">
                     Football match
                 </option>
+                <option
+                    value="Other">
+                    Other
+                </option>
             </select>
         </div>
     }
@@ -159,6 +156,7 @@ export default class CreateMeeting extends Component {
         return <div className="form-group row h-100 justify-content-center align-items-center">
             <label>Location:</label>
             <input
+                required
                 type="text"
                 className="form-control"
                 value={this.state.location}
@@ -175,6 +173,7 @@ export default class CreateMeeting extends Component {
         return <div className="form-group row h-100 justify-content-center align-items-center">
             <label>Meeting's date and time:</label>
             <input
+                required
                 type="datetime-local"
                 className="form-control"
                 value={this.state.timeOfAction}

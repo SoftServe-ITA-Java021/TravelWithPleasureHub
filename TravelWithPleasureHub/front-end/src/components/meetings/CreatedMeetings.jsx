@@ -3,7 +3,7 @@ import axios from "axios";
 import showList from './ShowList'
 
 
-export default class GetAllMeetings extends Component {
+export default class CreatedMeetings extends Component {
     constructor(props) {
         super(props);
         this.state =
@@ -12,7 +12,7 @@ export default class GetAllMeetings extends Component {
                     {
                         id: -1,
                         header: "",
-                        meetingType: "walking",
+                        meetingType: -1,
                         content: "",
                         location: "",
                         links: [],
@@ -28,11 +28,11 @@ export default class GetAllMeetings extends Component {
 
     render() {
         const value = this.state;
-        return <div>
+        return <div className="container">
             <div className="alert alert-light bg-light row h-100 justify-content-center align-items-center"> You're
-                watching all meetings
+                watching meetings where you're organizer
             </div>
-            {value.meetings[0].id !== -1 && showList(value.meetings)}
+            {showList(value.meetings)}
         </div>
     }
 
@@ -40,12 +40,11 @@ export default class GetAllMeetings extends Component {
     componentDidMount() {
         axios.get(`http://localhost:8080/api/meetings`,
             {
-                headers: {
-                    'Access-Control-Allow-Credentials': 'include'
+                params: {
+                    owner: "2"
                 }
             })
             .then(json => this.setState({meetings: json.data}));
-	        // .then(json => console.log(json))
     }
 
 }
