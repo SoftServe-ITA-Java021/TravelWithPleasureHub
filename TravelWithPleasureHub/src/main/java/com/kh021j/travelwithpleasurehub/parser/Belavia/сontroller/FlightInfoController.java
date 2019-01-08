@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("flights")
+@RequestMapping("api/flights")
 public class FlightInfoController {
 
     @ResponseBody
