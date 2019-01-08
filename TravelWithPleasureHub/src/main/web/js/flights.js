@@ -1,35 +1,36 @@
-
 function Flight(props) {
     return (
         <div className="container-fluid">
             <div className="container card">
                 <div className="row text-center justify-content center">
                     <div className="col border">
-                        <img className="img-fluid"
+                        <img className="img"
                              src={props.flight.img}
                              alt={props.flight.name}
                              width={210}
                              height={150}/>
                     </div>
                     <div className="col border">
-                        <h5><p>{props.flight.origin}</p></h5>
-                        <h5><p><b>{props.flight.departureDateTime}</b></p></h5>
+                        <h5 className="text-muted"><p>{props.flight.origin}</p></h5>
+                        <h5><p>{props.flight.departureDateTime}</p></h5>
                     </div>
                     <div className="col border">
-                        <h5><p>Duration: <b>{props.flight.duration}</b></p></h5>
-                        <h5><p><b>==============></b></p></h5>
+                        <h5 className="text-muted">Duration: </h5>
+                        <h5><p>{props.flight.duration}</p></h5>
+                        <img className="img-fluid"
+                             src="img/Kontur-samolyotika_91282.png"
+                             alt="Plane"
+                             width={50}
+                             height={120}/>
+                        {/*<h5><p>==============></p></h5>*/}
                     </div>
                     <div className="col border">
-                        <h5><p>{props.flight.destination}</p></h5>
-                        <h5><p><b>{props.flight.arrivalDateTime}</b></p></h5>
+                        <h5 className="text-muted"><p>{props.flight.destination}</p></h5>
+                        <h5><p>{props.flight.arrivalDateTime}</p></h5>
                     </div>
                     <div className="col border">
-                        <div className="price">
-                            <div className="from"><h5>From</h5></div>
-                            <div className="value">
-                                <h5>{props.flight.price}</h5>
-                            </div>
-                        </div>
+                        <div className="from text-muted"><h5>From</h5></div>
+                        <h4 className="color">{props.flight.price}</h4>
                         <a href={props.flight.link}>
                             <button className="btn btn-info btn-lg">BUY</button>
                         </a>
@@ -96,7 +97,7 @@ class FlightInfo extends React.Component {
     render() {
         return (
             <div>
-                <h2 align="center">Available Tickets</h2>
+                <h5 className="display-4" align="center">Available Tickets</h5>
                 <hr/>
                 <div>
                     {this.renderFlights()}
@@ -104,16 +105,6 @@ class FlightInfo extends React.Component {
             </div>
         )
     }
-
-   /* componentDidMount() {
-        fetch('flights')
-            .then(response => response.json())
-            .then(state => this.setState({ state }));
-    }*/
 }
 
 ReactDOM.render(<FlightInfo/>, document.getElementById("root"))
-
-
-
-

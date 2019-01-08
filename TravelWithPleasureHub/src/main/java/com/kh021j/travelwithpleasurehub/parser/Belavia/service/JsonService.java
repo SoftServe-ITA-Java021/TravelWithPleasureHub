@@ -66,7 +66,7 @@ public class JsonService {
 
     public String getDepartureDateTime(String json) throws IOException {
         String departureDateTime = getInfoFromItineraries("departureDateTime", json);
-        return departureDateTime ;
+        return departureDateTime;
     }
 
     public String getArrivalDateTime(String json) throws IOException {
@@ -74,7 +74,7 @@ public class JsonService {
         return arrivalDateTime;
     }
 
-    public String getDepature(String json) throws IOException {
+    public String getDuration(String json) throws IOException {
         String duration = getInfoFromItineraries("duration", json);
         return duration;
     }

@@ -10,10 +10,14 @@
     transition: box-shadow .3s ease-in-out;
 }
 
-.back{
+.back {
     background: #cff1ff;
 }
 
-.card:hover{
+.card:hover {
     background-color: #d4f0ef;
+}
+
+.color {
+    color: #dab200;
 }

@@ -15,7 +15,7 @@ public class BelaviaParserDemo {
 
     public static void main(String[] args) throws IOException {
         List<SearchRoutes> searchRoutes = new ArrayList<>();
-        searchRoutes.add(new SearchRoutes("IEV", "BUD", "2019-01-20", 0));
+        searchRoutes.add(new SearchRoutes("IEV", "BUD", "2019-01-22", 0));
 
         List<PassengerQuantities> passengerQuantities = new ArrayList<>();
         passengerQuantities.add(new PassengerQuantities("ADT", 1));
@@ -34,6 +34,6 @@ public class BelaviaParserDemo {
         System.out.println(jsonService.getDepartureDateTime(jsonBelavia));
         System.out.println(jsonService.getArrivalDateTime(jsonBelavia));
         System.out.println(jsonService.getMinPriceFromResponse(jsonBelavia));
-        System.out.println(jsonService.getDepature(jsonBelavia));
+        System.out.println(jsonService.getDuration(jsonBelavia));
     }
 }
