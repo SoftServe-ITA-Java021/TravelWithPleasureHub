@@ -14,7 +14,10 @@ class PropertyThumbnail extends Component {
 	loadThumbnailImageLink = () => {
 		fetch('http://localhost:8080/api/property-image/property/first/' + this.props.id)
 			.then(response => response.json())
-			.then(responseJSON => this.setState({imageLink: responseJSON.imageLink}))
+			.then(responseJSON => {
+				this.setState({imageLink: responseJSON.imageLink})
+			})
+			.catch(error => { throw error } )
 	};
 
 
