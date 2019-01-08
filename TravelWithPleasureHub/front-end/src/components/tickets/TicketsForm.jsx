@@ -23,7 +23,7 @@ class TicketsForm extends Component {
             adultsOption: 1,
             childrenOption: 0,
             infantsOption: 0,
-            travelClass: ""
+            travelClass: "Business class"
         };
         this.onTripTypeChange = this.onTripTypeChange.bind(this);
         this.onOriginLocationChange = this.onOriginLocationChange.bind(this);
@@ -74,16 +74,19 @@ class TicketsForm extends Component {
     }
 
     onSubmit(event) {
-        alert(`Ваш запрос имеет следующие параметры: 
-        Тип перелета: ${this.state.tripType}\n
-        Город отбытия: ${this.state.originLocation}\n
-        Город прибытя: ${this.state.destinationLocation}\n
-        Дата отбытия: ${this.state.departureDate}\n
-        Дата прибытия: ${this.state.arrivalDate}\n
-        Количество взрослых: ${this.state.adultsOption}\n
-        Количество детей от 2 до 17 лет: ${this.state.childrenOption}\n
-        Количество детей до 2 лет: ${this.state.infantsOption}\n
-        Класс салона: ${this.state.travelClass}\n`);
+        let data = new FormData();
+        data.append('tripType', this.state.tripType);
+        data.append('originLocation', this.state.tripType);
+        data.append('destinationLocation', this.state.destinationLocation);
+        data.append('departureDate', this.state.departureDate);
+        data.append('arrivalDate', this.state.arrivalDate);
+        data.append('adultsOption', this.state.adultsOption);
+        data.append('childrenOption', this.state.childrenOption);
+        data.append('infantsOption', this.state.infantsOption);
+        data.append('travelClass', this.state.travelClass);
+
+
+
         event.preventDefault()
     }
 
