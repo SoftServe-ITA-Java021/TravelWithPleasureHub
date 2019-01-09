@@ -1,4 +1,5 @@
-package com.kh021j.travelwithpleasurehub.parser.Belavia.model;
+
+package com.kh021j.travelwithpleasurehub.tickets.parser.Belavia.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;

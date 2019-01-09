@@ -1,5 +1,5 @@
 
-package com.kh021j.travelwithpleasurehub.parser.Belavia.service;
+package com.kh021j.travelwithpleasurehub.tickets.parser.Belavia.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -45,15 +45,13 @@ public class JsonService {
 
     public String getMinPriceFromResponse(String json) throws IOException {
         JsonNode itineraries = getNodeFromMainKey("itineraries", json);
-        String minPrice = itineraries.get(0).path("brands").get(0).get("total").toString();
-        return minPrice;
+        return itineraries.get(0).path("brands").get(0).get("total").toString();
     }
 
     private JsonNode getNodeFromMainKey(String mainKey, String json) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode rootNode = objectMapper.readTree(json);
-        JsonNode mainNode = rootNode.path(mainKey);
-        return mainNode;
+        return rootNode.path(mainKey);
     }
 
     private String getInfoFromItineraries(String key, String json) throws IOException {
@@ -61,21 +59,17 @@ public class JsonService {
         String departureDateTime = itineraries.get(0).
                 get(key).toString().replace("\"", "");
         return departureDateTime.replace("T", " ");
-
     }
 
     public String getDepartureDateTime(String json) throws IOException {
-        String departureDateTime = getInfoFromItineraries("departureDateTime", json);
-        return departureDateTime;
+        return getInfoFromItineraries("departureDateTime", json);
     }
 
     public String getArrivalDateTime(String json) throws IOException {
-        String arrivalDateTime = getInfoFromItineraries("arrivalDateTime", json);
-        return arrivalDateTime;
+        return getInfoFromItineraries("arrivalDateTime", json);
     }
 
     public String getDuration(String json) throws IOException {
-        String duration = getInfoFromItineraries("duration", json);
-        return duration;
+        return getInfoFromItineraries("duration", json);
     }
 }

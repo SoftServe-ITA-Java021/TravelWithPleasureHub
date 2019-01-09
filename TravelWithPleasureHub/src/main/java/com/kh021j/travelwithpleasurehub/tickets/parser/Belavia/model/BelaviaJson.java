@@ -1,8 +1,8 @@
 
-package com.kh021j.travelwithpleasurehub.parser.Belavia.model;
+package com.kh021j.travelwithpleasurehub.tickets.parser.Belavia.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.kh021j.travelwithpleasurehub.parser.Belavia.model.enums.Currency;
+import com.kh021j.travelwithpleasurehub.tickets.parser.Belavia.model.enums.Currency;
 import lombok.*;
 
 import java.util.List;

@@ -1,5 +1,5 @@
 
-package com.kh021j.travelwithpleasurehub.parser.Belavia.service;
+package com.kh021j.travelwithpleasurehub.tickets.parser.Belavia.service;
 
 public class UrlBuilder {
 
