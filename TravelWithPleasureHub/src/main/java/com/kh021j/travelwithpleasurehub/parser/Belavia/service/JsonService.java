@@ -32,7 +32,8 @@ public class JsonService {
 
     public String getJsonResponse(String jsonQuery) throws IOException {
         sendJsonRequest(jsonQuery);
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+        BufferedReader bufferedReader = new BufferedReader
+                (new InputStreamReader(connection.getInputStream()));
         StringBuilder jsonBuilder = new StringBuilder();
         String jsonString;
         while ((jsonString = bufferedReader.readLine()) != null) {
@@ -45,19 +46,18 @@ public class JsonService {
 
     public String getMinPriceFromResponse(String json) throws IOException {
         JsonNode itineraries = getNodeFromMainKey("itineraries", json);
-        String minPrice = itineraries.get(0).path("brands").get(0).get("total").toString();
-        return minPrice;
+        return itineraries.get(0).path("brands").get(0).get("total").toString();
     }
 
     private JsonNode getNodeFromMainKey(String mainKey, String json) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode rootNode = objectMapper.readTree(json);
-        JsonNode mainNode = rootNode.path(mainKey);
-        return mainNode;
+        return rootNode.path(mainKey);
     }
 
     private String getInfoFromItineraries(String key, String json) throws IOException {
-        JsonNode itineraries = new JsonService().getNodeFromMainKey("itineraries", json);
+        JsonNode itineraries = new JsonService().
+                getNodeFromMainKey("itineraries", json);
         String departureDateTime = itineraries.get(0).
                 get(key).toString().replace("\"", "");
         return departureDateTime.replace("T", " ");
@@ -65,17 +65,14 @@ public class JsonService {
     }
 
     public String getDepartureDateTime(String json) throws IOException {
-        String departureDateTime = getInfoFromItineraries("departureDateTime", json);
-        return departureDateTime;
+        return getInfoFromItineraries("departureDateTime", json);
     }
 
     public String getArrivalDateTime(String json) throws IOException {
-        String arrivalDateTime = getInfoFromItineraries("arrivalDateTime", json);
-        return arrivalDateTime;
+        return getInfoFromItineraries("arrivalDateTime", json);
     }
 
     public String getDuration(String json) throws IOException {
-        String duration = getInfoFromItineraries("duration", json);
-        return duration;
+        return getInfoFromItineraries("duration", json);
     }
 }
