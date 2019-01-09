@@ -22,7 +22,7 @@ class NavBar extends Component {
 									<NavLink className="nav-link" to="/properties">Rent a property</NavLink>
 								</li>
 								<li className="nav-item">
-									<NavLink className="nav-link" to="/meetings">Arrange a meeting</NavLink>
+									<NavLink className="nav-link" to="/meetings/show-all-meetings">Arrange a meeting</NavLink>
 								</li>
 							</ul>
 							<NavLink className="btn btn-outline-warning" to="/messages">

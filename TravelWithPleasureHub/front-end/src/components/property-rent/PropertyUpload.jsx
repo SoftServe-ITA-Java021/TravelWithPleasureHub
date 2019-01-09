@@ -25,7 +25,7 @@ class PropertyUpload extends Component {
 				fileFormPlaceholder: photosNames
 			});
 		} else
-			this.setState({[e.target.name]: e.target.value});
+			this.setState({ [e.target.name]: e.target.value });
 	};
 
 	handleSubmit = (e) => {
@@ -45,6 +45,7 @@ class PropertyUpload extends Component {
 		})
 			.then(response => response.json())
 			.then(response => console.log(response))
+			.catch(error => { throw error } )
 	};
 
 	render() {
