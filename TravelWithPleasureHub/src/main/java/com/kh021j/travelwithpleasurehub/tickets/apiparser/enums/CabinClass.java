@@ -1,4 +1,4 @@
-package com.kh021j.travelwithpleasurehub.tickets.api_parser.enums;
+package com.kh021j.travelwithpleasurehub.tickets.apiparser.enums;
 
 public enum CabinClass {
     ECONOMY, PREMIUMECONOMY, BUSINESS, FIRST

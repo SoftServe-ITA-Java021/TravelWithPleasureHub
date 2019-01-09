@@ -15,26 +15,29 @@ class TicketsForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            tripType: "One way",
-            originLocation: "",
-            destinationLocation: "",
-            departureDate: formatDay(),
-            arrivalDate: "",
-            adultsOption: 1,
-            childrenOption: 0,
-            infantsOption: 0,
-            travelClass: "Business class"
+            country: "US",
+            currency: "USD",
+            originPlace: "",
+            destinationPlace: "",
+            outboundDate: formatDay(),
+            adults: 1,
+            children: 0,
+            infants: 0,
+            cabinType: "business",
+
+            result: []
         };
         this.onTripTypeChange = this.onTripTypeChange.bind(this);
         this.onOriginLocationChange = this.onOriginLocationChange.bind(this);
         this.onDestinationLocationChange = this.onDestinationLocationChange.bind(this);
         this.onDepartureDateChange = this.onDepartureDateChange.bind(this);
-        this.onArrivalDateChange = this.onArrivalDateChange.bind(this);
+        // this.onArrivalDateChange = this.onArrivalDateChange.bind(this);
         this.onAdultsOptionChange = this.onAdultsOptionChange.bind(this);
         this.onChildrenOptionChange = this.onChildrenOptionChange.bind(this);
         this.onInfantsOptionChange = this.onInfantsOptionChange.bind(this);
         this.onTravelClassChange = this.onTravelClassChange.bind(this);
-        this.onSubmit = this.onSubmit.bind(this);
+        this.onHandle = this.onHandle.bind(this);
+        this.onCurrencyChange = this.onCurrencyChange.bind(this)
     }
 
     onTripTypeChange(event) {
@@ -42,53 +45,66 @@ class TicketsForm extends Component {
     }
 
     onOriginLocationChange(event) {
-        this.setState({originLocation: event.target.value})
+        this.setState({originPlace: event.target.value})
     }
 
     onDestinationLocationChange(event) {
-        this.setState({destinationLocation: event.target.value})
+        this.setState({destinationPlace: event.target.value})
     }
 
     onDepartureDateChange(event) {
-        this.setState({departureDate: event.target.value})
+        this.setState({outboundDate: event.target.value})
     }
 
-    onArrivalDateChange(event) {
-        this.setState({arrivalDate: event.target.value})
-    }
+    // onArrivalDateChange(event) {
+    //     this.setState({inboundDate: event.target.value})
+    // }
 
     onAdultsOptionChange(event) {
-        this.setState({adultsOption: event.target.value})
+        this.setState({adults: event.target.value})
     }
 
     onChildrenOptionChange(event) {
-        this.setState({childrenOption: event.target.value})
+        this.setState({children: event.target.value})
     }
 
     onInfantsOptionChange(event) {
-        this.setState({infantsOption: event.target.value})
+        this.setState({infants: event.target.value})
     }
 
     onTravelClassChange(event) {
-        this.setState({travelClass: event.target.value})
+        this.setState({cabinType: event.target.value})
     }
 
-    onSubmit(event) {
+    onCurrencyChange(event) {
+        this.setState({currency: event.target.value})
+    }
+
+    onLoad = () => {
         let data = new FormData();
-        data.append('tripType', this.state.tripType);
-        data.append('originLocation', this.state.tripType);
-        data.append('destinationLocation', this.state.destinationLocation);
-        data.append('departureDate', this.state.departureDate);
-        data.append('arrivalDate', this.state.arrivalDate);
-        data.append('adultsOption', this.state.adultsOption);
-        data.append('childrenOption', this.state.childrenOption);
-        data.append('infantsOption', this.state.infantsOption);
-        data.append('travelClass', this.state.travelClass);
+        data.append('country', this.state.country);
+        data.append('currency', this.state.currency);
+        data.append('locale', this.state.locale);
+        data.append('originPlace', this.state.originPlace);
+        data.append('destinationPlace', this.state.destinationPlace);
+        data.append('outboundDate', this.state.outboundDate);
+        data.append('adults', this.state.adults);
+        data.append('cabinClass', this.state.cabinType);
+        data.append('children', this.state.children);
+        data.append('infants', this.state.infants);
 
+        fetch("http://localhost:3000/api/flights/", {
+            method: "POST",
+            body: data
+        })
+            .then(response => response.json())
+            .then(result => this.setState({result: result}))
+    };
 
-
-        event.preventDefault()
-    }
+    onHandle = (event) => {
+        event.preventDefault();
+        this.onLoad()
+    };
 
     render() {
         return (
@@ -98,7 +114,7 @@ class TicketsForm extends Component {
                         <div className="row">
                             <div className="booking-form">
                                 <form>
-                                    <div className="form-group">
+                                    <div className="form-group row">
                                         <div className="form-checkbox">
                                             <label htmlFor="roundtrip">
                                                 <input type="radio" id="roundtrip" value={this.state.tripType}
@@ -112,12 +128,6 @@ class TicketsForm extends Component {
                                                        name="flight-type"/>
                                                 <span/>One-way
                                             </label>
-                                            <label htmlFor="multicity">
-                                                <input type="radio" id="multicity" value={this.state.tripType}
-                                                       onChange={this.onTripTypeChange}
-                                                       name="flight-type"/>
-                                                <span/>Multicity
-                                            </label>
                                         </div>
                                     </div>
                                     <div className="row">
@@ -125,7 +135,7 @@ class TicketsForm extends Component {
                                             <div className="form-group">
                                                 <span className="form-label">Flying from</span>
                                                 <input className="form-control" type="text"
-                                                       value={this.state.originLocation}
+                                                       value={this.state.originPlace}
                                                        onChange={this.onOriginLocationChange}
                                                        placeholder="City of airport"/>
                                             </div>
@@ -134,7 +144,7 @@ class TicketsForm extends Component {
                                             <div className="form-group">
                                                 <span className="form-label">Flying to</span>
                                                 <input className="form-control" type="text"
-                                                       value={this.state.destinationLocation}
+                                                       value={this.state.destinationPlace}
                                                        onChange={this.onDestinationLocationChange}
                                                        placeholder="City or airport"/>
                                             </div>
@@ -144,7 +154,7 @@ class TicketsForm extends Component {
                                         <div className="col-md-3">
                                             <div className="form-group">
                                                 <span className="form-label">Departing</span>
-                                                <input className="form-control" value={this.state.departureDate}
+                                                <input className="form-control" value={this.state.outboundDate}
                                                        onChange={this.onDepartureDateChange}
                                                        type="date" required/>
                                             </div>
@@ -152,15 +162,15 @@ class TicketsForm extends Component {
                                         <div className="col-md-3">
                                             <div className="form-group">
                                                 <span className="form-label">Returning</span>
-                                                <input className="form-control" value={this.state.arrivalDate}
+                                                <input className="form-control" value={this.state.inboundDate}
                                                        onChange={this.onArrivalDateChange}
-                                                       type="date" required/>
+                                                       type="date"/>
                                             </div>
                                         </div>
                                         <div className="col-md-2">
                                             <div className="form-group">
                                                 <span className="form-label">Adults</span>
-                                                <select className="form-control" value={this.state.adultsOption}
+                                                <select className="form-control" value={this.state.adults}
                                                         onChange={this.onAdultsOptionChange}>
                                                     <option>1</option>
                                                     <option>2</option>
@@ -172,7 +182,7 @@ class TicketsForm extends Component {
                                         <div className="col-md-2">
                                             <div className="form-group">
                                                 <span className="form-label">Children</span>
-                                                <select className="form-control" value={this.state.childrenOption}
+                                                <select className="form-control" value={this.state.children}
                                                         onChange={this.onChildrenOptionChange}>
                                                     <option>0</option>
                                                     <option>1</option>
@@ -184,7 +194,7 @@ class TicketsForm extends Component {
                                         <div className="col-md-2">
                                             <div className="form-group">
                                                 <span className="form-label">Infants</span>
-                                                <select className="form-control" value={this.state.infantsOption}
+                                                <select className="form-control" value={this.state.infants}
                                                         onChange={this.onInfantsOptionChange}>
                                                     <option>0</option>
                                                     <option>1</option>
@@ -199,17 +209,17 @@ class TicketsForm extends Component {
                                             <div className="form-group">
                                                 <span className="form-label">Travel class</span>
                                                 <select className="form-control" id="travel-class"
-                                                        value={this.state.travelClass}
+                                                        value={this.state.cabinType}
                                                         onChange={this.onTravelClassChange}>
-                                                    <option id={0}>Business class</option>
-                                                    <option id={1}>Economy class</option>
+                                                    <option>Business class</option>
+                                                    <option>Economy class</option>
                                                 </select>
                                                 <span className="select-arrow"/>
                                             </div>
                                         </div>
                                         <div className="col-md-3">
                                             <div className="form-btn">
-                                                <button className="submit-btn" onClick={this.onSubmit}>Show flights
+                                                <button className="submit-btn" onClick={this.onHandle}>Show flights
                                                 </button>
                                             </div>
                                         </div>
