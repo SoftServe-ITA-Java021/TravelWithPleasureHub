@@ -1,4 +1,4 @@
-package com.kh021j.travelwithpleasurehub.tickets.api_parser.service;
+package com.kh021j.travelwithpleasurehub.tickets.apiparser.service;
 
 
 import com.mashape.unirest.http.Unirest;
@@ -7,12 +7,10 @@ import com.mashape.unirest.http.HttpResponse;
 import org.springframework.stereotype.Service;
 import com.mashape.unirest.request.HttpRequestWithBody;
 import com.mashape.unirest.http.exceptions.UnirestException;
-import com.kh021j.travelwithpleasurehub.tickets.api_parser.model.RequestModel;
+import com.kh021j.travelwithpleasurehub.tickets.apiparser.model.RequestModel;
 
 @Service
 public class RequestService {
-
-    RequestModel requestModel;
 
     private String formatDate(String pickedPlace) {
 
