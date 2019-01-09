@@ -1,5 +1,5 @@
 
-package com.kh021j.travelwithpleasurehub.parser.Belavia.model.enums;
+package com.kh021j.travelwithpleasurehub.tickets.parser.Belavia.model.enums;
 
 /**
  * ADT - adult passenger
