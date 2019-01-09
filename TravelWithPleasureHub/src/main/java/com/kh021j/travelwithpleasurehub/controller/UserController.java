@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/users")
 public class UserController {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(UserControllerRaise.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(   UserControllerRaise.class);
 
     @Autowired
     private UserService userService;

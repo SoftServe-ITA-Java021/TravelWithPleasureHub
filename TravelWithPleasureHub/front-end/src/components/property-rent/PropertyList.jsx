@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import PropertyThumbnail from "./PropertyThumbnail";
 import {Link} from "react-router-dom";
+import ErrorBoundary from "../../ErrorBoundary";
 
 class PropertyList extends Component {
 	constructor(props) {
@@ -22,11 +23,11 @@ class PropertyList extends Component {
 		fetch('http://localhost:8080/api/properties')
 			.then(response => response.json())
 			.then(properties => this.setState({properties : properties}))
+			.catch(error => { throw error } )
 	};
 
 	onFieldChange = e => {
-		this.setState( {[e.target.name]: e.target.value });
-		console.log(this.state);
+		this.setState( { [e.target.name]: e.target.value });
 	};
 
 	handleSubmit = e => {
@@ -35,6 +36,7 @@ class PropertyList extends Component {
 	};
 
 	loadMatchingProperties = () => {
+
 		let formData = new FormData();
 		formData.append('locality', this.state.locality);
 		formData.append('address', this.state.address);
@@ -46,6 +48,7 @@ class PropertyList extends Component {
 		})
 			.then(response => response.json())
 			.then(properties => this.setState({properties : properties}))
+			.catch(error => { throw error })
 	};
 
 	componentWillMount() {
@@ -54,6 +57,7 @@ class PropertyList extends Component {
 
 
 	render() {
+
 		return (
 			<div className="container">
 				<h2 className="ml-3 ">Search property you need!</h2>
@@ -62,7 +66,7 @@ class PropertyList extends Component {
 						<div className="col">
 							<label htmlFor="locality">Locality</label>
 							<input type="text" className="form-control" placeholder="London" id="locality"
-							       name="locality" onChange={this.onFieldChange} required/>
+							       name="locality" onChange={this.onFieldChange}/>
 						</div>
 						<div className="col">
 							<label htmlFor="address">Address</label>
@@ -89,7 +93,7 @@ class PropertyList extends Component {
 						{
 							this.state.properties.map(property =>
 								<div className="col-md-4">
-									<PropertyThumbnail key={property.id} id={property.id} title={property.title}
+										<PropertyThumbnail key={property.id} id={property.id} title={property.title}
 									                   price={property.price} />
 								</div>
 							)
@@ -101,8 +105,8 @@ class PropertyList extends Component {
 						<button type="button" className="mt-5 btn btn-outline-primary w-75">Publish advert of your property</button>
 					</Link>
 				</div>
-
 			</div>
+
 		);
 	}
 }
