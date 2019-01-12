@@ -9,5 +9,9 @@ public interface UserService {
     List<User> findAll();
     List<User> findUserByName(String username);
     User create (User user);
+    User update(User user);
+    User getUser(int id);
+    User getUser(String email);
+    void blockUser(int id);
     Optional<User> getById(Integer id);
 }

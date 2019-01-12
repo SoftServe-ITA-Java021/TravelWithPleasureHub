@@ -34,6 +34,28 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
+    @Override
+    public User update(User user) {
+        return userRepository.saveAndFlush(user);
+    }
+
+    @Override
+    public User getUser(int id) {
+        return userRepository.getOne(id);
+    }
+
+    @Override
+    public User getUser(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public void blockUser(int id) {
+        User user = this.getUser(id);
+        user.setStatus(!user.isStatus());
+        this.update(user);
+    }
+
     @Transactional
     @Override
     public Optional<User> getById(Integer id) {
