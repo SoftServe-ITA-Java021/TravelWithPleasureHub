@@ -14,8 +14,13 @@
     "react-dom": "^16.7.0",
     "react-redux": "^6.0.0",
     "react-router-dom": "^4.3.1",
+<<<<<<< HEAD
     "react-scripts": "2.1.2",
     "redux": "^4.0.1"
+=======
+    "react-scripts": "^2.1.3",
+    "unirest": "^0.5.1"
+>>>>>>> origin/dev
   },
   "scripts": {
     "start": "react-scripts start",
@@ -32,7 +37,14 @@
     "not ie <= 11",
     "not op_mini all"
   ],
+<<<<<<< HEAD
   "devDependencies": {
     "isomorphic-fetch": "^2.2.1"
   }
+=======
+  "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
+  "main": "index.js",
+  "author": "",
+  "license": "ISC"
+>>>>>>> origin/dev
 }
