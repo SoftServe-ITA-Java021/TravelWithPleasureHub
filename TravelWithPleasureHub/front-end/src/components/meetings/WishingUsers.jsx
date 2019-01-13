@@ -58,14 +58,14 @@ export default class WishingUsers extends Component {
     }
 
     componentDidMount() {
-        axios.get(`http://localhost:8080/api/meetings/wishing-users/${this.props.match.params.id}`)
+        axios.get(`http://localhost:9000/api/meetings/wishing-users/${this.props.match.params.id}`)
             .then(json => (this.setState({users: json.data, isDownloaded: true})));
     }
 
 
     submit(param, e) {
         e.preventDefault();
-        axios.get("http://localhost:8080/api/meetings/confirm-meeting/", {
+        axios.get("http://localhost:9000/api/meetings/confirm-meeting/", {
             headers: {
                 'Access-Control-Allow-Credentials': 'include'
             },
@@ -73,13 +73,13 @@ export default class WishingUsers extends Component {
                 meetingId: this.props.match.params.id,
                 wishingUserId: param
             }
-        }).then(() => (axios.get(`http://localhost:8080/api/meetings/wishing-users/${this.props.match.params.id}`)
+        }).then(() => (axios.get(`http://localhost:9000/api/meetings/wishing-users/${this.props.match.params.id}`)
             .then(json => (this.setState({users: json.data, isDownloaded: true})))))
     }
 
     reject(param, e) {
         e.preventDefault();
-        axios.get("http://localhost:8080/api/meetings/reject/", {
+        axios.get("http://localhost:9000/api/meetings/reject/", {
             headers: {
                 'Access-Control-Allow-Credentials': 'include'
             },
@@ -87,7 +87,7 @@ export default class WishingUsers extends Component {
                 meetingId: this.props.match.params.id,
                 wishingUserId: param
             }
-        }).then(() => (axios.get(`http://localhost:8080/api/meetings/wishing-users/${this.props.match.params.id}`)
+        }).then(() => (axios.get(`http://localhost:9000/api/meetings/wishing-users/${this.props.match.params.id}`)
             .then(json => (this.setState({users: json.data, isDownloaded: true})))))
     }
 
