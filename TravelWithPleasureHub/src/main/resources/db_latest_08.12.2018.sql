@@ -131,7 +131,7 @@ alter table property_availability owner to postgres;
 
   header varchar(40) not null,
 
-  meeting_type varchar(30) not null,
+  meeting_type integer not null,
 
   content varchar not null,
 

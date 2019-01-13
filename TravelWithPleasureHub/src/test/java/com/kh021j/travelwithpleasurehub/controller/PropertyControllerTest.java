@@ -1,6 +1,7 @@
 package com.kh021j.travelwithpleasurehub.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kh021j.travelwithpleasurehub.model.enumiration.UserRole;
 import com.kh021j.travelwithpleasurehub.propertyrent.controller.PropertyController;
 import com.kh021j.travelwithpleasurehub.propertyrent.model.Property;
 import com.kh021j.travelwithpleasurehub.propertyrent.model.PropertyType;
@@ -51,10 +52,9 @@ public class PropertyControllerTest {
             .password("easypassword")
             .secondName("sName")
             .firstName("fName")
-            .status("status")
             .phoneNumber("phone number")
             .location("Ukraine")
-            .role("User")
+            .role(UserRole.ROLE_USER)
             .pathToPhoto("path")
             .build();
 

@@ -6,7 +6,7 @@ import com.kh021j.travelwithpleasurehub.propertyrent.service.ImgurAPIService;
 import com.kh021j.travelwithpleasurehub.propertyrent.service.PropertyImageService;
 import com.kh021j.travelwithpleasurehub.propertyrent.service.PropertyService;
 import com.kh021j.travelwithpleasurehub.propertyrent.service.PropertyTypeService;
-import com.kh021j.travelwithpleasurehub.service.impl.UserServiceImpl;
+import com.kh021j.travelwithpleasurehub.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,7 +23,7 @@ public class PropertyController {
     private PropertyTypeService propertyTypeService;
 
     @Autowired
-    private UserServiceImpl userService;
+    private UserService userService;
 
     @Autowired
     private ImgurAPIService imgurAPIService;

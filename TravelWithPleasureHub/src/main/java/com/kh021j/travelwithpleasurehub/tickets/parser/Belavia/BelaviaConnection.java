@@ -1,7 +1,8 @@
 package com.kh021j.travelwithpleasurehub.tickets.parser.Belavia;
 
-import com.kh021j.travelwithpleasurehub.parser.Connection;
-import java.io.*;
+import com.kh021j.travelwithpleasurehub.tickets.parser.Connection;
+
+import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
