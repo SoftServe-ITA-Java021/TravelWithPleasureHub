@@ -31,7 +31,7 @@ class App extends Component {
             phoneNumber: '',
             email: '',
             password: '',
-            role: '',
+            role: 'ROLE_USER',
             status: false,
             isRegistered: false,
             isLoggedIn: false
@@ -82,7 +82,7 @@ class App extends Component {
                                 <Route path="/meetings/show-history/" component={MeetingsHistory}/>
                                 <Route path="/meetings/show-all-created-meetings" component={CreatedMeetings}/>
                                 <Route path="/meetings/show-meeting/:id" exact component={OneMeeting}/>
-                                {this.state.role === '' ?<Route path="/profile" exact component={Profile}/>:""}
+                                <Route path="/profile" exact component={Profile}/>
                                 <Route path="/tickets" component={TicketsForm}/>
 
                                 <Route exact path="/" component={Home}/>
@@ -258,7 +258,6 @@ class App extends Component {
         e.preventDefault();
         let value = this.state;
         let formData = new FormData();
-        this.state.role = 'ROLE_USER';
         formData.append("username",value.username);
         formData.append("firstName",value.firstName);
         formData.append("secondName",value.secondName);
