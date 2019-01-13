@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.OffsetDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
 
@@ -40,7 +41,7 @@ public class Meeting {
     private List<String> links;
 
     @Column(name = "date_time", nullable = false)
-    private ZonedDateTime timeOfAction;
+    private OffsetDateTime timeOfAction;
 
     @OneToOne
     @JoinColumn(name = "owner_id")

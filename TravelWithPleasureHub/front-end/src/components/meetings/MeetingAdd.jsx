@@ -40,10 +40,6 @@ export default class MeetingAdd extends Component {
 				<MeetingNavbar/>
 				<div className="container meetingForm">
 
-					<div className="alert alert-light row h-100 justify-content-center align-items-center">Creating of
-						meeting
-					</div>
-
 					{!this.state.isUpdated ? <div className="row h-100 justify-content-center align-items-center">
 							<form>
 								<div className="form-group">
@@ -86,7 +82,7 @@ export default class MeetingAdd extends Component {
 		formData.append("timeOfAction", value.timeOfAction);
 		formData.append("ownerId", JSON.stringify(2));
 
-		axios.post("http://localhost:9000/api/meetings",
+		axios.post("http://localhost:8080/api/meetings",
 			formData
 		).then(response => {
 			console.log("status = " + response.status);
@@ -169,7 +165,7 @@ export default class MeetingAdd extends Component {
 				placeholder="Enter location"
 			/>
 			<small className="form-text text-muted">
-				Please, enter location according next format: "Country, City, Street, etc".
+				Please, enter location according to the next format: "Country, City, Street, etc".
 			</small>
 		</div>
 	}
@@ -184,6 +180,9 @@ export default class MeetingAdd extends Component {
 				value={this.state.timeOfAction}
 				onChange={this.timeOfActionChange}
 			/>
+            <small className="form-text text-muted">
+                Please, enter date and time according to the GMT.
+            </small>
 		</div>
 	}
 

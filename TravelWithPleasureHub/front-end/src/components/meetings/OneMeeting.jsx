@@ -103,18 +103,18 @@ export default class OneMeeting extends Component {
                     </div>
                     <div className="form-row text-right">
                         <div className="col-12">
-                                <NavLink to={`/meetings/edit/${value.meeting.id}`}>
-                                    <button type="submit"
-                                            className="btn btn-warning">
-                                        Edit
-                                    </button>
-                                </NavLink>
+                            <NavLink to={`/meetings/edit/${value.meeting.id}`}>
                                 <button type="submit"
-                                        className="btn btn-danger"
-                                        onClick={this.deleteMeeting}>
-                                    Delete
+                                        className="btn btn-warning">
+                                    Edit
                                 </button>
-                            </div>
+                            </NavLink>
+                            <button type="submit"
+                                    className="btn btn-danger"
+                                    onClick={this.deleteMeeting}>
+                                Delete
+                            </button>
+                        </div>
                     </div>
                 </div>}
             </div>}
@@ -130,14 +130,28 @@ export default class OneMeeting extends Component {
                 meeting: {value.meeting.meetingType}</p>
             <p className="lead row h-100 justify-content-center align-items-center">Description: {value.meeting.content}</p>
             <p className="lead row h-100 justify-content-center align-items-center">Address: {value.meeting.location}</p>
-            <p className="lead row h-100 justify-content-center align-items-center">Time:
-                {value.meeting.timeOfAction.replace("T", " ").replace("+", " +")}</p>
+            <p className="lead row h-100 justify-content-center align-items-center">
+                {new Date(value.meeting.timeOfAction).toUTCString()}
+            </p>
+
+            <p className="lead row h-100 justify-content-center align-items-center">
+                <div className="btn-group dropright ">
+                    <button type="button" className="btn btn-secondary dropdown-toggle center-block widthButton"
+                            data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                        In your local time
+                    </button>
+                    <div className="dropdown-menu">
+                        {new Date(value.meeting.timeOfAction).toLocaleString()}
+                    </div>
+                </div>
+            </p>
         </div>
     }
 
 
     componentDidMount() {
-        axios.get(`http://localhost:9000/api/meetings/${this.props.match.params.id}`,
+        axios.get(`http://localhost:8080/api/meetings/${this.props.match.params.id}`,
             {
                 headers: {
                     'Access-Control-Allow-Credentials': 'include'
@@ -153,7 +167,7 @@ export default class OneMeeting extends Component {
         formData.append("meetingId", value.meeting.id);
         formData.append("userId", "2");
 
-        axios.post("http://localhost:9000/api/meetings/request-for-meeting/",
+        axios.post("http://localhost:8080/api/meetings/request-for-meeting/",
             formData
         ).then(() => {
             this.setState({
@@ -168,7 +182,7 @@ export default class OneMeeting extends Component {
         e.preventDefault();
         let resp = window.confirm("Are you sure?");
         if (resp) {
-            axios.delete(`http://localhost:9000/api/meetings/${this.state.meeting.id}`)
+            axios.delete(`http://localhost:8080/api/meetings/${this.state.meeting.id}`)
                 .then(() => {
                     this.setState({
                         isDeleted: true

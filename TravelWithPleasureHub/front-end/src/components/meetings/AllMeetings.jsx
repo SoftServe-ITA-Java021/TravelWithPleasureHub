@@ -38,7 +38,7 @@ export default class AllMeetings extends Component {
 
 
     componentWillMount() {
-        fetch(`http://localhost:9000/api/meetings`)
+        fetch(`http://localhost:8080/api/meetings`)
             .then(data => data.json())
             .then(json => this.setState({meetings: json}));
     }
