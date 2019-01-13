@@ -22,46 +22,46 @@ import TicketsForm from "./components/tickets/TicketsForm";
 import Profile from './components/signup/Profile';
 
 class App extends Component {
-    constructor(props){
-        super(props);
-        this.state = {
-            username: '',
-            firstName:'',
-            secondName: '',
-            phoneNumber: '',
-            email: '',
-            password: '',
-            role: 'ROLE_USER',
-            status: false,
-            isRegistered: false,
-            isLoggedIn: false
-        };
+	constructor(props){
+		super(props);
+		this.state = {
+			username: '',
+			firstName:'',
+			secondName: '',
+			phoneNumber: '',
+			email: '',
+			password: '',
+			role: 'ROLE_USER',
+			status: false,
+			isRegistered: false,
+			isLoggedIn: false
+		};
 
-        this.usernameChange = this.usernameChange.bind(this);
-        this.firstNameChange = this.firstNameChange.bind(this);
-        this.secondNameChange = this.secondNameChange.bind(this);
-        this.emailChange = this.emailChange.bind(this);
-        this.passwordChange = this.passwordChange.bind(this);
-        this.phoneNumberChange = this.phoneNumberChange.bind(this);
+		this.usernameChange = this.usernameChange.bind(this);
+		this.firstNameChange = this.firstNameChange.bind(this);
+		this.secondNameChange = this.secondNameChange.bind(this);
+		this.emailChange = this.emailChange.bind(this);
+		this.passwordChange = this.passwordChange.bind(this);
+		this.phoneNumberChange = this.phoneNumberChange.bind(this);
 
-        this.usernameBody = this.usernameBody.bind(this);
-        this.firstNameBody = this.firstNameBody.bind(this);
-        this.secondNameBody = this.secondNameBody.bind(this);
-        this.emailBody = this.emailBody.bind(this);
-        this.passwordBody = this.passwordBody.bind(this);
-        this.phoneNumberBody = this.phoneNumberBody.bind(this);
+		this.usernameBody = this.usernameBody.bind(this);
+		this.firstNameBody = this.firstNameBody.bind(this);
+		this.secondNameBody = this.secondNameBody.bind(this);
+		this.emailBody = this.emailBody.bind(this);
+		this.passwordBody = this.passwordBody.bind(this);
+		this.phoneNumberBody = this.phoneNumberBody.bind(this);
 
-        //this.handleSignUp = this.handleSignUp.bind(this);
-        //this.handleLogin = this.handleLogin.bind(this);
-        this.profileShow = this.profileShow.bind(this);
-        //this.profileChange= this.profileChange.bind(this);
-        this.passwordChangeForm = this.passwordChangeForm.bind(this);
-        this.sendSignUpRequest = this.sendSignUpRequest.bind(this);
-        this.sendLoginRequest = this.sendLoginRequest.bind(this);
-        this.handleChoice = this.handleChoice.bind(this);
-        this.isFormValid = this.isFormValid.bind(this);
-        this.isEmailUnique = this.isEmailUnique.bind(this);
-    }
+		//this.handleSignUp = this.handleSignUp.bind(this);
+		//this.handleLogin = this.handleLogin.bind(this);
+		this.profileShow = this.profileShow.bind(this);
+		//this.profileChange= this.profileChange.bind(this);
+		this.passwordChangeForm = this.passwordChangeForm.bind(this);
+		this.sendSignUpRequest = this.sendSignUpRequest.bind(this);
+		this.sendLoginRequest = this.sendLoginRequest.bind(this);
+		this.handleChoice = this.handleChoice.bind(this);
+		this.isFormValid = this.isFormValid.bind(this);
+		this.isEmailUnique = this.isEmailUnique.bind(this);
+	}
     render() {
         const isRegisteredState = this.state.isRegistered;
         return (
@@ -364,17 +364,92 @@ class App extends Component {
     }
     passwordChangeForm(){
 
-    }
-    profileShow(){
+				</BrowserRouter>
+					<div className="container meetingForm">
+						<div className="alert alert-light row h-100 justify-content-center align-items-center">FOLLOW US!
+						</div>
 
-    }
-    handleChoice(e){
-        e.preventDefault();
-        this.setState(
-            {isRegistered: true}
-        )
-    }
-    isEmailUnique(email){
+                        {!this.state.isRegistered ? <div className="row h-100 justify-content-center align-items-center">
+								<form>
+									<div className="form-group">
+                                        {this.usernameBody()}
+                                        {this.firstNameBody()}
+                                        {this.secondNameBody()}
+                                        {this.emailBody()}
+										{this.phoneNumberBody()}
+										{this.passwordBody()}
+									</div>
+									<div className="form-row text-center">
+										<div className="col-12">
+											<button
+												className="btn btn-primary center-block"
+												type="submit"
+												onClick={this.sendSignUpRequest}> SIGN UP
+											</button>
+											<p>Already registered? </p>
+											<button
+												className="btn btn-primary center-block"
+												type="submit"
+												onClick={this.handleChoice}> LOGIN
+											</button>
+										</div>
+									</div>
+								</form>
+							</div>
+                            :
+							<div id="Login" className="alert alert-info row h-100 justify-content-center align-items-center">
+								<form action="http://localhost:8080/j_spring_security_check" method="post"
+								onSubmit={(e)=>{e.preventDefault();this.sendLoginRequest();}}>
+									<div className="form-group">
+                                        {this.emailBody()}
+                                        {this.passwordBody()}
+									</div>
+									<div className="form-row text-center">
+										<div className="col-12">
+											<button
+												className="btn btn-primary center-block"
+												type="submit"> LOGIN
+											</button>
+										</div>
+									</div>
+								</form>
+							</div>
+                        }
+					</div>
+				</div>
+		);
+	}
+
+
+	sendLoginRequest(){
+		let value = this.state;
+		let formData = new FormData();
+		formData.append("j_username",value.email);
+		formData.append("j_password",value.password);
+		axios.post("http://localhost:8080/login",
+			formData,{
+                headers: {
+                    'Access-Control-Allow-Credentials': 'include'
+                }
+			}
+			).then( response =>{
+				if (response.status === 200)
+				this.setState({
+					isLoggedIn: true
+				})
+
+		})
+	}
+	profileShow(){
+
+	}
+	handleChoice(e){
+		e.preventDefault();
+		this.setState(
+			{isRegistered: true}
+		)
+	}
+	isEmailUnique(email){
         return new Promise(function(resolve, reject) {
             $.ajax({
                 url: "http://localhost:8080/loginCheck",
