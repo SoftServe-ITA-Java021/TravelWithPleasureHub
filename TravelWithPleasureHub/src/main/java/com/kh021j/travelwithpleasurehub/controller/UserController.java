@@ -3,8 +3,7 @@ package com.kh021j.travelwithpleasurehub.controller;
 import com.kh021j.travelwithpleasurehub.model.User;
 import com.kh021j.travelwithpleasurehub.service.UserService;
 import com.kh021j.travelwithpleasurehub.service.dto.UserDTO;
-import com.kh021j.travelwithpleasurehub.utils.FromDTO;
-import com.kh021j.travelwithpleasurehub.utils.ToDTO;
+import com.kh021j.travelwithpleasurehub.utils.ConverterUserDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +31,7 @@ public class UserController {
     @GetMapping(path = "/{id}")
     public ResponseEntity<UserDTO> getById(@PathVariable Integer id) {
         Optional<User> user = userService.getById(id);
-        return user.map(body -> ResponseEntity.ok(ToDTO.toUserDTO(body))).orElseGet(()->ResponseEntity.notFound().build());
+        return user.map(body -> ResponseEntity.ok(ConverterUserDTO.toUserDTO(body))).orElseGet(()->ResponseEntity.notFound().build());
     }
 
     //is not correct according to Richardson model
@@ -41,7 +40,7 @@ public class UserController {
     public List<UserDTO> getUserByName(@PathVariable String username) {
         List<User> users = userService.findUserByName(username);
         return users.stream()
-                .map(ToDTO::toUserDTO)
+                .map(ConverterUserDTO::toUserDTO)
                 .collect(Collectors.toList());
     }
 
@@ -49,7 +48,7 @@ public class UserController {
     @ResponseBody
     public UserDTO createUser (@RequestBody UserDTO userDTO){
         LOGGER.debug("REST request to save User : {}", userDTO);
-        return ToDTO.toUserDTO(userService.create(FromDTO.fromUserDTO(userDTO)));
+        return ConverterUserDTO.toUserDTO(userService.create(ConverterUserDTO.fromUserDTO(userDTO)));
     }
 
 }

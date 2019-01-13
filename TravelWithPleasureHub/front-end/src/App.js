@@ -17,44 +17,47 @@ import ErrorBoundary from "./ErrorBoundary";
 import NoMatch from "./components/NoMatch";
 import Home from "./components/Home";
 import TicketsForm from "./components/tickets/TicketsForm";
+import WishingUsers from "./components/meetings/WishingUsers";
+import ConfirmedUsers from "./components/meetings/ConfirmedUsers";
 
 class App extends Component {
-	render() {
-		return (
-			<div>
+    render() {
+        return (
+            <div>
 
-				<BrowserRouter>
-					<Fragment>
-						<NavBar />
-						<ErrorBoundary>
-							<Switch>
-								<Route exact path="/upload/property" component={PropertyUpload} />
-								<Route exact path="/properties/:id" component={Property} />
-								<Route exact path="/properties/" component={PropertyList} />
+                <BrowserRouter>
+                    <Fragment>
+                        <NavBar/>
+                        <ErrorBoundary>
+                            <Switch>
+                                <Route exact path="/upload/property" component={PropertyUpload}/>
+                                <Route exact path="/properties/:id" component={Property}/>
+                                <Route exact path="/properties/" component={PropertyList}/>
 
-								<Route path="/meetings/show-all-meetings/" component={AllMeetings}/>
-								<Route path="/meetings/find-meetings/" component={MeetingsFind}/>
-								<Route path="/meetings/add-meeting/" component={MeetingAdd}/>
-								<Route path="/meetings/show-history/" component={MeetingsHistory}/>
-								<Route path="/meetings/show-all-created-meetings" component={CreatedMeetings}/>
-								<Route path="/meetings/show-meeting/:id" exact component={OneMeeting}/>
+                                <Route exact path="/meetings/show-all-meetings/" component={AllMeetings}/>
+                                <Route exact path="/meetings/find-meetings/" component={MeetingsFind}/>
+                                <Route exact path="/meetings/add-meeting/" component={MeetingAdd}/>
+                                <Route exact path="/meetings/show-history/" component={MeetingsHistory}/>
+                                <Route exact path="/meetings/show-all-created-meetings" component={CreatedMeetings}/>
+                                <Route exact path="/meetings/show-meeting/:id" component={OneMeeting}/>
+                                <Route exact path="/meetings/show-meeting/wishing-users/:id" component={WishingUsers}/>
+                                <Route exact path="/meetings/show-meeting/confirmed-users/:id" component={ConfirmedUsers}/>
 
-								<Route path="/tickets" component={TicketsForm}/>
+                                <Route path="/tickets" component={TicketsForm}/>
+                                <Route exact path="/" component={Home}/>
 
-								<Route exact path="/" component={Home}/>
+                                <Route path="*" component={NoMatch}/>
+                            </Switch>
 
-								<Route path="*" component={NoMatch}/>
-							</Switch>
+                        </ErrorBoundary>
+                    </Fragment>
 
-						</ErrorBoundary>
-					</Fragment>
+                </BrowserRouter>
 
-				</BrowserRouter>
+            </div>
 
-			</div>
-
-		);
-	}
+        );
+    }
 }
 
 export default App;
