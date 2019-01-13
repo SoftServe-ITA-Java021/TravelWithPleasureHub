@@ -68,7 +68,7 @@ export default class Profile extends Component{
 
     handleLogout(e){
         e.preventDefault();
-       axios.get("http://localhost:8080/logout_success").then(
+       axios.get("http://localhost:8080/logout").then(
            response => {
                if (response.status === 200){
                    this.setState({

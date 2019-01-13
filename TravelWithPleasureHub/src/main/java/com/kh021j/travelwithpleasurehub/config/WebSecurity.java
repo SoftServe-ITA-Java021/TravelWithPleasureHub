@@ -46,9 +46,9 @@ public class WebSecurity extends WebSecurityConfigurerAdapter{
                 .usernameParameter("j_username")
                 .passwordParameter("j_password")
                 .and()
-                .logout().logoutUrl("/logout_success").logoutSuccessUrl("/").and()
+                .logout().logoutUrl("/j_spring_security_check").logoutSuccessUrl("/").and()
                 .sessionManagement().maximumSessions(2)
-                .and().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
+                .and().sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
     }
 
     @Override
