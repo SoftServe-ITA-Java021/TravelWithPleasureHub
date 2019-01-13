@@ -18,6 +18,7 @@ public class ConverterUserDTO {
                 .additionalInfo(user.getAdditionalInfo())
                 .phoneNumber(user.getPhoneNumber())
                 .role(user.getRole().toString().toUpperCase())
+                .status(String.valueOf(user.isStatus()))
                 .build();
     }
 
@@ -33,6 +34,7 @@ public class ConverterUserDTO {
                 .additionalInfo(userDTO.getAdditionalInfo())
                 .phoneNumber(userDTO.getPhoneNumber())
                 .role(UserRole.valueOf(userDTO.getRole().toUpperCase()))
+                .status(Boolean.valueOf(userDTO.getStatus().toUpperCase()))
                 .build();
     }
 }
