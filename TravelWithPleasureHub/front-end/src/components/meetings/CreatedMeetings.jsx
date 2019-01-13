@@ -41,7 +41,7 @@ export default class CreatedMeetings extends Component {
 		axios.get(`http://localhost:8080/api/meetings`,
 			{
 				params: {
-					owner: "1"
+					owner: "2"
 				}
 			})
 			.then(json => this.setState({meetings: json.data}));

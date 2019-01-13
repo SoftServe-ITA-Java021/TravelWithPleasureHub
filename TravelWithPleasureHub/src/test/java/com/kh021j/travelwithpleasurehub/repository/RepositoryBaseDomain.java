@@ -15,10 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.*;
 import java.util.Arrays;
 
 @RunWith(SpringRunner.class)
@@ -95,7 +92,7 @@ public abstract class RepositoryBaseDomain {
         Meeting meeting = Meeting.builder()
                 .header("simple")
                 .content("asd")
-                .timeOfAction(ZonedDateTime.of(2018, 12, 12, 15, 30, 0, 0, ZoneId.systemDefault()))
+                .timeOfAction(OffsetDateTime.of(2018, 12, 12, 15, 30, 0, 0, ZoneOffset.UTC))
                 .location("dqwdwq")
                 .meetingType(MeetingType.CINEMA)
                 .links(Arrays.asList("1", "2"))

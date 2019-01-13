@@ -20,9 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -50,7 +49,7 @@ public class MeetingService {
                 .location(meetingDTO.getLocation())
                 .links(meetingDTO.getLinks())
                 .meetingType(MeetingType.valueOf(meetingDTO.getMeetingType().toUpperCase()))
-                .timeOfAction(ZonedDateTime.of(LocalDateTime.parse(meetingDTO.getTimeOfAction()), ZoneId.systemDefault()))
+                .timeOfAction(OffsetDateTime.of(LocalDateTime.parse(meetingDTO.getTimeOfAction()), ZoneOffset.UTC))
                 .owner(meetingDTO.getOwnerId() != null ?
                         userRepository.findById(meetingDTO.getOwnerId()).get()
                         : null)
@@ -102,8 +101,11 @@ public class MeetingService {
     }
 
     @Transactional
-    public MeetingDTO update(MeetingDTO meetingDTO) {
+    public MeetingDTO update(MeetingDTO meetingDTO) throws IOException {
         log.debug("Request to update Meeting : {}", meetingDTO);
+        meetingDTO = meetingDTO.toBuilder()
+                .links(findLinksForMeeting(meetingDTO))
+                .build();
         if (meetingRepository.existsById(meetingDTO.getId())) {
             Meeting meeting = fromDTO(meetingDTO);
             return toDTO(meetingRepository.saveAndFlush(meeting));
@@ -131,7 +133,7 @@ public class MeetingService {
     public MeetingDTO confirmUserForMeeting(Integer meetingId, Integer wishingUserId) {
         log.debug("Request to confirm for Meeting with id : {} , and wishing user id : {}", meetingId, wishingUserId);
         if (!meetingRepository.existsById(meetingId) || !userRepository.existsById(wishingUserId)) {
-            log.error("Request to confirm for Meeting with id : {}, and wishing user id : {} was failed", meetingId,  wishingUserId);
+            log.error("Request to confirm for Meeting with id : {}, and wishing user id : {} was failed", meetingId, wishingUserId);
             return null;
         }
         Meeting meeting = meetingRepository.findById(meetingId).get();
@@ -144,10 +146,10 @@ public class MeetingService {
     }
 
     @Transactional
-    public MeetingDTO rejectRequestForMeeting(Integer meetingId, Integer wishingUserId){
+    public MeetingDTO rejectRequestForMeeting(Integer meetingId, Integer wishingUserId) {
         log.debug("Request to reject for Meeting with id : {} , and wishing user id : {}", meetingId, wishingUserId);
         if (!meetingRepository.existsById(meetingId) || !userRepository.existsById(wishingUserId)) {
-            log.error("Request to reject for Meeting with id : {}, and wishing user id : {} was failed", meetingId,  wishingUserId);
+            log.error("Request to reject for Meeting with id : {}, and wishing user id : {} was failed", meetingId, wishingUserId);
             return null;
         }
         Meeting meeting = meetingRepository.findById(meetingId).get();

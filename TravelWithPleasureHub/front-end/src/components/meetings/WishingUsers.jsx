@@ -37,7 +37,7 @@ export default class WishingUsers extends Component {
                     watching users that want to go with you
                 </div>
                 {value.users.map(item => (
-                    <NavLink className="nav-link" to={``} key={item.id}>
+                    <NavLink className="nav-link" to={`/profile`} key={item.id}>
                         <li className="list-group-item list-group-item-action flex-column align-items-start">
                             {item.firstName}{" " + item.secondName}
                             <button type="submit" className="close" aria-label="Close"
@@ -58,14 +58,14 @@ export default class WishingUsers extends Component {
     }
 
     componentDidMount() {
-        axios.get(`http://localhost:8080/api/meetings/wishing-users/${this.props.match.params.id}`)
+        axios.get(`http://localhost:9000/api/meetings/wishing-users/${this.props.match.params.id}`)
             .then(json => (this.setState({users: json.data, isDownloaded: true})));
     }
 
 
     submit(param, e) {
         e.preventDefault();
-        axios.get("http://localhost:8080/api/meetings/confirm-meeting/", {
+        axios.get("http://localhost:9000/api/meetings/confirm-meeting/", {
             headers: {
                 'Access-Control-Allow-Credentials': 'include'
             },
@@ -73,13 +73,13 @@ export default class WishingUsers extends Component {
                 meetingId: this.props.match.params.id,
                 wishingUserId: param
             }
-        }).then(() => (axios.get(`http://localhost:8080/api/meetings/wishing-users/${this.props.match.params.id}`)
+        }).then(() => (axios.get(`http://localhost:9000/api/meetings/wishing-users/${this.props.match.params.id}`)
             .then(json => (this.setState({users: json.data, isDownloaded: true})))))
     }
 
     reject(param, e) {
         e.preventDefault();
-        axios.get("http://localhost:8080/api/meetings/reject/", {
+        axios.get("http://localhost:9000/api/meetings/reject/", {
             headers: {
                 'Access-Control-Allow-Credentials': 'include'
             },
@@ -87,7 +87,7 @@ export default class WishingUsers extends Component {
                 meetingId: this.props.match.params.id,
                 wishingUserId: param
             }
-        }).then(() => (axios.get(`http://localhost:8080/api/meetings/wishing-users/${this.props.match.params.id}`)
+        }).then(() => (axios.get(`http://localhost:9000/api/meetings/wishing-users/${this.props.match.params.id}`)
             .then(json => (this.setState({users: json.data, isDownloaded: true})))))
     }
 

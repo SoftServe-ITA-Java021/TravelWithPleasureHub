@@ -17,7 +17,7 @@ export default class MeetingAdd extends Component {
 				timeOfAction: "",
 				ownerId: -1,
 
-				isCreated: false,
+				isUpdated: false,
 				status: ""
 			};
 		this.headerChange = this.headerChange.bind(this);
@@ -40,11 +40,7 @@ export default class MeetingAdd extends Component {
 				<MeetingNavbar/>
 				<div className="container meetingForm">
 
-					<div className="alert alert-light row h-100 justify-content-center align-items-center">Creating of
-						meeting
-					</div>
-
-					{!this.state.isCreated ? <div className="row h-100 justify-content-center align-items-center">
+					{!this.state.isUpdated ? <div className="row h-100 justify-content-center align-items-center">
 							<form>
 								<div className="form-group">
 									{this.headerBody()}
@@ -93,7 +89,7 @@ export default class MeetingAdd extends Component {
 			if (response.status === 201) {
 				this.setState({
 					status: "Success",
-					isCreated: true
+					isUpdated: true
 				})
 			}
 		})
@@ -169,7 +165,7 @@ export default class MeetingAdd extends Component {
 				placeholder="Enter location"
 			/>
 			<small className="form-text text-muted">
-				Please, enter location according next format: "Country, City, Street, etc".
+				Please, enter location according to the next format: "Country, City, Street, etc".
 			</small>
 		</div>
 	}
@@ -184,6 +180,9 @@ export default class MeetingAdd extends Component {
 				value={this.state.timeOfAction}
 				onChange={this.timeOfActionChange}
 			/>
+            <small className="form-text text-muted">
+                Please, enter date and time according to the GMT.
+            </small>
 		</div>
 	}
 

@@ -59,7 +59,7 @@ public class MeetingController {
     }
 
     @GetMapping(value = "/reject/", params = {"meetingId", "wishingUserId"})
-    public  ResponseEntity<MeetingDTO> rejectUserForMeeting
+    public ResponseEntity<MeetingDTO> rejectUserForMeeting
             (@RequestParam(value = "meetingId") String meetingId, @RequestParam(value = "wishingUserId") String wishingUserId) {
         log.debug("REST request to reject request for Meeting with id : {} ,and wishing user id : {} ",
                 meetingId, wishingUserId);
@@ -72,7 +72,7 @@ public class MeetingController {
 
 
     @PutMapping
-    public ResponseEntity<MeetingDTO> updateMeeting(@RequestBody MeetingDTO meetingDTO) {
+    public ResponseEntity<MeetingDTO> updateMeeting(@ModelAttribute MeetingDTO meetingDTO) throws IOException {
         log.debug("REST request to update Meeting : {}", meetingDTO);
         MeetingDTO result = meetingService.update(meetingDTO);
         if (result != null) {

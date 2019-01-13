@@ -1,6 +1,5 @@
 import React, {Component, Fragment} from 'react';
 import {BrowserRouter, Route, Switch,Redirect} from "react-router-dom";
-import {BrowserRouter, Route, Switch, Redirect} from "react-router-dom";
 import NavBar from "./components/NavBar";
 import PropertyList from "./components/property-rent/PropertyList";
 import Property from "./components/property-rent/Property";
@@ -19,6 +18,7 @@ import TicketsForm from "./components/tickets/TicketsForm";
 import Profile from './components/signup/Profile';
 import WishingUsers from "./components/meetings/WishingUsers";
 import ConfirmedUsers from "./components/meetings/ConfirmedUsers";
+import MeetingUpdate from "./components/meetings/MeetingUpdate";
 
 class App extends Component {
 	render() {
@@ -34,13 +34,15 @@ class App extends Component {
 								<Route exact path="/properties/:id" component={Property} />
 								<Route exact path="/properties/" component={PropertyList} />
 
-								<Route path="/meetings/show-all-meetings/" component={AllMeetings}/>
-								<Route path="/meetings/find-meetings/" component={MeetingsFind}/>
-								<Route path="/meetings/add-meeting/" component={MeetingAdd}/>
-								<Route path="/meetings/show-history/" component={MeetingsHistory}/>
-								<Route path="/meetings/show-all-created-meetings" component={CreatedMeetings}/>
-								<Route path="/meetings/show-meeting/:id" exact component={OneMeeting}/>
-								<Route path="/profile" exact component={Profile}/>
+								<Route exact path="/meetings/show-all-meetings/" component={AllMeetings}/>
+								<Route exact path="/meetings/find-meetings/" component={MeetingsFind}/>
+								<Route exact path="/meetings/add-meeting/" component={MeetingAdd}/>
+								<Route exact path="/meetings/show-history/" component={MeetingsHistory}/>
+								<Route exact path="/meetings/show-all-created-meetings" component={CreatedMeetings}/>
+								<Route exact path="/meetings/show-meeting/:id"  component={OneMeeting}/>
+								<Route exact path="/meetings/edit/:id" component={MeetingUpdate}/>
+								<Route exact path="/profile"  component={Profile}/>
+
 								<Route path="/tickets" component={TicketsForm}/>
                                 <Route exact path="/meetings/show-meeting/wishing-users/:id" component={WishingUsers}/>
                                 <Route exact path="/meetings/show-meeting/confirmed-users/:id"

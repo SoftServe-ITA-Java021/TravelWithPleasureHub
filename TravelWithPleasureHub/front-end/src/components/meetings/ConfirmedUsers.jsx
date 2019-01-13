@@ -37,7 +37,7 @@ export default class ConfirmedUsers extends Component {
                     watching users that are confirmed
                 </div>
                 {value.users.map(item => (
-                    <NavLink className="nav-link" to={``} key={item.id}>
+                    <NavLink className="nav-link" to={`/profile`} key={item.id}>
                         <li className="list-group-item list-group-item-action flex-column align-items-start">
                             {item.firstName}{" " + item.secondName}
                         </li>
