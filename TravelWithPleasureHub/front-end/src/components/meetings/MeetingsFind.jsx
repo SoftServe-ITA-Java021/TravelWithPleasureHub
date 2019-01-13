@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import axios from "axios";
-import showList from './ShowList'
+import showList from './ShowMeetingsList'
 import MeetingNavbar from "./MeetingNavbar";
 import "./css/style.css"
 
@@ -96,7 +96,7 @@ export default class MeetingsFind extends Component {
 
 	handleChangeHeader(event) {
 		let header = event.target.value;
-		axios.get(`http://localhost:8080/api/meetings`,
+		axios.get(`http://localhost:9000/api/meetings`,
 			{
 				params: {
 					'headerFilter': header,
@@ -113,7 +113,7 @@ export default class MeetingsFind extends Component {
 
 	handleChangeLocation(event) {
 		let location = event.target.value;
-		axios.get(`http://localhost:8080/api/meetings`,
+		axios.get(`http://localhost:9000/api/meetings`,
 			{
 				params: {
 					'headerFilter': this.state.header,
@@ -131,7 +131,7 @@ export default class MeetingsFind extends Component {
 	handleChangeDatetime(event) {
 		let date = event.target.value;
 		console.log(date);
-		axios.get(`http://localhost:8080/api/meetings`,
+		axios.get(`http://localhost:9000/api/meetings`,
 			{
 				params: {
 					'headerFilter': this.state.header,

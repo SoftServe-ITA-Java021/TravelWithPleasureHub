@@ -3,7 +3,7 @@ package com.kh021j.travelwithpleasurehub.tickets.parser.Belavia.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kh021j.travelwithpleasurehub.parser.Belavia.BelaviaConnection;
+import com.kh021j.travelwithpleasurehub.tickets.parser.Belavia.BelaviaConnection;
 
 import java.io.BufferedReader;
 import java.io.IOException;

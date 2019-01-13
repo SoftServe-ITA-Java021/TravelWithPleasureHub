@@ -14,20 +14,21 @@ public interface MeetingRepository extends JpaRepository<Meeting, Integer> {
 
     Meeting findById(long id);
 
-    List<Meeting> findAllByConfirmedUsersContainingOrWishingUsersContaining(User user1, User user2);
+    List<Meeting> findAllByConfirmedUsersContaining(User user);
+
+    List<Meeting> findAllByWishingUsersContaining(User user);
 
     List<Meeting> findAllByOwner(User user);
 
-    @Query(value = "SELECT DISTINCT * FROM meeting m " +
-            "INNER JOIN users u ON u.id = m.owner_id " +
-            "WHERE (LOWER(m.header) LIKE LOWER(CONCAT('%', CASE WHEN ((:headerFilter IS NULL) OR (:headerFilter = 'undefined')) THEN '' ELSE :headerFilter END, '%')) " +
-            "AND LOWER(m.location) LIKE LOWER(CONCAT('%', CASE WHEN ((:locationFilter IS NULL) OR (:locationFilter = 'undefined')) THEN '' ELSE :locationFilter END, '%')) " +
+    @Query(value = "SELECT DISTINCT * FROM meeting " +
+            "WHERE (LOWER(header) LIKE LOWER(CONCAT('%', CASE WHEN ((:headerFilter IS NULL) OR (:headerFilter = 'undefined')) THEN '' ELSE :headerFilter END, '%')) " +
+            "AND LOWER(location) LIKE LOWER(CONCAT('%', CASE WHEN ((:locationFilter IS NULL) OR (:locationFilter = 'undefined')) THEN '' ELSE :locationFilter END, '%')) " +
             "AND CASE WHEN ((:timeFilter IS NULL) OR (:timeFilter = 'undefined')) THEN '' ELSE :timeFilter END > " +
-            "CONCAT(extract (YEAR from m.date_time),'-', " +
-            "(CASE WHEN (extract(MONTH from m.date_time) < 10) THEN CONCAT('0',extract(MONTH from m.date_time)) ELSE CONCAT(extract(MONTH from m.date_time)) END) ,'-', " +
-            "(CASE WHEN (extract(DAY from m.date_time) < 10) THEN CONCAT('0',extract(DAY from m.date_time)) ELSE CONCAT(extract(DAY from m.date_time)) END) ,' ', " +
-            "(CASE WHEN (extract(HOUR from m.date_time) < 10) THEN CONCAT('0',extract(HOUR from m.date_time)) ELSE CONCAT(extract(HOUR from m.date_time)) END) ,':', " +
-            "(CASE WHEN (extract(MINUTE from m.date_time) < 10) THEN CONCAT('0',extract(MINUTE from m.date_time)) ELSE CONCAT(extract(MINUTE from m.date_time)) END)))",
+            "CONCAT(extract (YEAR from date_time),'-', " +
+            "(CASE WHEN (extract(MONTH from date_time) < 10) THEN CONCAT('0',extract(MONTH from date_time)) ELSE CONCAT(extract(MONTH from date_time)) END) ,'-', " +
+            "(CASE WHEN (extract(DAY from date_time) < 10) THEN CONCAT('0',extract(DAY from date_time)) ELSE CONCAT(extract(DAY from date_time)) END) ,' ', " +
+            "(CASE WHEN (extract(HOUR from date_time) < 10) THEN CONCAT('0',extract(HOUR from date_time)) ELSE CONCAT(extract(HOUR from date_time)) END) ,':', " +
+            "(CASE WHEN (extract(MINUTE from date_time) < 10) THEN CONCAT('0',extract(MINUTE from date_time)) ELSE CONCAT(extract(MINUTE from date_time)) END)))",
             nativeQuery = true)
     List<Meeting> findAllByFilter(@Param("headerFilter") String headerFilter,
                                   @Param("locationFilter") String locationFilter,
