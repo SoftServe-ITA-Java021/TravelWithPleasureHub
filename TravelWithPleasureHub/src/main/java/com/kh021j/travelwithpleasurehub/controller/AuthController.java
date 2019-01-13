@@ -91,17 +91,28 @@ public class AuthController {
 
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
     public ResponseEntity<?> getCurrentUser(){
-       Authentication authentication = getSecurityContext().getAuthentication();
-       if (!(authentication instanceof AnonymousAuthenticationToken)) {
-           return new ResponseEntity<User>(userService.getUser(authentication.getName()), HttpStatus.OK);
-       }
-       return new ResponseEntity<Object>(HttpStatus.BAD_REQUEST);
+        try {
+            while (getSecurityContext().getAuthentication() != null) {
+                Authentication authentication = getSecurityContext().getAuthentication();
+                if (!(authentication instanceof AnonymousAuthenticationToken)) {
+                    return new ResponseEntity<Object>(userService.getUser(authentication.getName()), HttpStatus.OK);
+                }
+                if (authentication.getName() == null) {
+                    return new ResponseEntity<Object>(HttpStatus.NOT_FOUND);
+                }
+            }
+        }
+        catch (NullPointerException e){
+            return new ResponseEntity<Object>(e.getMessage(),HttpStatus.NOT_FOUND);
+
+        }
+        return null;
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public ResponseEntity<?> logout(){
-        SecurityContextHolder.setContext(getSecurityContext());
         SecurityContextHolder.clearContext();
+        setSecurityContext(null);
         return new ResponseEntity<Object>(HttpStatus.OK);
     }
 
