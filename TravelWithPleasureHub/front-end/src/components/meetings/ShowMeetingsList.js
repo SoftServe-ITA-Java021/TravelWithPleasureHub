@@ -15,6 +15,5 @@ export default function getListWithAllMeetings(value) {
                     </li>
                 </NavLink>
             ))}
-
     </ul>
 }

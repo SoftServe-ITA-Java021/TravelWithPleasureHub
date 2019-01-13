@@ -2,6 +2,7 @@ package com.kh021j.travelwithpleasurehub.controller;
 
 import com.kh021j.travelwithpleasurehub.service.MeetingService;
 import com.kh021j.travelwithpleasurehub.service.dto.MeetingDTO;
+import com.kh021j.travelwithpleasurehub.service.dto.UserDTO;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,18 +46,30 @@ public class MeetingController {
         return ResponseEntity.badRequest().build();
     }
 
-    @PostMapping(value = "/confirm-meeting/", params = {"ownerId", "meetingId", "wishingUserId"})
+    @GetMapping(value = "/confirm-meeting/", params = {"meetingId", "wishingUserId"})
     public ResponseEntity<MeetingDTO> confirmUserForMeeting
-            (@RequestParam String ownerId, @RequestParam String meetingId, @RequestParam String wishingUserId) {
-        log.debug("REST request to send request for Meeting with id : {} ,owner id : {} ,and wishing user id : {} ",
-                meetingId, ownerId, wishingUserId);
-        MeetingDTO result = meetingService.confirmUserForMeeting(
-                Integer.parseInt(ownerId), Integer.parseInt(meetingId), Integer.parseInt(wishingUserId));
+            (@RequestParam(value = "meetingId") String meetingId, @RequestParam(value = "wishingUserId") String wishingUserId) {
+        log.debug("REST request to send request for Meeting with id : {} ,and wishing user id : {} ",
+                meetingId, wishingUserId);
+        MeetingDTO result = meetingService.confirmUserForMeeting(Integer.parseInt(meetingId), Integer.parseInt(wishingUserId));
         if (result != null) {
             return ResponseEntity.ok(result);
         }
         return ResponseEntity.badRequest().build();
     }
+
+    @GetMapping(value = "/reject/", params = {"meetingId", "wishingUserId"})
+    public  ResponseEntity<MeetingDTO> rejectUserForMeeting
+            (@RequestParam(value = "meetingId") String meetingId, @RequestParam(value = "wishingUserId") String wishingUserId) {
+        log.debug("REST request to reject request for Meeting with id : {} ,and wishing user id : {} ",
+                meetingId, wishingUserId);
+        MeetingDTO result = meetingService.rejectRequestForMeeting(Integer.parseInt(meetingId), Integer.parseInt(wishingUserId));
+        if (result != null) {
+            return ResponseEntity.ok(result);
+        }
+        return ResponseEntity.badRequest().build();
+    }
+
 
     @PutMapping
     public ResponseEntity<MeetingDTO> updateMeeting(@RequestBody MeetingDTO meetingDTO) {
@@ -94,11 +107,16 @@ public class MeetingController {
         return meetingService.findAllByOwnerId(Integer.parseInt(owner));
     }
 
-    @GetMapping(params = "historyByUser")
-    public List<MeetingDTO> findHistoryByUser(@RequestParam String historyByUser) {
-        log.debug("REST request to get Meetings with user's id  : {} ", historyByUser);
-        return meetingService.findHistoryOfMeetingsByUserId(Integer.parseInt(historyByUser));
+    @GetMapping(params = "confirmedHistoryByUser")
+    public List<MeetingDTO> findConfirmedHistoryByUser(@RequestParam String confirmedHistoryByUser) {
+        log.debug("REST request to get confirmed Meetings with user's id  : {} ", confirmedHistoryByUser);
+        return meetingService.findConfirmedHistoryOfMeetingsByUserId(Integer.parseInt(confirmedHistoryByUser));
+    }
 
+    @GetMapping(params = "wishingHistoryByUser")
+    public List<MeetingDTO> findWishingHistoryByUser(@RequestParam String wishingHistoryByUser) {
+        log.debug("REST request to get wishing Meetings with user's id  : {} ", wishingHistoryByUser);
+        return meetingService.findWishingHistoryOfMeetingsByUserId(Integer.parseInt(wishingHistoryByUser));
     }
 
     @GetMapping(params = {"headerFilter", "locationFilter", "timeFilter"})
@@ -107,6 +125,18 @@ public class MeetingController {
                                                  @RequestParam String timeFilter) {
         log.debug("REST request to get Meetings with header : {} ,location : {} ,time : {} ", headerFilter, locationFilter, timeFilter);
         return meetingService.findAllByFilter(headerFilter, locationFilter, timeFilter);
+    }
+
+    @GetMapping(value = "wishing-users/{id}")
+    public List<UserDTO> findAllWishingUsersInMeeting(@PathVariable Integer id) {
+        log.debug("REST request to get wishing users in Meetings id : {} ", id);
+        return meetingService.findAllWishingUsersInMeeting(id);
+    }
+
+    @GetMapping(value = "confirmed-users/{id}")
+    public List<UserDTO> findAllConfirmedUsersInMeeting(@PathVariable Integer id) {
+        log.debug("REST request to get confirmed users in Meetings id : {} ", id);
+        return meetingService.findAllConfirmedUsersInMeeting(id);
     }
 
 }
