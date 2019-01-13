@@ -1,6 +1,7 @@
 package com.kh021j.travelwithpleasurehub.model;
 
 
+import com.kh021j.travelwithpleasurehub.model.enumiration.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -38,8 +39,9 @@ public class User {
 
     private String pathToPhoto;
 
-    private String status;
+    private boolean status;
 
-    private String role;
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
 
 }

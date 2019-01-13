@@ -83,6 +83,22 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+            <version>5.0.3.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+            <version>5.0.6.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>5.0.6.RELEASE</version>
+        </dependency>
+        <dependency>
+
             <groupId>com.mashape.unirest</groupId>
             <artifactId>unirest-java</artifactId>
             <version>1.4.9</version>
@@ -107,10 +123,7 @@
             <artifactId>json</artifactId>
             <version>20140107</version>
         </dependency>
-
-
     </dependencies>
-
     <build>
         <plugins>
             <plugin>

@@ -52,7 +52,6 @@ public class UserReviewControllerTest {
             .additionalInfo("add info")
             .email("smart@gmail.com")
             .username("us name")
-            .status("activ")
             .build();
 
     private UserReview userReview = UserReview.builder()

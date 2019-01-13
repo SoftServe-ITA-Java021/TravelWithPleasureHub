@@ -1,6 +1,7 @@
 package com.kh021j.travelwithpleasurehub.utils;
 
 import com.kh021j.travelwithpleasurehub.model.User;
+import com.kh021j.travelwithpleasurehub.model.enumiration.UserRole;
 import com.kh021j.travelwithpleasurehub.service.dto.UserDTO;
 
 public class ConverterUserDTO {
@@ -16,8 +17,8 @@ public class ConverterUserDTO {
                 .location(user.getLocation())
                 .additionalInfo(user.getAdditionalInfo())
                 .phoneNumber(user.getPhoneNumber())
-                .status(user.getStatus())
-                .role(user.getRole())
+                .role(user.getRole().toString().toUpperCase())
+                .status(String.valueOf(user.isStatus()))
                 .build();
     }
 
@@ -32,8 +33,8 @@ public class ConverterUserDTO {
                 .location(userDTO.getLocation())
                 .additionalInfo(userDTO.getAdditionalInfo())
                 .phoneNumber(userDTO.getPhoneNumber())
-                .status(userDTO.getStatus())
-                .role(userDTO.getRole())
+                .role(UserRole.valueOf(userDTO.getRole().toUpperCase()))
+                .status(Boolean.valueOf(userDTO.getStatus().toUpperCase()))
                 .build();
     }
 }
