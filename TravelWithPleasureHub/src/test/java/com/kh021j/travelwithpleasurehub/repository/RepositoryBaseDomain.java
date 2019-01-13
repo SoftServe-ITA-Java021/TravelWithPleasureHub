@@ -38,7 +38,6 @@ public abstract class RepositoryBaseDomain {
                 .additionalInfo("add info")
                 .email("smart@gmail.com")
                 .username("us name")
-                .status("activ")
                 .build();
         entityManager.persist(user);
 

@@ -1,5 +1,5 @@
 import React, {Component, Fragment} from 'react';
-import {BrowserRouter, Route, Switch,Redirect} from "react-router-dom";
+import {BrowserRouter, Route, Switch, Redirect} from "react-router-dom";
 import $ from 'jquery';
 import axios from 'axios';
 import fetch from 'isomorphic-fetch';
@@ -20,48 +20,51 @@ import NoMatch from "./components/NoMatch";
 import Home from "./components/Home";
 import TicketsForm from "./components/tickets/TicketsForm";
 import Profile from './components/signup/Profile';
+import WishingUsers from "./components/meetings/WishingUsers";
+import ConfirmedUsers from "./components/meetings/ConfirmedUsers";
 
 class App extends Component {
-	constructor(props){
-		super(props);
-		this.state = {
-			username: '',
-			firstName:'',
-			secondName: '',
-			phoneNumber: '',
-			email: '',
-			password: '',
-			role: 'ROLE_USER',
-			status: false,
-			isRegistered: false,
-			isLoggedIn: false
-		};
+    constructor(props) {
+        super(props);
+        this.state = {
+            username: '',
+            firstName: '',
+            secondName: '',
+            phoneNumber: '',
+            email: '',
+            password: '',
+            role: 'ROLE_USER',
+            status: false,
+            isRegistered: false,
+            isLoggedIn: false
+        };
 
-		this.usernameChange = this.usernameChange.bind(this);
-		this.firstNameChange = this.firstNameChange.bind(this);
-		this.secondNameChange = this.secondNameChange.bind(this);
-		this.emailChange = this.emailChange.bind(this);
-		this.passwordChange = this.passwordChange.bind(this);
-		this.phoneNumberChange = this.phoneNumberChange.bind(this);
+        this.usernameChange = this.usernameChange.bind(this);
+        this.firstNameChange = this.firstNameChange.bind(this);
+        this.secondNameChange = this.secondNameChange.bind(this);
+        this.emailChange = this.emailChange.bind(this);
+        this.passwordChange = this.passwordChange.bind(this);
+        this.phoneNumberChange = this.phoneNumberChange.bind(this);
 
-		this.usernameBody = this.usernameBody.bind(this);
-		this.firstNameBody = this.firstNameBody.bind(this);
-		this.secondNameBody = this.secondNameBody.bind(this);
-		this.emailBody = this.emailBody.bind(this);
-		this.passwordBody = this.passwordBody.bind(this);
-		this.phoneNumberBody = this.phoneNumberBody.bind(this);
+        this.usernameBody = this.usernameBody.bind(this);
+        this.firstNameBody = this.firstNameBody.bind(this);
+        this.secondNameBody = this.secondNameBody.bind(this);
+        this.emailBody = this.emailBody.bind(this);
+        this.passwordBody = this.passwordBody.bind(this);
+        this.phoneNumberBody = this.phoneNumberBody.bind(this);
 
-		//this.handleSignUp = this.handleSignUp.bind(this);
-		//this.handleLogin = this.handleLogin.bind(this);
-		this.profileShow = this.profileShow.bind(this);
-		//this.profileChange= this.profileChange.bind(this);
-		this.passwordChangeForm = this.passwordChangeForm.bind(this);
-		this.sendSignUpRequest = this.sendSignUpRequest.bind(this);
-		this.sendLoginRequest = this.sendLoginRequest.bind(this);
-		this.handleChoice = this.handleChoice.bind(this);
-		this.isFormValid = this.isFormValid.bind(this);
-		this.isEmailUnique = this.isEmailUnique.bind(this);
-	}
+        //this.handleSignUp = this.handleSignUp.bind(this);
+        //this.handleLogin = this.handleLogin.bind(this);
+        this.profileShow = this.profileShow.bind(this);
+        //this.profileChange= this.profileChange.bind(this);
+        this.passwordChangeForm = this.passwordChangeForm.bind(this);
+        this.sendSignUpRequest = this.sendSignUpRequest.bind(this);
+        this.sendLoginRequest = this.sendLoginRequest.bind(this);
+        this.handleChoice = this.handleChoice.bind(this);
+        this.isFormValid = this.isFormValid.bind(this);
+        this.isEmailUnique = this.isEmailUnique.bind(this);
+    }
+
     render() {
         const isRegisteredState = this.state.isRegistered;
         return (
@@ -72,9 +75,9 @@ class App extends Component {
                         <NavBar/>
                         <ErrorBoundary>
                             <Switch>
-                                <Route exact path="/upload/property" component={PropertyUpload} />
-                                <Route exact path="/properties/:id" component={Property} />
-                                <Route exact path="/properties/" component={PropertyList} />
+                                <Route exact path="/upload/property" component={PropertyUpload}/>
+                                <Route exact path="/properties/:id" component={Property}/>
+                                <Route exact path="/properties/" component={PropertyList}/>
 
                                 <Route path="/meetings/show-all-meetings/" component={AllMeetings}/>
                                 <Route path="/meetings/find-meetings/" component={MeetingsFind}/>
@@ -82,7 +85,11 @@ class App extends Component {
                                 <Route path="/meetings/show-history/" component={MeetingsHistory}/>
                                 <Route path="/meetings/show-all-created-meetings" component={CreatedMeetings}/>
                                 <Route path="/meetings/show-meeting/:id" exact component={OneMeeting}/>
+                                <Route exact path="/meetings/show-meeting/wishing-users/:id" component={WishingUsers}/>
+                                <Route exact path="/meetings/show-meeting/confirmed-users/:id"
+                                       component={ConfirmedUsers}/>
                                 <Route path="/profile" exact component={Profile}/>
+
                                 <Route path="/tickets" component={TicketsForm}/>
 
                                 <Route exact path="/" component={Home}/>
@@ -126,9 +133,13 @@ class App extends Component {
                             </form>
                         </div>
                         :
-                        <div id="Login" className="alert alert-info row h-100 justify-content-center align-items-center">
+                        <div id="Login"
+                             className="alert alert-info row h-100 justify-content-center align-items-center">
                             <form action="http://localhost:8080/j_spring_security_check" method="post"
-                                  onSubmit={(e)=>{e.preventDefault();this.sendLoginRequest();}}>
+                                  onSubmit={(e) => {
+                                      e.preventDefault();
+                                      this.sendLoginRequest();
+                                  }}>
                                 <div className="form-group">
                                     {this.emailBody()}
                                     {this.passwordBody()}
@@ -149,26 +160,31 @@ class App extends Component {
         );
     }
 
-    usernameChange(event){
+    usernameChange(event) {
         this.setState({username: event.target.value})
     }
-    firstNameChange(event){
+
+    firstNameChange(event) {
         this.setState({firstName: event.target.value})
     }
-    secondNameChange(event){
+
+    secondNameChange(event) {
         this.setState({secondName: event.target.value})
     }
-    phoneNumberChange(event){
+
+    phoneNumberChange(event) {
         this.setState({phoneNumber: event.target.value})
     }
-    emailChange(event){
+
+    emailChange(event) {
         this.setState({email: event.target.value})
     }
-    passwordChange(event){
+
+    passwordChange(event) {
         this.setState({password: event.target.value})
     }
 
-    usernameBody(){
+    usernameBody() {
         return <div className="form-group row h-100 justify-content-center align-items-center">
             <label>Username:</label>
             <input
@@ -182,7 +198,8 @@ class App extends Component {
             <div id="username-error"></div>
         </div>
     }
-    firstNameBody(){
+
+    firstNameBody() {
         return <div className="form-group row h-100 justify-content-center align-items-center">
             <label>First name:</label>
             <input
@@ -196,7 +213,8 @@ class App extends Component {
             <div id="fName-error"></div>
         </div>
     }
-    secondNameBody(){
+
+    secondNameBody() {
         return <div className="form-group row h-100 justify-content-center align-items-center">
             <label>Last name:</label>
             <input
@@ -210,7 +228,8 @@ class App extends Component {
             <div id="sName-error"></div>
         </div>
     }
-    phoneNumberBody(){
+
+    phoneNumberBody() {
         return <div className="form-group row h-100 justify-content-center align-items-center">
             <label>Phone:</label>
             <input
@@ -224,7 +243,8 @@ class App extends Component {
             <div id="phoneNumber-error"></div>
         </div>
     }
-    emailBody(){
+
+    emailBody() {
         return <div className="form-group row h-100 justify-content-center align-items-center">
             <label>E-mail:</label>
             <input
@@ -239,7 +259,8 @@ class App extends Component {
             <div id="email-error"></div>
         </div>
     }
-    passwordBody(){
+
+    passwordBody() {
         return <div className="form-group row h-100 justify-content-center align-items-center">
             <label>Password:</label>
             <input
@@ -254,18 +275,19 @@ class App extends Component {
             <div id="password-error"></div>
         </div>
     }
-    sendSignUpRequest(e){
+
+    sendSignUpRequest(e) {
         e.preventDefault();
         let value = this.state;
         let formData = new FormData();
-        formData.append("username",value.username);
-        formData.append("firstName",value.firstName);
-        formData.append("secondName",value.secondName);
-        formData.append("phoneNumber",value.phoneNumber);
-        formData.append("email",value.email);
-        formData.append("password",value.password);
-        formData.append("role",this.state.role);
-        formData.append("status",this.state.status);
+        formData.append("username", value.username);
+        formData.append("firstName", value.firstName);
+        formData.append("secondName", value.secondName);
+        formData.append("phoneNumber", value.phoneNumber);
+        formData.append("email", value.email);
+        formData.append("password", value.password);
+        formData.append("role", this.state.role);
+        formData.append("status", this.state.status);
         let form = {
             username: value.username,
             firstName: value.firstName,
@@ -275,7 +297,7 @@ class App extends Component {
             password: value.password,
         };
 
-        if(this.isFormValid(form)) {
+        if (this.isFormValid(form)) {
             fetch("http://localhost:8080/registration",
                 {
                     method: "POST",
@@ -343,18 +365,19 @@ class App extends Component {
         }
         return isValid;
     }
-    sendLoginRequest(){
+
+    sendLoginRequest() {
         let value = this.state;
         let formData = new FormData();
-        formData.append("j_username",value.email);
-        formData.append("j_password",value.password);
+        formData.append("j_username", value.email);
+        formData.append("j_password", value.password);
         axios.post("http://localhost:8080/login",
-            formData,{
+            formData, {
                 headers: {
                     'Access-Control-Allow-Credentials': 'include'
                 }
             }
-        ).then( response =>{
+        ).then(response => {
             if (response.status === 200)
                 this.setState({
                     isLoggedIn: true
@@ -362,95 +385,24 @@ class App extends Component {
 
         })
     }
-    passwordChangeForm(){
 
-				</BrowserRouter>
-					<div className="container meetingForm">
-						<div className="alert alert-light row h-100 justify-content-center align-items-center">FOLLOW US!
-						</div>
+    passwordChangeForm() {
 
-                        {!this.state.isRegistered ? <div className="row h-100 justify-content-center align-items-center">
-								<form>
-									<div className="form-group">
-                                        {this.usernameBody()}
-                                        {this.firstNameBody()}
-                                        {this.secondNameBody()}
-                                        {this.emailBody()}
-										{this.phoneNumberBody()}
-										{this.passwordBody()}
-									</div>
-									<div className="form-row text-center">
-										<div className="col-12">
-											<button
-												className="btn btn-primary center-block"
-												type="submit"
-												onClick={this.sendSignUpRequest}> SIGN UP
-											</button>
-											<p>Already registered? </p>
-											<button
-												className="btn btn-primary center-block"
-												type="submit"
-												onClick={this.handleChoice}> LOGIN
-											</button>
-										</div>
-									</div>
-								</form>
-							</div>
-                            :
-							<div id="Login" className="alert alert-info row h-100 justify-content-center align-items-center">
-								<form action="http://localhost:8080/j_spring_security_check" method="post"
-								onSubmit={(e)=>{e.preventDefault();this.sendLoginRequest();}}>
-									<div className="form-group">
-                                        {this.emailBody()}
-                                        {this.passwordBody()}
-									</div>
-									<div className="form-row text-center">
-										<div className="col-12">
-											<button
-												className="btn btn-primary center-block"
-												type="submit"> LOGIN
-											</button>
-										</div>
-									</div>
-								</form>
-							</div>
-                        }
-					</div>
-				</div>
-		);
-	}
+    }
 
+    profileShow() {
 
-	sendLoginRequest(){
-		let value = this.state;
-		let formData = new FormData();
-		formData.append("j_username",value.email);
-		formData.append("j_password",value.password);
-		axios.post("http://localhost:8080/login",
-			formData,{
-                headers: {
-                    'Access-Control-Allow-Credentials': 'include'
-                }
-			}
-			).then( response =>{
-				if (response.status === 200)
-				this.setState({
-					isLoggedIn: true
-				})
+    }
 
-		})
-	}
-	profileShow(){
+    handleChoice(e) {
+        e.preventDefault();
+        this.setState(
+            {isRegistered: true}
+        )
+    }
 
-	}
-	handleChoice(e){
-		e.preventDefault();
-		this.setState(
-			{isRegistered: true}
-		)
-	}
-	isEmailUnique(email){
-        return new Promise(function(resolve, reject) {
+    isEmailUnique(email) {
+        return new Promise(function (resolve, reject) {
             $.ajax({
                 url: "http://localhost:8080/loginCheck",
                 type: 'GET',
@@ -461,7 +413,6 @@ class App extends Component {
             });
         });
     }
-
 }
 
 export default App;
