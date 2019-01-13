@@ -38,7 +38,7 @@ export default class CreatedMeetings extends Component {
 
 
 	componentDidMount() {
-		axios.get(`http://localhost:9000/api/meetings`,
+		axios.get(`http://localhost:8080/api/meetings`,
 			{
 				params: {
 					owner: "1"
