@@ -17,7 +17,7 @@ export default class MeetingAdd extends Component {
 				timeOfAction: "",
 				ownerId: -1,
 
-				isCreated: false,
+				isUpdated: false,
 				status: ""
 			};
 		this.headerChange = this.headerChange.bind(this);
@@ -44,7 +44,7 @@ export default class MeetingAdd extends Component {
 						meeting
 					</div>
 
-					{!this.state.isCreated ? <div className="row h-100 justify-content-center align-items-center">
+					{!this.state.isUpdated ? <div className="row h-100 justify-content-center align-items-center">
 							<form>
 								<div className="form-group">
 									{this.headerBody()}
@@ -93,7 +93,7 @@ export default class MeetingAdd extends Component {
 			if (response.status === 201) {
 				this.setState({
 					status: "Success",
-					isCreated: true
+					isUpdated: true
 				})
 			}
 		})

@@ -102,8 +102,11 @@ public class MeetingService {
     }
 
     @Transactional
-    public MeetingDTO update(MeetingDTO meetingDTO) {
+    public MeetingDTO update(MeetingDTO meetingDTO) throws IOException {
         log.debug("Request to update Meeting : {}", meetingDTO);
+        meetingDTO = meetingDTO.toBuilder()
+                .links(findLinksForMeeting(meetingDTO))
+                .build();
         if (meetingRepository.existsById(meetingDTO.getId())) {
             Meeting meeting = fromDTO(meetingDTO);
             return toDTO(meetingRepository.saveAndFlush(meeting));

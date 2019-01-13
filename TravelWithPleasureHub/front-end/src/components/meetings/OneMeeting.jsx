@@ -24,9 +24,10 @@ export default class OneMeeting extends Component {
                 changed: false,
                 isSent: false,
                 isDeleted: false
-            }   ;
+            };
         this.sendRequest = this.sendRequest.bind(this);
         this.deleteMeeting = this.deleteMeeting.bind(this);
+        OneMeeting.showInformationAboutMeeting = OneMeeting.showInformationAboutMeeting.bind(this);
     }
 
 
@@ -45,14 +46,7 @@ export default class OneMeeting extends Component {
                 <div className="alert alert-info row h-100 justify-content-center align-items-center"> Request has
                     been
                     sent </div>}
-
-                <h1 className="display-4 row h-100 justify-content-center align-items-center">{value.meeting.header}</h1>
-                <p className="lead row h-100 justify-content-center align-items-center">Type of
-                    meeting: {value.meeting.meetingType}</p>
-                <p className="lead row h-100 justify-content-center align-items-center">Description: {value.meeting.content}</p>
-                <p className="lead row h-100 justify-content-center align-items-center">Address: {value.meeting.location}</p>
-                <p className="lead row h-100 justify-content-center align-items-center">Time:
-                    {value.meeting.timeOfAction.replace("T", " ").replace("+", " +")}</p>
+                {OneMeeting.showInformationAboutMeeting(value)}
 
                 {value.meeting.meetingType.toUpperCase() !== 'WALKING' && value.meeting.meetingType.toUpperCase() !== 'OTHER' ?
                     <h1 className="lead row h-100 justify-content-center align-items-center">
@@ -86,7 +80,7 @@ export default class OneMeeting extends Component {
                     </NavLink>
                 </h1>
 
-                {value.meeting.ownerId !== 1 && <div className="form-row text-center">
+                {value.meeting.ownerId !== 2 && <div className="form-row text-center">
                     <div className="col-12">
                         <button type="submit"
                                 className="btn btn-primary center-block widthButton"
@@ -96,7 +90,7 @@ export default class OneMeeting extends Component {
                     </div>
                 </div>
                 }
-                {value.meeting.ownerId === 1 && <div>
+                {value.meeting.ownerId === 2 && <div>
                     <div className="form-row text-center">
                         <div className="col-12">
                             <NavLink to={`/meetings/show-meeting/wishing-users/${value.meeting.id}`}>
@@ -109,25 +103,37 @@ export default class OneMeeting extends Component {
                     </div>
                     <div className="form-row text-right">
                         <div className="col-12">
-                            <div className="btn-group btn-group-toggle" data-toggle="buttons">
-                                <button type="submit"
-                                        className="btn btn-warning"
-                                        onClick={this.sendRequest}>
-                                    Edit
-                                </button>
+                                <NavLink to={`/meetings/edit/${value.meeting.id}`}>
+                                    <button type="submit"
+                                            className="btn btn-warning">
+                                        Edit
+                                    </button>
+                                </NavLink>
                                 <button type="submit"
                                         className="btn btn-danger"
                                         onClick={this.deleteMeeting}>
                                     Delete
                                 </button>
                             </div>
-                        </div>
                     </div>
                 </div>}
             </div>}
         </div>
     }
 
+
+    static showInformationAboutMeeting(value) {
+        return <div>
+            <h1
+                className="display-4 row h-100 justify-content-center align-items-center">{value.meeting.header}</h1>
+            <p className="lead row h-100 justify-content-center align-items-center">Type of
+                meeting: {value.meeting.meetingType}</p>
+            <p className="lead row h-100 justify-content-center align-items-center">Description: {value.meeting.content}</p>
+            <p className="lead row h-100 justify-content-center align-items-center">Address: {value.meeting.location}</p>
+            <p className="lead row h-100 justify-content-center align-items-center">Time:
+                {value.meeting.timeOfAction.replace("T", " ").replace("+", " +")}</p>
+        </div>
+    }
 
 
     componentDidMount() {
