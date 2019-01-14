@@ -30,7 +30,7 @@ export default class MeetingUpdate extends Component {
                 timeOfAction: "",
                 ownerId: -1,
 
-                isUpdated: false,
+                isUpdated: false
             };
         this.headerChange = this.headerChange.bind(this);
         this.meetingTypeChange = this.meetingTypeChange.bind(this);
@@ -89,7 +89,7 @@ export default class MeetingUpdate extends Component {
     }
 
     componentWillMount() {
-        axios.get(`http://localhost:8080/api/meetings/${this.props.match.params.id}`,
+        axios.get(`http://localhost:9000/api/meetings/${this.props.match.params.id}`,
         ).then(response => {
             this.setState({
                 meeting: response.data
@@ -112,7 +112,7 @@ export default class MeetingUpdate extends Component {
         formData.append("confirmedUserIds", value.meeting.confirmedUserIds.toString());
         formData.append("wishingUserIds", value.meeting.wishingUserIds.toString());
 
-        axios.put("http://localhost:8080/api/meetings",
+        axios.put("http://localhost:9000/api/meetings",
             formData
         ).then(response => {
             if (response.status === 200) {
@@ -175,7 +175,7 @@ export default class MeetingUpdate extends Component {
             <label>Description:</label>
             <textarea
                 className="form-control"
-                defaultValue={this.state.meeting.content}
+                defaultValue={this.state.meeting.content.toString()}
                 onChange={this.contentChange}
                 placeholder="Enter content of meeting"
             />

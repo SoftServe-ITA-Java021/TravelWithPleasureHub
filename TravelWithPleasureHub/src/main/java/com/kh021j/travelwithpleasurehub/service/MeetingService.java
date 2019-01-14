@@ -19,9 +19,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
+import java.time.*;
+import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -49,7 +48,7 @@ public class MeetingService {
                 .location(meetingDTO.getLocation())
                 .links(meetingDTO.getLinks())
                 .meetingType(MeetingType.valueOf(meetingDTO.getMeetingType().toUpperCase()))
-                .timeOfAction(OffsetDateTime.of(LocalDateTime.parse(meetingDTO.getTimeOfAction()), ZoneOffset.UTC))
+                .timeOfAction(ZonedDateTime.of(LocalDateTime.parse(meetingDTO.getTimeOfAction()),ZoneId.systemDefault()))
                 .owner(meetingDTO.getOwnerId() != null ?
                         userRepository.findById(meetingDTO.getOwnerId()).get()
                         : null)

@@ -92,7 +92,7 @@ public abstract class RepositoryBaseDomain {
         Meeting meeting = Meeting.builder()
                 .header("simple")
                 .content("asd")
-                .timeOfAction(OffsetDateTime.of(2018, 12, 12, 15, 30, 0, 0, ZoneOffset.UTC))
+//                .timeOfAction(OffsetDateTime.of(2018, 12, 12, 15, 30, 0, 0, ZoneOffset.UTC))
                 .location("dqwdwq")
                 .meetingType(MeetingType.CINEMA)
                 .links(Arrays.asList("1", "2"))

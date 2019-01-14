@@ -11,7 +11,7 @@ export default function getListWithAllMeetings(value) {
                 <NavLink className="nav-link" to={`/meetings/show-meeting/${item.id}`} key={item.id}>
                     <li className="list-group-item list-group-item-action flex-column align-items-start">
                         {item.header.charAt(0).toLocaleUpperCase() + item.header.slice(1)}.
-                        Address: {item.location}. Date: {new Date(item.timeOfAction).toUTCString()}
+                        Address: {item.location}. Date: {item.timeOfAction.substring(0,22).replace("T"," ").replace("+"," (+") + ")"}
                     </li>
                 </NavLink>
             ))}
