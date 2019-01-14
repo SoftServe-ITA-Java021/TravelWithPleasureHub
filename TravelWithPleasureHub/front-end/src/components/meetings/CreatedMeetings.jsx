@@ -1,6 +1,5 @@
 import React, {Component} from "react";
 import axios from "axios";
-import showList from './ShowMeetingsList'
 import MeetingNavbar from "./MeetingNavbar";
 import "./css/style.css"
 import JwPagination from 'jw-react-pagination';
