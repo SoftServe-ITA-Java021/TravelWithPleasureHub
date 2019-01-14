@@ -41,7 +41,7 @@ class App extends Component {
 								<Route exact path="/meetings/show-all-created-meetings" component={CreatedMeetings}/>
 								<Route exact path="/meetings/show-meeting/:id"  component={OneMeeting}/>
 								<Route exact path="/meetings/edit/:id" component={MeetingUpdate}/>
-								<Route exact path="/profile"  component={Profile}/>
+								<Route exact path="/profile/:id"  component={Profile}/>
 
 								<Route path="/tickets" component={TicketsForm}/>
                                 <Route exact path="/meetings/show-meeting/wishing-users/:id" component={WishingUsers}/>

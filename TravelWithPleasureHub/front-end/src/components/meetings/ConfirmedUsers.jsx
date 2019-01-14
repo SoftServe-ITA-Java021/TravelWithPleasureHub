@@ -41,7 +41,7 @@ export default class ConfirmedUsers extends Component {
                 </div>
                 {this.state.pageOfItems.map(item =>
                     <div key={item.id}>
-                        <NavLink className="nav-link" to={`/profile`} key={item.id}>
+                        <NavLink className="nav-link" to={`/profile/${item.id}`} key={item.id}>
                             <li className="list-group-item list-group-item-action flex-column align-items-start">
                                 {item.firstName}{" " + item.secondName}
                             </li>
