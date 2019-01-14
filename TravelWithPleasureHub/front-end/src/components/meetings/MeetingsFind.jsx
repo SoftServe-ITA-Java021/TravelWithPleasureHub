@@ -120,7 +120,7 @@ export default class MeetingsFind extends Component {
 
     handleChangeHeader(event) {
         let header = event.target.value;
-        axios.get(`http://localhost:9000/api/meetings`,
+        axios.get(`http://localhost:8080/api/meetings`,
             {
                 params: {
                     'headerFilter': header,
@@ -137,7 +137,7 @@ export default class MeetingsFind extends Component {
 
     handleChangeLocation(event) {
         let location = event.target.value;
-        axios.get(`http://localhost:9000/api/meetings`,
+        axios.get(`http://localhost:8080/api/meetings`,
             {
                 params: {
                     'headerFilter': this.state.header,
@@ -155,7 +155,7 @@ export default class MeetingsFind extends Component {
     handleChangeDatetime(event) {
         let date = event.target.value;
         console.log(date);
-        axios.get(`http://localhost:9000/api/meetings`,
+        axios.get(`http://localhost:8080/api/meetings`,
             {
                 params: {
                     'headerFilter': this.state.header,

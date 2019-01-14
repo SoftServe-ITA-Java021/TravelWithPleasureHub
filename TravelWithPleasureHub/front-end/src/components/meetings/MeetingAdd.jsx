@@ -75,7 +75,7 @@ export default class MeetingAdd extends Component {
     }
 
     // componentWillMount() {
-    //     axios.get("http://localhost:9000/profile"
+    //     axios.get("http://localhost:8080/profile"
     //     ).then(response => {
     //             this.setState({
     //                 user: response.data
@@ -96,7 +96,7 @@ export default class MeetingAdd extends Component {
         formData.append("timeOfAction", value.timeOfAction);
         formData.append("ownerId", JSON.stringify(2));
 
-        axios.post("http://localhost:9000/api/meetings",
+        axios.post("http://localhost:8080/api/meetings",
             formData
         ).then(response => {
             console.log("status = " + response.status);

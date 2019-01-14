@@ -63,7 +63,7 @@ export default class ConfirmedUsers extends Component {
     }
 
     componentWillMount() {
-        axios.get(`http://localhost:9000/api/meetings/confirmed-users/${this.props.match.params.id}`)
+        axios.get(`http://localhost:8080/api/meetings/confirmed-users/${this.props.match.params.id}`)
             .then(json => (this.setState({users: json.data, isDownloaded: true})));
     }
 

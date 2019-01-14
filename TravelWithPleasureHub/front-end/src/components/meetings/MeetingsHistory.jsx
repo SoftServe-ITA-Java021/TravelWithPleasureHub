@@ -83,7 +83,7 @@ export default class MeetingsHistory extends Component {
 
     confirmed(e) {
         e.preventDefault();
-        axios.get(`http://localhost:9000/api/meetings`,
+        axios.get(`http://localhost:8080/api/meetings`,
             {
                 params: {
                     confirmedHistoryByUser: "2"
@@ -94,7 +94,7 @@ export default class MeetingsHistory extends Component {
 
     wishing(e) {
         e.preventDefault();
-        axios.get(`http://localhost:9000/api/meetings`,
+        axios.get(`http://localhost:8080/api/meetings`,
             {
                 params: {
                     wishingHistoryByUser: "2"
