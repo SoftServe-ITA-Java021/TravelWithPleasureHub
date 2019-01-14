@@ -131,20 +131,7 @@ export default class OneMeeting extends Component {
             <p className="lead row h-100 justify-content-center align-items-center">Description: {value.meeting.content}</p>
             <p className="lead row h-100 justify-content-center align-items-center">Address: {value.meeting.location}</p>
             <p className="lead row h-100 justify-content-center align-items-center">
-                {new Date(value.meeting.timeOfAction).toUTCString()}
-            </p>
-
-            <p className="lead row h-100 justify-content-center align-items-center">
-                <div className="btn-group dropright ">
-                    <button type="button" className="btn btn-secondary dropdown-toggle center-block widthButton"
-                            data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
-                        In your local time
-                    </button>
-                    <div className="dropdown-menu">
-                        {new Date(value.meeting.timeOfAction).toLocaleString()}
-                    </div>
-                </div>
+              Date:  {value.meeting.timeOfAction.substring(0,22).replace("T"," ").replace("+"," (+") + ")"}
             </p>
         </div>
     }

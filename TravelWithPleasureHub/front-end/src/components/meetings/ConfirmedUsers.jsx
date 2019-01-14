@@ -1,9 +1,10 @@
 import React, {Component} from "react";
 import axios from "axios";
-// import showList from './ShowMeetingsList'
 import MeetingNavbar from "./MeetingNavbar";
 import "./css/style.css"
-import {NavLink} from "react-router-dom";
+import {NavLink} from "react-router-dom"
+import JwPagination from 'jw-react-pagination';
+import pStyle from './css/pagination.css';
 
 
 export default class ConfirmedUsers extends Component {
@@ -21,9 +22,11 @@ export default class ConfirmedUsers extends Component {
                     phoneNumber: ""
                 }],
 
+                pageOfItems: [],
                 isDownloaded: false,
                 isConfirmed: false
             };
+        this.onChangePage = this.onChangePage.bind(this);
     }
 
     render() {
@@ -36,21 +39,36 @@ export default class ConfirmedUsers extends Component {
                     className="alert alert-light bg-light row h-100 justify-content-center align-items-center"> You're
                     watching users that are confirmed
                 </div>
-                {value.users.map(item => (
-                    <NavLink className="nav-link" to={`/profile`} key={item.id}>
-                        <li className="list-group-item list-group-item-action flex-column align-items-start">
-                            {item.firstName}{" " + item.secondName}
-                        </li>
-                    </NavLink>
-                ))}
+                {this.state.pageOfItems.map(item =>
+                    <div key={item.id}>
+                        <NavLink className="nav-link" to={`/profile`} key={item.id}>
+                            <li className="list-group-item list-group-item-action flex-column align-items-start">
+                                {item.firstName}{" " + item.secondName}
+                            </li>
+                        </NavLink>
+                    </div>)}
+
+                <div className="form-row text-center">
+                    <div className="col-12">
+                        <JwPagination
+                            items={value.users}
+                            onChangePage={this.onChangePage}
+                            pageSize={6}
+                            styles={pStyle}/>
+                    </div>
+                </div>
             </div>
             }
         </div>
     }
 
-    componentDidMount() {
+    componentWillMount() {
         axios.get(`http://localhost:8080/api/meetings/confirmed-users/${this.props.match.params.id}`)
             .then(json => (this.setState({users: json.data, isDownloaded: true})));
+    }
+
+    onChangePage(pageOfItems) {
+        this.setState({pageOfItems});
     }
 
 }

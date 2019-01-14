@@ -1,9 +1,10 @@
 import React, {Component} from "react";
 import axios from "axios";
-// import showList from './ShowMeetingsList'
 import MeetingNavbar from "./MeetingNavbar";
 import "./css/style.css"
 import {NavLink} from "react-router-dom";
+import JwPagination from 'jw-react-pagination';
+import pStyle from './css/pagination.css';
 
 
 export default class WishingUsers extends Component {
@@ -22,8 +23,12 @@ export default class WishingUsers extends Component {
                 }],
 
                 isDownloaded: false,
-                isConfirmed: false
+                isConfirmed: false,
+                pageOfItems: []
+
             };
+        this.onChangePage = this.onChangePage.bind(this);
+
     }
 
     render() {
@@ -36,7 +41,7 @@ export default class WishingUsers extends Component {
                     className="alert alert-light bg-light row h-100 justify-content-center align-items-center"> You're
                     watching users that want to go with you
                 </div>
-                {value.users.map(item => (
+                {this.state.pageOfItems.map(item =>
                     <NavLink className="nav-link" to={`/profile`} key={item.id}>
                         <li className="list-group-item list-group-item-action flex-column align-items-start">
                             {item.firstName}{" " + item.secondName}
@@ -50,22 +55,30 @@ export default class WishingUsers extends Component {
                             </button>
                         </li>
                     </NavLink>
-
-                ))}
+                )}
+                <div className="form-row text-center">
+                    <div className="col-12">
+                        <JwPagination
+                            items={value.users}
+                            onChangePage={this.onChangePage}
+                            pageSize={6}
+                            styles={pStyle}/>
+                    </div>
+                </div>
             </div>
             }
         </div>
     }
 
-    componentDidMount() {
-        axios.get(`http://localhost:9000/api/meetings/wishing-users/${this.props.match.params.id}`)
+    componentWillMount() {
+        axios.get(`http://localhost:8080/api/meetings/wishing-users/${this.props.match.params.id}`)
             .then(json => (this.setState({users: json.data, isDownloaded: true})));
     }
 
 
     submit(param, e) {
         e.preventDefault();
-        axios.get("http://localhost:9000/api/meetings/confirm-meeting/", {
+        axios.get("http://localhost:8080/api/meetings/confirm-meeting/", {
             headers: {
                 'Access-Control-Allow-Credentials': 'include'
             },
@@ -73,13 +86,13 @@ export default class WishingUsers extends Component {
                 meetingId: this.props.match.params.id,
                 wishingUserId: param
             }
-        }).then(() => (axios.get(`http://localhost:9000/api/meetings/wishing-users/${this.props.match.params.id}`)
+        }).then(() => (axios.get(`http://localhost:8080/api/meetings/wishing-users/${this.props.match.params.id}`)
             .then(json => (this.setState({users: json.data, isDownloaded: true})))))
     }
 
     reject(param, e) {
         e.preventDefault();
-        axios.get("http://localhost:9000/api/meetings/reject/", {
+        axios.get("http://localhost:8080/api/meetings/reject/", {
             headers: {
                 'Access-Control-Allow-Credentials': 'include'
             },
@@ -87,8 +100,11 @@ export default class WishingUsers extends Component {
                 meetingId: this.props.match.params.id,
                 wishingUserId: param
             }
-        }).then(() => (axios.get(`http://localhost:9000/api/meetings/wishing-users/${this.props.match.params.id}`)
+        }).then(() => (axios.get(`http://localhost:8080/api/meetings/wishing-users/${this.props.match.params.id}`)
             .then(json => (this.setState({users: json.data, isDownloaded: true})))))
     }
 
+    onChangePage(pageOfItems) {
+        this.setState({pageOfItems});
+    }
 }

@@ -41,7 +41,7 @@ public class Meeting {
     private List<String> links;
 
     @Column(name = "date_time", nullable = false)
-    private OffsetDateTime timeOfAction;
+    private ZonedDateTime timeOfAction;
 
     @OneToOne
     @JoinColumn(name = "owner_id")

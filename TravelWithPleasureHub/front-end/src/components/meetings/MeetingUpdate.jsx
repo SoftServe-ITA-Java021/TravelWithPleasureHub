@@ -30,7 +30,7 @@ export default class MeetingUpdate extends Component {
                 timeOfAction: "",
                 ownerId: -1,
 
-                isUpdated: false,
+                isUpdated: false
             };
         this.headerChange = this.headerChange.bind(this);
         this.meetingTypeChange = this.meetingTypeChange.bind(this);
@@ -175,7 +175,7 @@ export default class MeetingUpdate extends Component {
             <label>Description:</label>
             <textarea
                 className="form-control"
-                defaultValue={this.state.meeting.content}
+                defaultValue={this.state.meeting.content.toString()}
                 onChange={this.contentChange}
                 placeholder="Enter content of meeting"
             />
