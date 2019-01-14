@@ -67,7 +67,6 @@ export default class OneMeeting extends Component {
                     </h1>
                     : ""}
 
-                <h1 className="lead row h-100 justify-content-center align-items-center">
                     <NavLink to={`/meetings/show-meeting/confirmed-users/${value.meeting.id}`}>
                         <div className="form-row text-center">
                             <div className="col-12">
@@ -78,7 +77,17 @@ export default class OneMeeting extends Component {
                             </div>
                         </div>
                     </NavLink>
-                </h1>
+
+                {value.meeting.ownerId !== 2 && <div className="form-row text-center">
+                    <div className="col-12">
+                        <NavLink className="nav-link" to={`/profile/${value.meeting.ownerId}`}>
+                            <button type="submit"
+                                    className="btn btn-primary center-block widthButton">
+                                Organizer
+                            </button>
+                        </NavLink>
+                    </div>
+                </div>}
 
                 {value.meeting.ownerId !== 2 && <div className="form-row text-center">
                     <div className="col-12">
@@ -90,6 +99,8 @@ export default class OneMeeting extends Component {
                     </div>
                 </div>
                 }
+
+
                 {value.meeting.ownerId === 2 && <div>
                     <div className="form-row text-center">
                         <div className="col-12">
@@ -131,7 +142,7 @@ export default class OneMeeting extends Component {
             <p className="lead row h-100 justify-content-center align-items-center">Description: {value.meeting.content}</p>
             <p className="lead row h-100 justify-content-center align-items-center">Address: {value.meeting.location}</p>
             <p className="lead row h-100 justify-content-center align-items-center">
-              Date:  {value.meeting.timeOfAction.substring(0,22).replace("T"," ").replace("+"," (+") + ")"}
+                Date: {value.meeting.timeOfAction.substring(0, 22).replace("T", " ").replace("+", " (+") + ")"}
             </p>
         </div>
     }

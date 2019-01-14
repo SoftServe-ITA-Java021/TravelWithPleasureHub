@@ -42,7 +42,7 @@ export default class WishingUsers extends Component {
                     watching users that want to go with you
                 </div>
                 {this.state.pageOfItems.map(item =>
-                    <NavLink className="nav-link" to={`/profile`} key={item.id}>
+                    <NavLink className="nav-link" to={`/profile/${item.id}`} key={item.id}>
                         <li className="list-group-item list-group-item-action flex-column align-items-start">
                             {item.firstName}{" " + item.secondName}
                             <button type="submit" className="close" aria-label="Close"
