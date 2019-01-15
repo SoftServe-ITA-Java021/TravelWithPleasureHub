@@ -48,7 +48,7 @@ public class MeetingService {
                 .location(meetingDTO.getLocation())
                 .links(meetingDTO.getLinks())
                 .meetingType(MeetingType.valueOf(meetingDTO.getMeetingType().toUpperCase()))
-                .timeOfAction(ZonedDateTime.of(LocalDateTime.parse(meetingDTO.getTimeOfAction()),ZoneId.systemDefault()))
+                .timeOfAction(ZonedDateTime.of(LocalDateTime.parse(meetingDTO.getTimeOfAction()), ZoneId.systemDefault()))
                 .owner(meetingDTO.getOwnerId() != null ?
                         userRepository.findById(meetingDTO.getOwnerId()).get()
                         : null)
@@ -122,9 +122,11 @@ public class MeetingService {
         }
         User user = userRepository.findById(userId).get();
         Meeting meeting = meetingRepository.findById(meetingId).get();
-        meeting = meeting.toBuilder()
-                .wishingUsers(addUserInWishingList(user, meeting))
-                .build();
+        if (!meeting.getConfirmedUsers().contains(user)) {
+            meeting = meeting.toBuilder()
+                    .wishingUsers(addUserInWishingList(user, meeting))
+                    .build();
+        }
         return toDTO(meetingRepository.saveAndFlush(meeting));
     }
 
