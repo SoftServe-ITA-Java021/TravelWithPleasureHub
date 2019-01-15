@@ -24,7 +24,7 @@ export default class MeetingUpdate extends Component {
 
                 id: this.props.match.params.id,
                 header: "",
-                meetingType: "walking",
+                meetingType: "",
                 content: "",
                 location: "",
                 timeOfAction: "",
