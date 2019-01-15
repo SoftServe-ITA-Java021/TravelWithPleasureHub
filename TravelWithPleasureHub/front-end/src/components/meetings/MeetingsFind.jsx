@@ -57,7 +57,7 @@ export default class MeetingsFind extends Component {
 
                     {value.showAll && (value.header.length > 0 || value.location.length > 0 || value.datetime.length > 0)
                     &&
-                    this.state.pageOfItems.map(item =>
+                    value.pageOfItems.map(item =>
                         <div key={item.id}>
                             <NavLink className="nav-link" to={`/meetings/show-meeting/${item.id}`}
                                      key={item.id}>

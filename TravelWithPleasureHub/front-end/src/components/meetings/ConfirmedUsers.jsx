@@ -39,7 +39,7 @@ export default class ConfirmedUsers extends Component {
                     className="alert alert-light bg-light row h-100 justify-content-center align-items-center"> You're
                     watching users that are confirmed
                 </div>
-                {this.state.pageOfItems.map(item =>
+                {value.pageOfItems.map(item =>
                     <div key={item.id}>
                         <NavLink className="nav-link" to={`/profile/${item.id}`} key={item.id}>
                             <li className="list-group-item list-group-item-action flex-column align-items-start">
