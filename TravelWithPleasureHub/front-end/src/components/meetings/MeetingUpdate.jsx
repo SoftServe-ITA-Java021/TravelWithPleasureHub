@@ -140,30 +140,31 @@ export default class MeetingUpdate extends Component {
     meetingTypeBody() {
         return <div className="form-group row h-100 justify-content-center align-items-center">
             <label>Meeting type:</label>
-            <select className="form-control" value={this.state.meetingType}
+            <select className="form-control"
+                    value={this.state.meeting.meetingType}
                     onChange={this.meetingTypeChange}>
                 <option
-                    value="Walking">
+                    value="WALKING">
                     Walking
                 </option>
                 <option
-                    value="Theatre">
+                    value="THEATRE">
                     Theatre
                 </option>
                 <option
-                    value="Cinema">
+                    value="CINEMA">
                     Cinema
                 </option>
                 <option
-                    value="Concert">
+                    value="CONCERT">
                     Concert
                 </option>
                 <option
-                    value="Football_match">
+                    value="FOOTBALL_MATCH">
                     Football match
                 </option>
                 <option
-                    value="Other">
+                    value="OTHER">
                     Other
                 </option>
             </select>
@@ -175,7 +176,7 @@ export default class MeetingUpdate extends Component {
             <label>Description:</label>
             <textarea
                 className="form-control"
-                defaultValue={this.state.meeting.content.toString()}
+                value={this.state.meeting.content}
                 onChange={this.contentChange}
                 placeholder="Enter content of meeting"
             />
@@ -206,7 +207,7 @@ export default class MeetingUpdate extends Component {
                 required
                 type="datetime-local"
                 className="form-control"
-                value={this.state.timeOfAction}
+                value={this.state.meeting.timeOfAction.substring(0,16)}
                 onChange={this.timeOfActionChange}
             />
         </div>
