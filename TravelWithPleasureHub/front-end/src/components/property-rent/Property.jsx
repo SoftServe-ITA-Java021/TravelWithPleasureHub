@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import Calendar from 'react-calendar';
 import moment from 'moment';
 
@@ -28,12 +28,14 @@ class Property extends Component {
 		fetch(`http://localhost:8080/api/properties/${this.props.match.params.id}`)
 			.then(response => response.json())
 			.then(response => this.setState(response))
+			.catch(error => console.log(error))
 	};
 
 	loadImages = () => {
 		fetch(`http://localhost:8080/api/property-image/property/${this.props.match.params.id}`)
 			.then(response => response.json())
 			.then(responseJSON => this.setState({imageLinkObjects: responseJSON}))
+			.catch(error => console.log(error))
 	};
 
 	loadPropertyAvailability = () => {
@@ -45,6 +47,7 @@ class Property extends Component {
 					propertyBookedDates: this.getAllBookedDates(response)
 				})
 			})
+			.catch(error => { throw error } )
 	};
 
 	componentWillMount() {
@@ -113,6 +116,7 @@ class Property extends Component {
 		})
 			.then(response => response.json())
 			.then(response => console.log(response))
+			.catch(error => { throw error } )
 	};
 
 

@@ -1,3 +1,7 @@
+import React, {Component} from 'react'
+import './style/style.css'
+import img from 'D:/IdeaProjects/TravelWithPleasureHub/TravelWithPleasureHub/front-end/src/components/tickets/image/Kontur-samolyotika_91282.png'
+
 function Flight(props) {
     return (
         <div className="container-fluid">
@@ -18,7 +22,7 @@ function Flight(props) {
                         <h5 className="text-muted">Duration: </h5>
                         <h5><p>{props.flight.duration}</p></h5>
                         <img className="img-fluid"
-                             src="img/Kontur-samolyotika_91282.png"
+                             src={img}
                              alt="Plane"
                              width={50}
                              height={120}/>
@@ -32,7 +36,7 @@ function Flight(props) {
                         <div className="from text-muted"><h5>From</h5></div>
                         <h4 className="color">{props.flight.price}</h4>
                         <a href={props.flight.link}>
-                            <button className="btn btn-info btn-lg">BUY</button>
+                            <button className="btn btn-primary btn-lg">BUY</button>
                         </a>
                     </div>
                 </div>
@@ -41,7 +45,7 @@ function Flight(props) {
     )
 }
 
-class FlightInfo extends React.Component {
+class FlightInfo extends Component {
 
     constructor(props) {
         super(props);
@@ -51,7 +55,7 @@ class FlightInfo extends React.Component {
                 {
                     name: "belavia",
                     price: "200$",
-                    img: "img/Logo-belavia.png",
+                    img: "image/Logo-belavia.png",
                     origin: "IEV",
                     destination: "BUD",
                     departureDateTime: "25.01.2019 19:00",
@@ -62,7 +66,7 @@ class FlightInfo extends React.Component {
                 {
                     name: "Turkish Airlines",
                     price: "300$",
-                    img: "img/Turkish-Airlines-Logo.png",
+                    img: "image/Turkish-Airlines-Logo.png",
                     origin: "IEV",
                     destination: "BUD",
                     departureDateTime: "25.01.2019 19:00",
@@ -73,7 +77,7 @@ class FlightInfo extends React.Component {
                 {
                     name: "Singapore Airlines",
                     price: "400$",
-                    img: "img/singaporeairlines.png",
+                    img: "front-end/src/components/tickets/image/singaporeairlines.png",
                     origin: "IEV",
                     destination: "BUD",
                     departureDateTime: "25.01.2019 19:00",
@@ -107,4 +111,4 @@ class FlightInfo extends React.Component {
     }
 }
 
-ReactDOM.render(<FlightInfo/>, document.getElementById("root"))
+export default FlightInfo;

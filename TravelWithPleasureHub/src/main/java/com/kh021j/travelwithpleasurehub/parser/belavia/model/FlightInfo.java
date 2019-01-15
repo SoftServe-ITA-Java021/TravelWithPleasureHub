@@ -1,8 +1,9 @@
 
-package com.kh021j.travelwithpleasurehub.parser.Belavia.model;
+package com.kh021j.travelwithpleasurehub.parser.belavia.model;
 
-import com.kh021j.travelwithpleasurehub.parser.Belavia.model.enums.Currency;
+import com.kh021j.travelwithpleasurehub.parser.belavia.model.enums.Currency;
 import lombok.*;
+import org.springframework.stereotype.Component;
 
 @Getter
 @Setter
@@ -10,6 +11,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Component
 public class FlightInfo {
 
     private String price;

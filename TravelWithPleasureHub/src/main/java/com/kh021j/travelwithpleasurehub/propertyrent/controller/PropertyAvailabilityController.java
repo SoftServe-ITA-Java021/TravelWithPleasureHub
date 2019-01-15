@@ -19,8 +19,6 @@ public class PropertyAvailabilityController {
     @Autowired
     private PropertyAvailabilityService propertyAvailabilityService;
 
-    @Autowired
-    private PropertyRepository propertyRepository;
 
     @GetMapping
     public @ResponseBody Iterable<PropertyAvailability> getAllPropertyAvailabilities(){

@@ -16,7 +16,7 @@ export default class MeetingNavbar extends Component {
 			                <ul className="navbar-nav">
 			                    <li className="nav-item active">
 			                        <NavLink className="nav-link" to="/meetings/show-all-meetings">
-			                            <button className="btn btn-secondary">
+			                            <button className="btn btn-dark">
 			                                View all meetings
 			                            </button>
 
@@ -24,28 +24,28 @@ export default class MeetingNavbar extends Component {
 			                    </li>
 			                    <li className="nav-item">
 			                        <NavLink className="nav-link" to="/meetings/find-meetings">
-			                            <button className="btn btn-secondary">
+			                            <button className="btn btn-dark">
 			                                Find meetings
 			                            </button>
 			                        </NavLink>
 			                    </li>
 			                    <li className="nav-item">
 			                        <NavLink className="nav-link" to="/meetings/show-history">
-			                            <button className="btn btn-secondary">
+			                            <button className="btn btn-dark">
 			                                View history
 			                            </button>
 			                        </NavLink>
 			                    </li>
 			                    <li className="nav-item dropdown">
 			                        <NavLink className="nav-link" to="/meetings/show-all-created-meetings">
-			                            <button className="btn btn-secondary">
+			                            <button className="btn btn-dark">
 			                                Your meetings
 			                            </button>
 			                        </NavLink>
 			                    </li>
 			                    <li className="nav-item dropdown">
 			                        <NavLink className="nav-link" to="/meetings/add-meeting">
-			                            <button className="btn btn-success">
+			                            <button className="btn btn-primary">
 			                                Create meeting
 			                            </button>
 			                        </NavLink>
@@ -56,6 +56,5 @@ export default class MeetingNavbar extends Component {
 		        </div>
 	        </div>
         )
-
     }
 }

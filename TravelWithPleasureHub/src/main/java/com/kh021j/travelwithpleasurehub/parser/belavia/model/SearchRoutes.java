@@ -1,7 +1,8 @@
-package com.kh021j.travelwithpleasurehub.parser.Belavia.model;
+package com.kh021j.travelwithpleasurehub.parser.belavia.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
+import org.springframework.stereotype.Component;
 
 @Getter
 @Setter
@@ -9,6 +10,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Component
 public class SearchRoutes {
 
     @JsonProperty

@@ -1,9 +1,10 @@
 
-package com.kh021j.travelwithpleasurehub.parser.Belavia.model;
+package com.kh021j.travelwithpleasurehub.parser.belavia.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.kh021j.travelwithpleasurehub.parser.Belavia.model.enums.Currency;
+import com.kh021j.travelwithpleasurehub.parser.belavia.model.enums.Currency;
 import lombok.*;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Component
 public class BelaviaJson {
 
     @JsonProperty

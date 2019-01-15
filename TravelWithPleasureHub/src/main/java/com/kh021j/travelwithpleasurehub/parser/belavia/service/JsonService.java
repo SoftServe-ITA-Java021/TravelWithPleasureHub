@@ -1,9 +1,9 @@
 
-package com.kh021j.travelwithpleasurehub.parser.Belavia.service;
+package com.kh021j.travelwithpleasurehub.parser.belavia.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kh021j.travelwithpleasurehub.parser.Belavia.BelaviaConnection;
+import com.kh021j.travelwithpleasurehub.parser.belavia.BelaviaConnection;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,9 +14,8 @@ import java.nio.charset.StandardCharsets;
 
 public class JsonService {
 
-    private static HttpURLConnection connection;
-
-    static {
+    private  HttpURLConnection connection;
+     {
         try {
             connection = new BelaviaConnection().createConnection();
         } catch (IOException e) {

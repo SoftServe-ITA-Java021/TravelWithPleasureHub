@@ -93,5 +93,4 @@ public class PropertyService {
                         .orElse(new ArrayList<>());
         }
     }
-
 }

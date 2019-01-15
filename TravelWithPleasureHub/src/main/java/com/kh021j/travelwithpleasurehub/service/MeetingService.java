@@ -195,7 +195,6 @@ public class MeetingService {
         return meetingRepository.findAllByFilter(headerFilter,
                 locationFilter,
                 timeFilter.replace("T", " ")).stream()
-                .filter(o -> o.getTimeOfAction().isAfter(LocalDateTime.now()))
                 .map(this::toDTO)
                 .collect(Collectors.toList());
     }
@@ -233,7 +232,7 @@ public class MeetingService {
             return null;
         }
         String reference = "https://search.yahoo.com/search?p=" + countryAndCity[0].trim() + "+" + countryAndCity[1].trim()
-                + "+buy+" + meetingDTO.getMeetingType() + "+tickets&fr=yfp-t&fp=1&toggle=1&cop=mss&ei=UTF-8";
+                + "+buy+" + meetingDTO.getMeetingType() + "&fr=yfp-t&fp=1&toggle=1&cop=mss&ei=UTF-8";
         Document document = Jsoup.connect(reference).timeout(10000).get();
         Elements elements = document.select("h3").select(".title").select("a");
         for (int i = 0; i < 4; i++) {

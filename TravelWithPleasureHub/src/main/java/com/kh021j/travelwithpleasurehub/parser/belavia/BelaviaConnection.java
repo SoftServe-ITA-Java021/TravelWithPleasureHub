@@ -1,4 +1,4 @@
-package com.kh021j.travelwithpleasurehub.parser.Belavia;
+package com.kh021j.travelwithpleasurehub.parser.belavia;
 
 import com.kh021j.travelwithpleasurehub.parser.Connection;
 import java.io.*;
@@ -6,7 +6,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class BelaviaConnection implements Connection {
-    private final String QUERY_URL = "https://ibe.belavia.by/api/flightsv2/outbound";
+    private final String QUERY_URL = "https://ibe.belavia.by/api/flights/outbound";
     private HttpURLConnection connection;
 
     @Override
