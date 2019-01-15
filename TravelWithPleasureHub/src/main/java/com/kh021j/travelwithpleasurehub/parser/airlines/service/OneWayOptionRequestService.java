@@ -1,5 +1,6 @@
-package com.kh021j.travelwithpleasurehub.parser.airlines;
+package com.kh021j.travelwithpleasurehub.parser.airlines.service;
 
+import com.kh021j.travelwithpleasurehub.parser.airlines.model.RequestModel;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.HttpResponse;
