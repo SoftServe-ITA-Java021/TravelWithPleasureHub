@@ -66,19 +66,19 @@ export default class OneMeeting extends Component {
                         </div>
                     </h1>
                     : ""}
-
-                    <NavLink to={`/meetings/show-meeting/confirmed-users/${value.meeting.id}`}>
-                        <div className="form-row text-center">
-                            <div className="col-12">
-                                <button type="submit"
-                                        className="btn btn-primary center-block widthButton">
-                                    Who's going to meet
-                                </button>
-                            </div>
+                <NavLink to={`/meetings/show-meeting/confirmed-users/${value.meeting.id}`}>
+                    <div className="form-row text-center">
+                        <div className="col-12">
+                            <button type="submit"
+                                    className="btn btn-primary center-block widthButton">
+                                Who's going to meet
+                            </button>
                         </div>
-                    </NavLink>
+                    </div>
+                </NavLink>
 
-                {value.meeting.ownerId !== 2 && <div className="form-row text-center">
+                {value.meeting.ownerId !== 2 &&
+                <div className="form-row text-center">
                     <div className="col-12">
                         <NavLink className="nav-link" to={`/profile/${value.meeting.ownerId}`}>
                             <button type="submit"
@@ -102,16 +102,19 @@ export default class OneMeeting extends Component {
 
 
                 {value.meeting.ownerId === 2 && <div>
-                    <div className="form-row text-center">
-                        <div className="col-12">
-                            <NavLink to={`/meetings/show-meeting/wishing-users/${value.meeting.id}`}>
-                                <button type="submit"
-                                        className="btn btn-primary widthButton">
-                                    Wishing people
-                                </button>
-                            </NavLink>
+                        <div className="form-row text-center">
+                            <div className="col-12">
+                                <NavLink to={`/meetings/show-meeting/wishing-users/${value.meeting.id}`}>
+                                    <h1 className="lead row h-100 justify-content-center align-items-center">
+                                    <button type="submit"
+                                            className="btn btn-primary widthButton">
+                                        Wishing people
+                                    </button>
+                                    </h1>
+                                </NavLink>
+                            </div>
                         </div>
-                    </div>
+
                     <div className="form-row text-right">
                         <div className="col-12">
                             <NavLink to={`/meetings/edit/${value.meeting.id}`}>

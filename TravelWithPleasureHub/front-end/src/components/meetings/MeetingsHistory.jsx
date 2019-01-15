@@ -56,7 +56,7 @@ export default class MeetingsHistory extends Component {
                     watching meetings where you are {value.confirmed ? " confirmed" : "wishing want to be"} participant
                 </div>}
                 {value.meetings.length > 0 && value.meetings[0].id !== -1 &&
-                this.state.pageOfItems.map(item =>
+                value.pageOfItems.map(item =>
                     <div key={item.id}>
                         <NavLink className="nav-link" to={`/meetings/show-meeting/${item.id}`}
                                  key={item.id}>

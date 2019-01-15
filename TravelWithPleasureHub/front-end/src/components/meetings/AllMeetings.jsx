@@ -35,7 +35,7 @@ export default class AllMeetings extends Component {
                     watching all meetings
                 </div>
 
-                {this.state.pageOfItems.map(item =>
+                {value.meetings.length > 0 && value.meetings[0].id !== -1 && value.pageOfItems.map(item =>
                     <div key={item.id}>
                         <NavLink className="nav-link" to={`/meetings/show-meeting/${item.id}`}
                                  key={item.id}>
