@@ -1,7 +1,6 @@
 
 package com.kh021j.travelwithpleasurehub.tickets.parser.belavia.model;
 
-import com.kh021j.travelwithpleasurehub.tickets.parser.belavia.model.enums.Currency;
 import lombok.*;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +14,7 @@ import org.springframework.stereotype.Component;
 public class FlightInfo {
 
     private String price;
-    private Currency currency;
+    private String currency;
     private String departureDateTime;
     private String arrivalDateTime;
     private String duration;
