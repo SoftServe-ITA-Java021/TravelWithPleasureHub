@@ -1,4 +1,3 @@
-
 package com.kh021j.travelwithpleasurehub.tickets.parser;
 
 import java.io.IOException;

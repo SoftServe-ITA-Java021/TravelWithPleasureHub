@@ -1,7 +1,8 @@
 
-package com.kh021j.travelwithpleasurehub.tickets.parser.Belavia.model;
+package com.kh021j.travelwithpleasurehub.tickets.parser.belavia.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.kh021j.travelwithpleasurehub.tickets.parser.belavia.model.enums.PassengerCode;
 import lombok.*;
 
 @Getter
@@ -13,7 +14,7 @@ import lombok.*;
 public class PassengerQuantities {
 
     @JsonProperty
-    private String code;
+    private PassengerCode code;
     @JsonProperty
     private int quantity;
 

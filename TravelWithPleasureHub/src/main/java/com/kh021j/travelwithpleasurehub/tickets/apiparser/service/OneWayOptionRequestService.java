@@ -1,16 +1,15 @@
 package com.kh021j.travelwithpleasurehub.tickets.apiparser.service;
 
-
-import com.mashape.unirest.http.Unirest;
-import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.HttpResponse;
-import org.springframework.stereotype.Service;
-import com.mashape.unirest.request.HttpRequestWithBody;
-import com.mashape.unirest.http.exceptions.UnirestException;
 import com.kh021j.travelwithpleasurehub.tickets.apiparser.model.RequestModel;
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
+import com.mashape.unirest.request.HttpRequestWithBody;
+import org.springframework.stereotype.Service;
 
 @Service
-public class RequestService {
+public class OneWayOptionRequestService {
 
     private String formatDate(String pickedPlace) {
 
@@ -29,14 +28,15 @@ public class RequestService {
         HttpRequestWithBody session = setRequestHeader();
 
         return session.field("country", requestModel.getCountry())
+                .field("currency", requestModel.getCurrency())
                 .field("locale", requestModel.getLocale())
                 .field("originPlace", formatDate(requestModel.getOriginPlace()))
                 .field("destinationPlace", formatDate(requestModel.getDestinationPlace()))
                 .field("outboundDate", requestModel.getOutboundDate())
                 .field("adults", requestModel.getAdults())
+                .field("cabinClass", requestModel.getCabinClass())
                 .field("children", requestModel.getChildren())
                 .field("infants", requestModel.getInfants())
-                .field("cabinClass", requestModel.getCabinType().toString().toLowerCase())
                 .asJson();
     }
 
