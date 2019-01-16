@@ -4,13 +4,15 @@ package com.kh021j.travelwithpleasurehub.tickets.apiparser.service;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.HttpResponse;
+import net.bytebuddy.description.method.MethodDescription;
+import org.json.JSONException;
 import org.springframework.stereotype.Service;
 import com.mashape.unirest.request.HttpRequestWithBody;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.kh021j.travelwithpleasurehub.tickets.apiparser.model.RequestModel;
 
 @Service
-public class RequestService {
+public class OneWayOptionRequestService {
 
     private String formatDate(String pickedPlace) {
 
@@ -29,14 +31,15 @@ public class RequestService {
         HttpRequestWithBody session = setRequestHeader();
 
         return session.field("country", requestModel.getCountry())
+                .field("currency", requestModel.getCurrency())
                 .field("locale", requestModel.getLocale())
                 .field("originPlace", formatDate(requestModel.getOriginPlace()))
                 .field("destinationPlace", formatDate(requestModel.getDestinationPlace()))
                 .field("outboundDate", requestModel.getOutboundDate())
                 .field("adults", requestModel.getAdults())
+                .field("cabinClass", requestModel.getCabinType())
                 .field("children", requestModel.getChildren())
                 .field("infants", requestModel.getInfants())
-                .field("cabinClass", requestModel.getCabinType().toString().toLowerCase())
                 .asJson();
     }
 
@@ -57,6 +60,8 @@ public class RequestService {
 
     public JsonNode sendResponseToController(RequestModel requestModel) throws UnirestException {
 
-        return getAllItineraries(getSessionKey(requestModel)).getBody();
+        // TODO: 1/15/2019 always retrieve "UpdatesPending" in first request. Need to resolve it.
+        JsonNode jsonNode = getAllItineraries(getSessionKey(requestModel)).getBody();
+        return jsonNode;
     }
 }

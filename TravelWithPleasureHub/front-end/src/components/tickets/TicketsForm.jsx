@@ -27,57 +27,20 @@ class TicketsForm extends Component {
 
             result: []
         };
+
+        this.onInputChange = this.onInputChange.bind(this);
+
         this.onTripTypeChange = this.onTripTypeChange.bind(this);
-        this.onOriginLocationChange = this.onOriginLocationChange.bind(this);
-        this.onDestinationLocationChange = this.onDestinationLocationChange.bind(this);
-        this.onDepartureDateChange = this.onDepartureDateChange.bind(this);
-        // this.onArrivalDateChange = this.onArrivalDateChange.bind(this);
-        this.onAdultsOptionChange = this.onAdultsOptionChange.bind(this);
-        this.onChildrenOptionChange = this.onChildrenOptionChange.bind(this);
-        this.onInfantsOptionChange = this.onInfantsOptionChange.bind(this);
-        this.onTravelClassChange = this.onTravelClassChange.bind(this);
         this.onHandle = this.onHandle.bind(this);
-        this.onCurrencyChange = this.onCurrencyChange.bind(this)
+    }
+
+    onInputChange(event) {
+        const name = event.target.name;
+        this.setState({[name]: event.target.value})
     }
 
     onTripTypeChange(event) {
         this.setState({tripType: event.target.value})
-    }
-
-    onOriginLocationChange(event) {
-        this.setState({originPlace: event.target.value})
-    }
-
-    onDestinationLocationChange(event) {
-        this.setState({destinationPlace: event.target.value})
-    }
-
-    onDepartureDateChange(event) {
-        this.setState({outboundDate: event.target.value})
-    }
-
-    // onArrivalDateChange(event) {
-    //     this.setState({inboundDate: event.target.value})
-    // }
-
-    onAdultsOptionChange(event) {
-        this.setState({adults: event.target.value})
-    }
-
-    onChildrenOptionChange(event) {
-        this.setState({children: event.target.value})
-    }
-
-    onInfantsOptionChange(event) {
-        this.setState({infants: event.target.value})
-    }
-
-    onTravelClassChange(event) {
-        this.setState({cabinType: event.target.value})
-    }
-
-    onCurrencyChange(event) {
-        this.setState({currency: event.target.value})
     }
 
     onLoad = () => {
@@ -134,9 +97,11 @@ class TicketsForm extends Component {
                                         <div className="col-md-6">
                                             <div className="form-group">
                                                 <span className="form-label">Flying from</span>
-                                                <input className="form-control" type="text"
+                                                <input className="form-control"
+                                                       type="text"
+                                                       name="originPlace"
                                                        value={this.state.originPlace}
-                                                       onChange={this.onOriginLocationChange}
+                                                       onChange={this.onInputChange}
                                                        placeholder="City of airport"/>
                                             </div>
                                         </div>
@@ -144,8 +109,9 @@ class TicketsForm extends Component {
                                             <div className="form-group">
                                                 <span className="form-label">Flying to</span>
                                                 <input className="form-control" type="text"
+                                                       name="destinationPlace"
                                                        value={this.state.destinationPlace}
-                                                       onChange={this.onDestinationLocationChange}
+                                                       onChange={this.onInputChange}
                                                        placeholder="City or airport"/>
                                             </div>
                                         </div>
@@ -154,23 +120,29 @@ class TicketsForm extends Component {
                                         <div className="col-md-3">
                                             <div className="form-group">
                                                 <span className="form-label">Departing</span>
-                                                <input className="form-control" value={this.state.outboundDate}
-                                                       onChange={this.onDepartureDateChange}
+                                                <input className="form-control"
+                                                       name="outboundDate"
+                                                       value={this.state.outboundDate}
+                                                       onChange={this.onInputChange}
                                                        type="date" required/>
                                             </div>
                                         </div>
                                         <div className="col-md-3">
                                             <div className="form-group">
                                                 <span className="form-label">Returning</span>
-                                                <input className="form-control" value={this.state.inboundDate}
-                                                       onChange={this.onArrivalDateChange}
+                                                <input className="form-control"
+                                                       name="inboundDate"
+                                                       value={this.state.inboundDate}
+                                                       onChange={this.onInputChange}
                                                        type="date"/>
                                             </div>
                                         </div>
                                         <div className="col-md-2">
                                             <div className="form-group">
                                                 <span className="form-label">Adults</span>
-                                                <select className="form-control" value={this.state.adults}
+                                                <select className="form-control"
+                                                        name="adults"
+                                                        value={this.state.adults}
                                                         onChange={this.onAdultsOptionChange}>
                                                     <option>1</option>
                                                     <option>2</option>
@@ -182,7 +154,9 @@ class TicketsForm extends Component {
                                         <div className="col-md-2">
                                             <div className="form-group">
                                                 <span className="form-label">Children</span>
-                                                <select className="form-control" value={this.state.children}
+                                                <select className="form-control"
+                                                        name="children"
+                                                        value={this.state.children}
                                                         onChange={this.onChildrenOptionChange}>
                                                     <option>0</option>
                                                     <option>1</option>
@@ -194,7 +168,9 @@ class TicketsForm extends Component {
                                         <div className="col-md-2">
                                             <div className="form-group">
                                                 <span className="form-label">Infants</span>
-                                                <select className="form-control" value={this.state.infants}
+                                                <select className="form-control"
+                                                        name="infants"
+                                                        value={this.state.infants}
                                                         onChange={this.onInfantsOptionChange}>
                                                     <option>0</option>
                                                     <option>1</option>
@@ -208,7 +184,9 @@ class TicketsForm extends Component {
                                         <div className="col-md-3">
                                             <div className="form-group">
                                                 <span className="form-label">Travel class</span>
-                                                <select className="form-control" id="travel-class"
+                                                <select className="form-control"
+                                                        id="travel-class"
+                                                        name="cabinClass"
                                                         value={this.state.cabinType}
                                                         onChange={this.onTravelClassChange}>
                                                     <option>Business class</option>
