@@ -49,9 +49,9 @@ class FlightInfo extends React.Component {
         this.state = {
             flights: [
                 {
-                    name: "Belavia",
+                    name: "belavia",
                     price: "200$",
-                    img: "img/Logo-Belavia.png",
+                    img: "img/Logo-belavia.png",
                     origin: "IEV",
                     destination: "BUD",
                     departureDateTime: "25.01.2019 19:00",

@@ -1,12 +1,12 @@
 package com.kh021j.travelwithpleasurehub.tickets.apiparser.service;
 
-import com.kh021j.travelwithpleasurehub.tickets.apiparser.model.RequestModel;
-import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
-import com.mashape.unirest.http.exceptions.UnirestException;
-import com.mashape.unirest.request.HttpRequestWithBody;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.HttpResponse;
 import org.springframework.stereotype.Service;
+import com.mashape.unirest.request.HttpRequestWithBody;
+import com.mashape.unirest.http.exceptions.UnirestException;
+import com.kh021j.travelwithpleasurehub.tickets.apiparser.model.RequestModel;
 
 @Service
 public class OneWayOptionRequestService {
@@ -34,7 +34,7 @@ public class OneWayOptionRequestService {
                 .field("destinationPlace", formatDate(requestModel.getDestinationPlace()))
                 .field("outboundDate", requestModel.getOutboundDate())
                 .field("adults", requestModel.getAdults())
-                .field("cabinClass", requestModel.getCabinClass())
+                .field("cabinClass", requestModel.getCabinType())
                 .field("children", requestModel.getChildren())
                 .field("infants", requestModel.getInfants())
                 .asJson();
@@ -57,6 +57,7 @@ public class OneWayOptionRequestService {
 
     public JsonNode sendResponseToController(RequestModel requestModel) throws UnirestException {
 
-        return getAllItineraries(getSessionKey(requestModel)).getBody();
+        JsonNode jsonNode = getAllItineraries(getSessionKey(requestModel)).getBody();
+        return jsonNode;
     }
 }

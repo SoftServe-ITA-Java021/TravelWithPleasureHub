@@ -1,16 +1,16 @@
 
 package com.kh021j.travelwithpleasurehub.tickets.apiparser.model;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
-@Data
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class RequestModel {
-
     private String country;
     private String currency;
     private String locale;
@@ -18,9 +18,8 @@ public class RequestModel {
     private String destinationPlace;
     private String outboundDate;
     private int adults;
-    private String cabinClass;
+    private String cabinType;
     private int children;
     private int infants;
-
 }
 
