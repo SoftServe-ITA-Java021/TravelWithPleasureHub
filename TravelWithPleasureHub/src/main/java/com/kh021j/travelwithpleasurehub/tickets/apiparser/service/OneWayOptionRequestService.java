@@ -4,8 +4,6 @@ package com.kh021j.travelwithpleasurehub.tickets.apiparser.service;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.HttpResponse;
-import net.bytebuddy.description.method.MethodDescription;
-import org.json.JSONException;
 import org.springframework.stereotype.Service;
 import com.mashape.unirest.request.HttpRequestWithBody;
 import com.mashape.unirest.http.exceptions.UnirestException;
@@ -60,7 +58,6 @@ public class OneWayOptionRequestService {
 
     public JsonNode sendResponseToController(RequestModel requestModel) throws UnirestException {
 
-        // TODO: 1/15/2019 always retrieve "UpdatesPending" in first request. Need to resolve it.
         JsonNode jsonNode = getAllItineraries(getSessionKey(requestModel)).getBody();
         return jsonNode;
     }

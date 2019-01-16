@@ -1,6 +1,5 @@
 package com.kh021j.travelwithpleasurehub.tickets.apiparser.controller;
 
-import org.json.JSONException;
 import org.springframework.web.bind.annotation.*;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,7 @@ import com.kh021j.travelwithpleasurehub.tickets.apiparser.service.OneWayOptionRe
 @RestController
 @CrossOrigin(origins = "http://localhost:8080")
 @RequestMapping(path = "/api/flights/one-way")
-public class OneWayOptionRequestController {
+public class OneWayRequestController {
 
     @Autowired
     OneWayOptionRequestService requestService;

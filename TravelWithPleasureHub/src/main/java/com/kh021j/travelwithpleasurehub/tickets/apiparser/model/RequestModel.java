@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
-import com.kh021j.travelwithpleasurehub.tickets.apiparser.enums.CabinClass;
 
 @Getter
 @Setter
@@ -19,9 +18,8 @@ public class RequestModel {
     private String destinationPlace;
     private String outboundDate;
     private int adults;
-
-    private CabinClass cabinType;
-    private String children;
-    private String infants;
+    private String cabinType;
+    private int children;
+    private int infants;
 }
 
