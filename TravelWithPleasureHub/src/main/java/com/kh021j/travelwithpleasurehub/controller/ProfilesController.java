@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Optional;
 
 /**
  * Created by ${JDEEK} on ${11.11.2018}.
@@ -25,14 +24,14 @@ public class ProfilesController {
     @GetMapping("/{id}")
     @CrossOrigin(origins="http://localhost:3000")
     public ResponseEntity<?> findUserById(@PathVariable Integer id) {
-        Optional<User> user = Optional.ofNullable(userService.getUser(id));
-        return new ResponseEntity<Optional<User>>(user,HttpStatus.OK);
+        User user = userService.getUser(id);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/change",method = RequestMethod.PUT)
     @CrossOrigin(origins="http://localhost:3000")
-    @ResponseStatus(HttpStatus.OK)
-    public User changeUser(@Valid @RequestBody User user){
-        return userService.update(user);
+    public ResponseEntity<?> changeUser(@Valid @ModelAttribute User user)
+    {
+        return new ResponseEntity<Object>(userService.update(user),HttpStatus.OK);
     }
 }

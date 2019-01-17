@@ -19,10 +19,11 @@ import Profile from './components/signup/Profile';
 import WishingUsers from "./components/meetings/WishingUsers";
 import ConfirmedUsers from "./components/meetings/ConfirmedUsers";
 import MeetingUpdate from "./components/meetings/MeetingUpdate";
+import AnotherProfile from "./components/signup/AnotherProfile";
 
 class App extends Component {
-	render() {
-		return (
+    render() {
+        return (
 			<div>
 
 				<BrowserRouter>
@@ -41,12 +42,13 @@ class App extends Component {
 								<Route exact path="/meetings/show-all-created-meetings" component={CreatedMeetings}/>
 								<Route exact path="/meetings/show-meeting/:id"  component={OneMeeting}/>
 								<Route exact path="/meetings/edit/:id" component={MeetingUpdate}/>
-								<Route exact path="/profile/:id"  component={Profile}/>
+								<Route exact path="/profile"  component={Profile}/>
+								<Route exact path="/profile/:id" component={AnotherProfile}/>
 
 								<Route path="/tickets" component={TicketsForm}/>
-                                <Route exact path="/meetings/show-meeting/wishing-users/:id" component={WishingUsers}/>
-                                <Route exact path="/meetings/show-meeting/confirmed-users/:id"
-                                       component={ConfirmedUsers}/>
+								<Route exact path="/meetings/show-meeting/wishing-users/:id" component={WishingUsers}/>
+								<Route exact path="/meetings/show-meeting/confirmed-users/:id"
+									   component={ConfirmedUsers}/>
 								<Route exact path="/" component={Home}/>
 
 								<Route path="*" component={NoMatch}/>
@@ -56,9 +58,9 @@ class App extends Component {
 					</Fragment>
 
 				</BrowserRouter>
-				</div>
-		);
-	}
+			</div>
+        );
+    }
 }
 
 export default App;

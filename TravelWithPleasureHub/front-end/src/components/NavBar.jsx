@@ -7,6 +7,7 @@ class NavBar extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            id: -1,
             username: '',
             firstName: '',
             secondName: '',
@@ -41,54 +42,118 @@ class NavBar extends Component {
         this.handleChoice = this.handleChoice.bind(this);
         this.isFormValid = this.isFormValid.bind(this);
         this.isEmailUnique = this.isEmailUnique.bind(this);
+        this.chatConnect = this.chatConnect.bind(this);
     }
-	render() {
-		return (
-			<div>
-				<nav className="navbar fixed-top navbar-expand-md navbar-dark bg-dark">
-					<div className="container">
-						<NavLink className="navbar-brand" to="/">Travel With Pleasure</NavLink>
-						<button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#menu">
-							<span className="navbar-toggler-icon"></span>
-						</button>
+    render(){
+        return (
+            <div>
+                <nav className="navbar fixed-top navbar-expand-md navbar-dark bg-dark">
+                    <div className="container">
+                        <NavLink className="navbar-brand" to="/">Travel With Pleasure</NavLink>
+                        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#menu">
+                            <span className="navbar-toggler-icon"></span>
+                        </button>
 
-						<div className="collapse navbar-collapse" id="menu">
-							<ul className="navbar-nav mr-auto">
-								<li className="nav-item">
-									<NavLink className="nav-link" to="/tickets">Purchase a plane ticket</NavLink>
-								</li>
-								<li className="nav-item">
-									<NavLink className="nav-link" to="/properties">Rent a property</NavLink>
-								</li>
-								<li className="nav-item">
-									<NavLink className="nav-link" to="/meetings/show-all-meetings">Arrange a meeting</NavLink>
-								</li>
-								<li>
-									<NavLink className="nav-link" to="/profile">Profile</NavLink>
-								</li>
-							</ul>
-							<NavLink className="btn btn-outline-warning" to="/messages">
-								<span className="glyphicon glyphicon-envelope"></span>
-								Messages
-							</NavLink>
-						</div>
-					</div>
-					<button
-						className="btn btn-outline-warning"
-						data-toggle="collapse"
-						data-target="#signup"
-					> SIGN UP
-					</button>
-					<button
-						className="btn btn-outline-warning"
-						data-toggle="collapse"
-						data-target="#signin"
-					> LOGIN
-					</button>
-				</nav>
-			</div>
-		);
-	}
+                        <div className="collapse navbar-collapse" id="menu">
+                            <ul className="navbar-nav mr-auto">
+                                <li className="nav-item">
+                                    <NavLink className="nav-link" to="/tickets">Purchase a plane ticket</NavLink>
+                                </li>
+                                <li className="nav-item">
+                                    <NavLink className="nav-link" to="/properties">Rent a property</NavLink>
+                                </li>
+                                <li className="nav-item">
+                                    <NavLink className="nav-link" to="/meetings/show-all-meetings">Arrange a meeting</NavLink>
+                                </li>
+                                {!this.state.isLoggedIn ?"" :<li>
+                                    <NavLink className="nav-link" to="/profile">Profile</NavLink>
+                                </li>}
+                            </ul>
+                            <NavLink className="btn btn-outline-warning" to="/chat">
+                                <span className="glyphicon glyphicon-envelope"></span>
+                                Messages
+                            </NavLink>
+                            <button className="btn btn-outline-warning" onClick={(e) => {
+                                e.preventDefault();
+                                this.chatConnect();
+                            }}>Chat</button>
+                        </div>
+                    </div>
+                    {!this.state.isLoggedIn? <button
+                        className="btn btn-outline-warning"
+                        data-toggle="collapse"
+                        data-target="#signup"
+                        aria-expanded="false"
+                        aria-controls="signup"
+                    > SIGN UP
+                    </button>:""}
+                    {!this.state.isLoggedIn ?<button
+                        className="btn btn-outline-warning"
+                        data-toggle="collapse"
+                        data-target="#signin"
+                        aria-expanded="false"
+                        aria-controls="signin"
+                    > LOGIN
+                    </button>:""}
+                </nav>
+                <div id="signup" className="collapse">
+
+                    <div className="row h-100 justify-content-center align-items-center">
+                        <form>
+                            <div className="form-group">
+                                {this.usernameBody()}
+                                {this.firstNameBody()}
+                                {this.secondNameBody()}
+                                {this.emailBody()}
+                                {this.phoneNumberBody()}
+                                {this.passwordBody()}
+                            </div>
+                            <div className="form-row text-center">
+                                <div className="col-12">
+                                    <button
+                                        className="btn btn-primary center-block"
+                                        type="submit"
+                                        data-toggle="collapse"
+                                        data-target="#signup"
+                                        aria-expanded="false"
+                                        aria-controls="signup"
+                                        onClick={this.sendSignUpRequest}> SIGN UP
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div id="signin" className="collapse" >
+                    <div className="alert alert-info row h-100 justify-content-center align-items-center" >
+                        <form action="http://localhost:8080/j_spring_security_check" method="post"
+                              onSubmit={(e) => {
+                                  e.preventDefault();
+                                  this.sendLoginRequest();
+                              }}>
+                            <div className="form-group">
+                                {this.emailBody()}
+                                {this.passwordBody()}
+                            </div>
+                            <div className="form-row text-center">
+                                <div className="col-12">
+                                    <button
+                                        className="btn btn-primary center-block"
+                                        data-toggle="collapse"
+                                        data-target="#signin"
+                                        aria-expanded="false"
+                                        aria-controls="signin"
+                                        type="submit"> LOGIN
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        );
+    }
 
     usernameChange(event) {
         this.setState({username: event.target.value})
@@ -116,94 +181,94 @@ class NavBar extends Component {
 
     usernameBody() {
         return <div className="form-group row h-100 justify-content-center align-items-center">
-			<label>Username:</label>
-			<input
-				required
-				type="text"
-				className="form-control"
-				value={this.state.username}
-				onChange={this.usernameChange}
-				placeholder="Enter username"
-			/>
-			<div id="username-error"></div>
-		</div>
+            <label>Username:</label>
+            <input
+                required
+                type="text"
+                className="form-control"
+                value={this.state.username}
+                onChange={this.usernameChange}
+                placeholder="Enter username"
+            />
+            <div id="username-error"></div>
+        </div>
     }
 
     firstNameBody() {
         return <div className="form-group row h-100 justify-content-center align-items-center">
-			<label>First name:</label>
-			<input
-				required
-				type="text"
-				className="form-control"
-				value={this.state.firstName}
-				onChange={this.firstNameChange}
-				placeholder="Enter First Name"
-			/>
-			<div id="fName-error"></div>
-		</div>
+            <label>First name:</label>
+            <input
+                required
+                type="text"
+                className="form-control"
+                value={this.state.firstName}
+                onChange={this.firstNameChange}
+                placeholder="Enter First Name"
+            />
+            <div id="fName-error"></div>
+        </div>
     }
 
     secondNameBody() {
         return <div className="form-group row h-100 justify-content-center align-items-center">
-			<label>Last name:</label>
-			<input
-				required
-				type="text"
-				className="form-control"
-				value={this.state.secondName}
-				onChange={this.secondNameChange}
-				placeholder="Enter Second Name"
-			/>
-			<div id="sName-error"></div>
-		</div>
+            <label>Last name:</label>
+            <input
+                required
+                type="text"
+                className="form-control"
+                value={this.state.secondName}
+                onChange={this.secondNameChange}
+                placeholder="Enter Second Name"
+            />
+            <div id="sName-error"></div>
+        </div>
     }
 
     phoneNumberBody() {
         return <div className="form-group row h-100 justify-content-center align-items-center">
-			<label>Phone:</label>
-			<input
-				required
-				type="text"
-				className="form-control"
-				value={this.state.phoneNumber}
-				onChange={this.phoneNumberChange}
-				placeholder="+380-11-111-1111"
-			/>
-			<div id="phoneNumber-error"></div>
-		</div>
+            <label>Phone:</label>
+            <input
+                required
+                type="text"
+                className="form-control"
+                value={this.state.phoneNumber}
+                onChange={this.phoneNumberChange}
+                placeholder="+380-11-111-1111"
+            />
+            <div id="phoneNumber-error"></div>
+        </div>
     }
 
     emailBody() {
         return <div className="form-group row h-100 justify-content-center align-items-center">
-			<label>E-mail:</label>
-			<input
-				required
-				type="email"
-				className="form-control"
-				value={this.state.email}
-				onChange={this.emailChange}
-				placeholder="Enter E-mail"
-				name="j_username"
-			/>
-			<div id="email-error"></div>
-		</div>
+            <label>E-mail:</label>
+            <input
+                required
+                type="email"
+                className="form-control"
+                value={this.state.email}
+                onChange={this.emailChange}
+                placeholder="Enter E-mail"
+                name="j_username"
+            />
+            <div id="email-error"></div>
+        </div>
     }
 
     passwordBody() {
         return <div className="form-group row h-100 justify-content-center align-items-center">
-			<label>Password:</label>
-			<input
-				required
-				type="password"
-				className="form-control"
-				value={this.state.password}
-				onChange={this.passwordChange}
-				placeholder="Enter password"
-				name="j_password"
-			/>
-			<div id="password-error"></div>
-		</div>
+            <label>Password:</label>
+            <input
+                required
+                type="password"
+                className="form-control"
+                value={this.state.password}
+                onChange={this.passwordChange}
+                placeholder="Enter password"
+                name="j_password"
+            />
+            <div id="password-error"></div>
+        </div>
     }
 
     sendSignUpRequest(e) {
@@ -342,6 +407,9 @@ class NavBar extends Component {
                 }
             });
         });
+    }
+    chatConnect(){
+        window.location.replace("http://localhost:8080");
     }
 }
 

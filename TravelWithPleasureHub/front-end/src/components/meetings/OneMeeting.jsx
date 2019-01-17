@@ -20,6 +20,15 @@ export default class OneMeeting extends Component {
                     confirmedUserIds: [],
                     wishingUserIds: []
                 },
+                user:{
+                    id: -1,
+                    username: "",
+                    email: "",
+                    firstName: "",
+                    secondName: "",
+                    additionalInfo: "",
+                    phoneNumber: ""
+                },
 
                 changed: false,
                 isSent: false,
@@ -27,6 +36,7 @@ export default class OneMeeting extends Component {
             };
         this.sendRequest = this.sendRequest.bind(this);
         this.deleteMeeting = this.deleteMeeting.bind(this);
+        this.chatConnect = this.chatConnect.bind(this);
         OneMeeting.showInformationAboutMeeting = OneMeeting.showInformationAboutMeeting.bind(this);
     }
 
@@ -102,18 +112,32 @@ export default class OneMeeting extends Component {
 
 
                 {value.meeting.ownerId === 2 && <div>
-                        <div className="form-row text-center">
-                            <div className="col-12">
-                                <NavLink to={`/meetings/show-meeting/wishing-users/${value.meeting.id}`}>
-                                    <h1 className="lead row h-100 justify-content-center align-items-center">
+                    <div className="form-row text-center">
+                        <div className="col-12">
+                            <NavLink to={`/meetings/show-meeting/wishing-users/${value.meeting.id}`}>
+                                <h1 className="lead row h-100 justify-content-center align-items-center">
                                     <button type="submit"
                                             className="btn btn-primary widthButton">
                                         Wishing people
                                     </button>
-                                    </h1>
-                                </NavLink>
-                            </div>
+                                </h1>
+                            </NavLink>
                         </div>
+                    </div>
+                    {this.state.user.username!=='' || this.state.meeting.ownerId!==-1?<div className="form-row text-center">
+                        <div className="col-12">
+                            <h1 className="lead row h-100 justify-content-center align-items-center">
+                                <button
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        this.chatConnect();
+                                    }}
+                                    className="btn btn-primary widthButton">
+                                    Go chat!
+                                </button>
+                            </h1>
+                        </div>
+                    </div>:""}
 
                     <div className="form-row text-right">
                         <div className="col-12">
@@ -160,6 +184,10 @@ export default class OneMeeting extends Component {
             })
             .then(json => this.setState({meeting: json.data, changed: true}));
     }
+    componentWillMount() {
+        axios.get(`http://localhost:8080/api/meetings/confirmed-users/${this.props.match.params.id}`)
+            .then(json => (this.setState({users: json.data, isDownloaded: true})));
+    }
 
     sendRequest(e) {
         e.preventDefault();
@@ -190,5 +218,8 @@ export default class OneMeeting extends Component {
                     })
                 })
         }
+    }
+    chatConnect(){
+        window.location.replace("http://localhost:8080");
     }
 }
