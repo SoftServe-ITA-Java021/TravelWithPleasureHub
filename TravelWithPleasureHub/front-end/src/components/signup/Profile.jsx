@@ -37,11 +37,7 @@ export default class Profile extends Component{
 
 
     componentDidMount() {
-<<<<<<< HEAD
         axios.get(`http://localhost:8080/profile`,
-=======
-       axios.get(`http://localhost:8080/${this.props.match.params.id}`,
->>>>>>> origin/dev
             {
                 headers: {
                     'Access-Control-Allow-Credentials': 'include'

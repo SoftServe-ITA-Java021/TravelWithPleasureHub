@@ -36,10 +36,7 @@ export default class OneMeeting extends Component {
             };
         this.sendRequest = this.sendRequest.bind(this);
         this.deleteMeeting = this.deleteMeeting.bind(this);
-<<<<<<< HEAD
         this.chatConnect = this.chatConnect.bind(this);
-=======
->>>>>>> origin/dev
         OneMeeting.showInformationAboutMeeting = OneMeeting.showInformationAboutMeeting.bind(this);
     }
 
@@ -89,7 +86,6 @@ export default class OneMeeting extends Component {
                         </div>
                     </div>
                 </NavLink>
-<<<<<<< HEAD
 
                 {value.meeting.ownerId !== 2 &&
                 <div className="form-row text-center">
@@ -103,21 +99,6 @@ export default class OneMeeting extends Component {
                     </div>
                 </div>}
 
-=======
-
-                {value.meeting.ownerId !== 2 &&
-                <div className="form-row text-center">
-                    <div className="col-12">
-                        <NavLink className="nav-link" to={`/profile/${value.meeting.ownerId}`}>
-                            <button type="submit"
-                                    className="btn btn-primary center-block widthButton">
-                                Organizer
-                            </button>
-                        </NavLink>
-                    </div>
-                </div>}
-
->>>>>>> origin/dev
                 {value.meeting.ownerId !== 2 && <div className="form-row text-center">
                     <div className="col-12">
                         <button type="submit"
@@ -131,35 +112,32 @@ export default class OneMeeting extends Component {
 
 
                 {value.meeting.ownerId === 2 && <div>
-                        <div className="form-row text-center">
-                            <div className="col-12">
-                                <NavLink to={`/meetings/show-meeting/wishing-users/${value.meeting.id}`}>
-                                    <h1 className="lead row h-100 justify-content-center align-items-center">
+                    <div className="form-row text-center">
+                        <div className="col-12">
+                            <NavLink to={`/meetings/show-meeting/wishing-users/${value.meeting.id}`}>
+                                <h1 className="lead row h-100 justify-content-center align-items-center">
                                     <button type="submit"
                                             className="btn btn-primary widthButton">
                                         Wishing people
                                     </button>
-                                    </h1>
-                                </NavLink>
-                            </div>
-                        </div>
-<<<<<<< HEAD
-                    {this.state.user.username!=='' || this.state.meeting.ownerId!==-1?<div className="form-row text-center">
-                         <div className="col-12">
-                                <h1 className="lead row h-100 justify-content-center align-items-center">
-                                    <button
-                                            onClick={(e) => {
-                                                e.preventDefault();
-                                                this.chatConnect();
-                                            }}
-                                            className="btn btn-primary widthButton">
-                                        Go chat!
-                                    </button>
                                 </h1>
+                            </NavLink>
                         </div>
-                       </div>:""}
-=======
->>>>>>> origin/dev
+                    </div>
+                    {this.state.user.username!=='' || this.state.meeting.ownerId!==-1?<div className="form-row text-center">
+                        <div className="col-12">
+                            <h1 className="lead row h-100 justify-content-center align-items-center">
+                                <button
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        this.chatConnect();
+                                    }}
+                                    className="btn btn-primary widthButton">
+                                    Go chat!
+                                </button>
+                            </h1>
+                        </div>
+                    </div>:""}
 
                     <div className="form-row text-right">
                         <div className="col-12">
