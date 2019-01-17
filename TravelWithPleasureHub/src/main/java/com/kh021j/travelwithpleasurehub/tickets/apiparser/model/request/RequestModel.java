@@ -1,13 +1,11 @@
+
 package com.kh021j.travelwithpleasurehub.tickets.apiparser.model;
 
-
-import lombok.Getter;
-import lombok.Setter;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
+import lombok.*;
 
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class RequestModel {
