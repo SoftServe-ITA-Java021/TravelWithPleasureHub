@@ -19,9 +19,7 @@ public class ProfilesController {
     @Autowired
     private UserService userService;
 
-
-
-    @GetMapping("/{id}")
+    @GetMapping("/profile/{id}")
     @CrossOrigin(origins="http://localhost:3000")
     public ResponseEntity<?> findUserById(@PathVariable Integer id) {
         User user = userService.getUser(id);
