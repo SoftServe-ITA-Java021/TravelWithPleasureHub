@@ -19,7 +19,10 @@ import Profile from './components/signup/Profile';
 import WishingUsers from "./components/meetings/WishingUsers";
 import ConfirmedUsers from "./components/meetings/ConfirmedUsers";
 import MeetingUpdate from "./components/meetings/MeetingUpdate";
+<<<<<<< HEAD
 import AnotherProfile from "./components/signup/AnotherProfile";
+=======
+>>>>>>> origin/dev
 
 class App extends Component {
 	render() {
@@ -42,8 +45,12 @@ class App extends Component {
 								<Route exact path="/meetings/show-all-created-meetings" component={CreatedMeetings}/>
 								<Route exact path="/meetings/show-meeting/:id"  component={OneMeeting}/>
 								<Route exact path="/meetings/edit/:id" component={MeetingUpdate}/>
+<<<<<<< HEAD
 								<Route exact path="/profile"  component={Profile}/>
 								<Route exact path="/profile/:id" component={AnotherProfile}/>
+=======
+								<Route exact path="/profile/:id"  component={Profile}/>
+>>>>>>> origin/dev
 
 								<Route path="/tickets" component={TicketsForm}/>
                                 <Route exact path="/meetings/show-meeting/wishing-users/:id" component={WishingUsers}/>
