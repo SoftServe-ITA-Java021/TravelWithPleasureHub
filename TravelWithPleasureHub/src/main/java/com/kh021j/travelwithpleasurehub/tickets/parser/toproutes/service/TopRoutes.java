@@ -26,49 +26,62 @@ public class TopRoutes {
         for (RequestModel entity : list) {
             for (int i = 0; i < 30; i++) {
                 entity.setOutboundDate(localDate.plusDays(i).toString());
-                listInfo.add(oneWayOptionRequestService.sendResponseToController(entity).toString());
+                listInfo.add(oneWayOptionRequestService.
+                        sendResponseToController(entity).toString());
             }
         }
         return listInfo;
     }
 
-    public List<RequestModel> getTopRoutes() {
+    private List<RequestModel> getTopRoutes() {
         List<RequestModel> list = new ArrayList<>();
         LocalDate localDate = currentDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        for (int i = 1; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                list.add(new RequestModel("US", "USD", "en-US",
-                        "ICN", "CJU", localDate.toString(),
-                        i, "economy", j, 0));
-                list.add(new RequestModel("US", "USD", "en-US",
-                        "MEL", "SYD", localDate.toString(),
-                        i, "economy", j, 0));
-                list.add(new RequestModel("US", "USD", "en-US",
-                        "BOM", "DEL", localDate.toString(),
-                        i, "economy", j, 0));
-                list.add(new RequestModel("US", "USD", "en-US",
-                        "DUB", "LON", localDate.toString(),
-                        i, "economy", j, 0));
-                list.add(new RequestModel("US", "USD", "en-US",
-                        "RIO", "GRU", localDate.toString(),
-                        i, "economy", j, 0));
-                list.add(new RequestModel("US", "USD", "en-US",
-                        "LAX", "SFO", localDate.toString(),
-                        i, "economy", j, 0));
-                list.add(new RequestModel("US", "USD", "en-US",
-                        "SIN", "KUL", localDate.toString(),
-                        i, "economy", j, 0));
-                list.add(new RequestModel("US", "USD", "en-US",
-                        "LGA", "YYZ", localDate.toString(),
-                        i, "economy", j, 0));
-                list.add(new RequestModel("US", "USD", "en-US",
-                        "AMS", "LHR", localDate.toString(),
-                        i, "economy", j, 0));
-                list.add(new RequestModel("US", "USD", "en-US",
-                        "DXB", "KWI", localDate.toString(),
-                        i, "economy", j, 0));
-            }
-        }
+
+        list.add(new RequestModel("US", "USD", "en-US",
+                "ICN", "CJU", localDate.toString(),
+                1, "economy", 0, 0));
+        list.add(new RequestModel("US", "USD", "en-US",
+                "MEL", "SYD", localDate.toString(),
+                1, "economy", 0, 0));
+        list.add(new RequestModel("US", "USD", "en-US",
+                "BOM", "DEL", localDate.toString(),
+                1, "economy", 0, 0));
+        list.add(new RequestModel("US", "USD", "en-US",
+                "DUB", "LCY", localDate.toString(),
+                1, "economy", 0, 0));
+        list.add(new RequestModel("US", "USD", "en-US",
+                "GIG", "GRU", localDate.toString(),
+                1, "economy", 0, 0));
+        list.add(new RequestModel("US", "USD", "en-US",
+                "LAX", "SFO", localDate.toString(),
+                1, "economy", 0, 0));
+        list.add(new RequestModel("US", "USD", "en-US",
+                "SIN", "KUL", localDate.toString(),
+                1, "economy", 0, 0));
+        list.add(new RequestModel("US", "USD", "en-US",
+                "LGA", "YYZ", localDate.toString(),
+                1, "economy", 0, 0));
+        list.add(new RequestModel("US", "USD", "en-US",
+                "AMS", "LHR", localDate.toString(),
+                1, "economy", 0, 0));
+        list.add(new RequestModel("US", "USD", "en-US",
+                "DXB", "KWI", localDate.toString(),
+                1, "economy", 0, 0));
+        list.add(new RequestModel("US", "USD", "en-US",
+                "ORD", "YYZ", localDate.toString(),
+                1, "economy", 0, 0));
+        list.add(new RequestModel("US", "USD", "en-US",
+                "JFK", "LHR", localDate.toString(),
+                1, "economy", 0, 0));
+        list.add(new RequestModel("US", "USD", "en-US",
+                "HKG", "PEK", localDate.toString(),
+                1, "economy", 0, 0));
+        list.add(new RequestModel("US", "USD", "en-US",
+                "BKK", "HKG", localDate.toString(),
+                1, "economy", 0, 0));
+        list.add(new RequestModel("US", "USD", "en-US",
+                "CGK", "SIN", localDate.toString(),
+                1, "economy", 0, 0));
         return list;
     }
 }
