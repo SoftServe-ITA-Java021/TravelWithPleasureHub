@@ -1,7 +1,7 @@
 package com.kh021j.travelwithpleasurehub.controller;
 
 import com.kh021j.travelwithpleasurehub.model.ChatMessage;
-import com.kh021j.travelwithpleasurehub.model.enumiration.MessageType;
+import com.kh021j.travelwithpleasurehub.model.ChatMessage.MessageType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,46 +11,33 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.servlet.http.HttpServletResponse;
+import static java.lang.String.format;
 
-/**
- * Created by ${JDEEK} on ${11.11.2018}.
- */
 @Controller
-@CrossOrigin(origins="http://localhost:3000")
 public class ChatController {
 
-    private static Logger logger = LoggerFactory.getLogger(ChatController.class);
+    private static final Logger logger = LoggerFactory.getLogger(WebSocketEventListener.class);
 
     @Autowired
     private SimpMessageSendingOperations messagingTemplate;
 
-    @MessageMapping("/chat/{roomId}/sendMesage")
-    public void sendMessage(@DestinationVariable String roomId, @Payload ChatMessage message){
-        messagingTemplate.convertAndSend(String.format("/chat/%s",roomId),message);
-    }
-
     @MessageMapping("/chat/{roomId}/sendMessage")
-    public void addUser(@DestinationVariable String roomId, @Payload ChatMessage message,
-                        SimpMessageHeaderAccessor accessor){
-        String currentRoomId = (String) accessor.getSessionAttributes().put("room_id",roomId);
-        if (currentRoomId!=null){
-            ChatMessage leaveMessage = new ChatMessage();
-            leaveMessage.setMessageType(MessageType.LEAVE);
-            leaveMessage.setSender(message.getSender());
-            messagingTemplate.convertAndSend(String.format("/channel/%s",currentRoomId),leaveMessage);
-        }
-        accessor.getSessionAttributes().put("username",message.getSender());
-        messagingTemplate.convertAndSend(String.format("/channel/%s",roomId),message);
+    public void sendMessage(@DestinationVariable String roomId, @Payload ChatMessage chatMessage) {
+        messagingTemplate.convertAndSend(format("/channel/%s", roomId), chatMessage);
     }
 
-    @RequestMapping(value = "/chatroom", method = RequestMethod.POST)
-    @CrossOrigin(origins="http://localhost:3000")
-    public void login(HttpServletResponse response) {
-        response.setHeader("Location", "http://localhost:8080");
+    @MessageMapping("/chat/{roomId}/addUser")
+    public void addUser(@DestinationVariable String roomId, @Payload ChatMessage chatMessage,
+                        SimpMessageHeaderAccessor headerAccessor) {
+        String currentRoomId = (String) headerAccessor.getSessionAttributes().put("room_id", roomId);
+        if (currentRoomId != null) {
+            ChatMessage leaveMessage = new ChatMessage();
+            leaveMessage.setType(MessageType.LEAVE);
+            leaveMessage.setSender(chatMessage.getSender());
+            messagingTemplate.convertAndSend(format("/channel/%s", currentRoomId), leaveMessage);
+        }
+        headerAccessor.getSessionAttributes().put("username", chatMessage.getSender());
+        messagingTemplate.convertAndSend(format("/channel/%s", roomId), chatMessage);
     }
 }

@@ -1,36 +1,39 @@
 package com.kh021j.travelwithpleasurehub.model;
 
-import com.kh021j.travelwithpleasurehub.model.enumiration.MessageType;
-
 /**
  * Created by ${JDEEK} on ${11.11.2018}.
  */
 public class ChatMessage {
 
+    public enum MessageType {
+        CHAT, JOIN, LEAVE
+    }
+
     private MessageType messageType;
     private String content;
     private String sender;
 
-    public MessageType getMessageType() {
+    public MessageType getType() {
         return messageType;
     }
 
-    public void setMessageType(MessageType messageType) {
+    public void setType(MessageType messageType) {
         this.messageType = messageType;
     }
 
-    public String getContent(){
+    public String getContent() {
         return content;
     }
-    public void setContent(String content){
+
+    public void setContent(String content) {
         this.content = content;
     }
 
-    public String getSender(){
+    public String getSender() {
         return sender;
     }
 
-    public void setSender(String sender){
-        this.sender= sender;
+    public void setSender(String sender) {
+        this.sender = sender;
     }
 }
