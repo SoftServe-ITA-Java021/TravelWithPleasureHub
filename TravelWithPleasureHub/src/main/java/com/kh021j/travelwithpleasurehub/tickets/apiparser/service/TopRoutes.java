@@ -43,29 +43,36 @@ public class TopRoutes {
     public static List<FlightData> getFlightsData(RequestModel entity) throws JSONException, UnirestException {
         OneWayOptionRequestService oneWayOptionRequestService = new OneWayOptionRequestService();
         List<FlightData> flightDataList = new ArrayList<>();
-        JsonNode obj = oneWayOptionRequestService.sendResponseToController(entity);
-        while (obj.getObject().getJSONArray("Carriers").length() < 1) {
-            obj = oneWayOptionRequestService.sendResponseToController(entity);
-        }
-        JSONArray carrier = obj.getObject().getJSONArray("Carriers");
-        for (int j = 0; j < carrier.length(); j++) {
-            FlightData flightData = FlightData.builder()
-                    .companyId(carrier.getJSONObject(j).getInt("Id"))
-                    .departureAirport(entity.getOriginPlace())
-                    .arrivalAirport(entity.getDestinationPlace())
-                    .queryDate(LocalDate.parse(entity.getOutboundDate()))
-                    .cabinType(entity.getCabinType())
-                    .currency(Currency.valueOf(obj.getObject().getJSONObject("Query").getString("Currency").toUpperCase()))
-                    .company(carrier.getJSONObject(j).getString("Name"))
-                    .companyCode(carrier.getJSONObject(j).getString("DisplayCode"))
-                    .imageCompany(carrier.getJSONObject(j).getString("ImageUrl"))
-                    .flights(getFlightsForResponse(obj, carrier.getJSONObject(j).getString("Id")))
-                    .build();
-            if (!flightData.getFlights().isEmpty()) {
-                flightDataList.add(flightData);
+        if (entity != null) {
+            JsonNode obj = oneWayOptionRequestService.sendResponseToController(entity);
+            int count = 0;
+            while ((obj.getObject().getJSONArray("Carriers").length() < 1 || obj.getObject() == null) && count < 5) {
+                obj = oneWayOptionRequestService.sendResponseToController(entity);
+                count++;
+            }
+            if (obj.getObject().getJSONArray("Carriers").length() > 0 && obj.getObject() != null) {
+                JSONArray carrier = obj.getObject().getJSONArray("Carriers");
+                for (int j = 0; j < carrier.length(); j++) {
+                    FlightData flightData = FlightData.builder()
+                            .companyId(carrier.getJSONObject(j).getInt("Id"))
+                            .departureAirport(entity.getOriginPlace())
+                            .arrivalAirport(entity.getDestinationPlace())
+                            .queryDate(LocalDate.parse(entity.getOutboundDate()))
+                            .cabinType(entity.getCabinType())
+                            .currency(Currency.valueOf(obj.getObject().getJSONObject("Query").getString("Currency").toUpperCase()))
+                            .company(carrier.getJSONObject(j).getString("Name"))
+                            .companyCode(carrier.getJSONObject(j).getString("DisplayCode"))
+                            .imageCompany(carrier.getJSONObject(j).getString("ImageUrl"))
+                            .flights(getFlightsForResponse(obj, carrier.getJSONObject(j).getString("Id")))
+                            .build();
+                    if (!flightData.getFlights().isEmpty()) {
+                        flightDataList.add(flightData);
+                    }
+                }
             }
         }
         return flightDataList;
+
     }
 
     private static List<Flight> getFlightsForResponse(JsonNode obj, String carrierId) throws JSONException {
