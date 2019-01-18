@@ -53,6 +53,8 @@ public class TopRoutes {
                     .companyId(carrier.getJSONObject(j).getInt("Id"))
                     .departureAirport(entity.getOriginPlace())
                     .arrivalAirport(entity.getDestinationPlace())
+                    .queryDate(LocalDate.parse(entity.getOutboundDate()))
+                    .cabinType(entity.getCabinType())
                     .currency(Currency.valueOf(obj.getObject().getJSONObject("Query").getString("Currency").toUpperCase()))
                     .company(carrier.getJSONObject(j).getString("Name"))
                     .companyCode(carrier.getJSONObject(j).getString("DisplayCode"))

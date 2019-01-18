@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.List;
 
 @Builder
@@ -29,6 +30,12 @@ public class FlightData {
 
     @Column(name = "arrival_airport")
     private String arrivalAirport;
+
+    @Column(name = "query_date")
+    private LocalDate queryDate;
+
+    @Column(name = "cabin_type")
+    private String cabinType;
 
     @Column(name = "company")
     private String company;
