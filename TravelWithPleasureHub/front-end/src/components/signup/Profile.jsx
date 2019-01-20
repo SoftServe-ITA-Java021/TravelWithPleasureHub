@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import $ from 'jquery';
+
 export default class Profile extends Component{
     constructor(props){
         super(props);
@@ -13,7 +14,7 @@ export default class Profile extends Component{
                     firstName: "",
                     secondName: "",
                     email: "",
-                    phoneNumber: ""
+                    phoneNumber: "",
                 },
                 changed: false,
                 isLoggedOut: false
@@ -31,67 +32,90 @@ export default class Profile extends Component{
 
         this.handleLogout = this.handleLogout.bind(this);
         this.handleSubmitChange = this.handleSubmitChange.bind(this);
+        this.handleChangePassword = this.handleChangePassword.bind(this);
         this.isProfileValid = this.isProfileValid.bind(this);
-
+        this.isPasswordFormValid = this.isPasswordFormValid.bind(this);
     }
 
 
-    componentDidMount() {
+    componentWillMount() {
         axios.get(`http://localhost:8080/profile`,
             {
                 headers: {
                     'Access-Control-Allow-Credentials': 'include'
                 }
             })
-            .then(json => this.setState({user: json.data, changed: true, status: json.status}));
+            .then(response => {
+                this.setState({
+                    user: response.data
+                })
+            });
     }
 
     render(){
-        const value = this.state;
-        return(
-            <div>
-                {!this.state.isLoggedOut ?<div className="container">
-                    <h2 className="page-header">
-                        Your login: {value.user.username} | <button className="btn btn-default" onClick={this.handleLogout}>LOGOUT</button> | <button className="btn btn-warning"
-                                                                                                                                                      data-toggle="collapse"
-                                                                                                                                                      aria-expanded="false"
-                                                                                                                                                      aria-controls="changeProfile"
-                                                                                                                                                      data-target="#changeProfile">Change Profile</button>
-                    </h2>
-                    <table className="table">
-                        <tbody>
-                        <tr>
-                            <td>Name:</td>
-                            <td>{value.user.firstName}</td>
-                        </tr>
-                        <tr>
-                            <td>Last name:</td>
-                            <td>{value.user.secondName}</td>
-                        </tr>
-                        <tr>
-                            <td>E-mail:</td>
-                            <td>{value.user.email}</td>
-                        </tr>
-                        <tr>
-                            <td>Phone:</td>
-                            <td>{value.user.phoneNumber}</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>: ""}
-                <div id="changeProfile" className="collapse">
-                    <div className="container">
-                        <h2 className="page-header">Your login: {value.username}</h2>
-                        <form onSubmit={this.handleSubmitChange}>
-                            {this.usernameBody()}
-                            {this.firstNameBody()}
-                            {this.secondNameBody()}
-                            {this.phoneNumberBody()}
-                            <button type="submit" className="btn btn-success">Save</button>
-                            &nbsp;
-                            <button className="btn btn-danger" onClick={this.cancel }>Cancel</button>
-                            &nbsp;
-                        </form>
+        let value = this.state;
+        return(<div className="container">
+                <div className="row">
+                    <div className="col-md-12  toppad  offset-md-0 ">
+                        <button className="btn btn-danger float-right"  onClick={this.handleLogout}>LOG OUT</button>
+                    </div>
+                    <div className="col-md-6  offset-md-0  toppad" >
+                        <div className="card">
+                            <div className="card-body">
+                                <h2 className="card-title">{this.state.user.email}</h2>
+                                <table className="table table-user-information">
+                                    <tbody>
+                                    <tr>
+                                        <td>Username:</td>
+                                        <td>
+                                            {this.usernameBody()}
+                                        </td>
+                                    </tr>
+                                    {this.firstNameBody()}
+                                    {this.secondNameBody()}
+                                    {this.phoneNumberBody()}
+                                    </tbody>
+                                </table>
+                                <a href="#" onClick={this.handleSubmitChange} className="btn btn-primary ml-2">Update profile</a>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-md-6  offset-md-0  toppad">
+                        <div className="card">
+                            <div className="card-body">
+                                <h3 className="card-title">Change password</h3>
+                                <table className="table table-user-information ">
+                                    <tbody>
+                                    <tr>
+                                        <td>New password:</td>
+                                        <td>
+                                            <input
+                                                icon="password-icon"
+                                                id="newPassword"
+                                                name="newPassword"
+                                                type="password"
+                                                defaultValue=''
+                                            />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Repeat password:</td>
+                                        <td>
+                                            <input
+                                                icon="password-icon"
+                                                id="repeatPassword"
+                                                name="repeatPassword"
+                                                type="password"
+                                                defaultValue=''
+                                            />
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <a href="#" onClick={this.handleChangePassword} className="btn btn-primary ml-2">Submit change</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -140,9 +164,9 @@ export default class Profile extends Component{
         axios.get("http://localhost:8080/logout").then(
             response => {
                 if (response.status === 200){
+                    window.location.replace("/");
                     this.setState({
-                        email: "",
-                        isLoggedOut: true
+                        email: ""
                     })
                 }
             }
@@ -176,59 +200,96 @@ export default class Profile extends Component{
                 })
         }
     }
+    isPasswordFormValid( newPassword, newPasswordCopy) {
+        var isValid = true;
+        if (newPassword === '') {
+            $("#newPassword-error").html("<br/><div class='alert alert-danger'>New password cannot be empty!</div>");
+            isValid = false;
+        } else if (newPassword !== newPasswordCopy) {
+            $("#newPassword-error").html("");
+            $("#newPasswordCopy-error").html("<br/><div class='alert alert-danger'>Passwords aren't same!</div>");
+            isValid = false;
+        } else {
+            $("#newPassword-error").html("");
+        }
+        return isValid;
+    }
+    handleChangePassword(e){
+        e.preventDefault();
+        let user = this.state.user;
+        let changeUser =new FormData();
+        changeUser.append("id",user.id);
+        changeUser.append("username",user.username);
+        changeUser.append("firstName",user.firstName);
+        changeUser.append("secondName",user.secondName);
+        changeUser.append("email",user.email);
+        changeUser.append("phoneNumber",user.phoneNumber);
+        changeUser.append("password",$("#newPassword").val());
+        changeUser.append("status","true");
+        changeUser.append("role","ROLE_USER");
+
+
+        let newPassword = $("#newPassword").val();
+        let repeatPassword = $("#repeatPassword").val();
+        if (this.isPasswordFormValid(newPassword,repeatPassword)){
+            fetch("http://localhost:8080/change",
+                {
+                    method: "PUT",
+                    body: changeUser
+                })
+        }
+    }
 
     usernameBody(){
-        return <div className="form-group">
-            <label>Username:</label>
-            <input
-                type="text"
-                className="form-control"
-                id="username"
-                value={this.state.username}
-                onChange={this.usernameChange}
-                placeholder="Enter new username"/>
-            <div id="username-error"></div>
-        </div>
+        return <input id="username"
+                      name="zipCode"
+                      type="text"
+                      defaultValue={this.state.user.username}
+                      onChange={this.usernameChange}
+        />
     }
     firstNameBody(){
-        return   <div className="form-group">
-            <label>First name:</label>
-            <input
-                type="text"
-                className="form-control"
-                id="firstName"
-                value={this.state.firstName}
-                onChange={this.firstNameChange}
-                placeholder="Enter new first name"/>
-            <div id="fName-error"></div>
-        </div>
+        return <tr>
+            <td>First name:</td>
+            <td>
+                <input id="firstName"
+                       type="text"
+                       defaultValue={this.state.user.firstName}
+                       onChange={this.firstNameChange}
+                />
+            </td>
+        </tr>
+
     }
 
     secondNameBody(){
-        return  <div className="form-group">
-            <label>Second name:</label>
-            <input type="text"
-                   className="form-control"
-                   id="secondName"
-                   value={this.state.secondName}
-                   onChange={this.secondNameChange}
-                   placeholder="Enter new second name"/>
-            <div id="sName-error"></div>
-        </div>
+        return<tr>
+            <td>Second name:</td>
+            <td >
+                <input id="secondName"
+                       name="zipCode"
+                       type="text"
+                       defaultValue={this.state.user.secondName}
+                       onChange={this.secondNameChange}
+                />
+            </td>
+        </tr>
     }
 
     phoneNumberBody(){
-        return  <div className="form-group">
-            <label>Phone:</label>
-            <input type="text"
-                   className="form-control"
-                   id="phoneNumber"
-                   value={this.state.phoneNumber}
-                   onChange={this.phoneNumberChange}
-                   defaultValue={this.state.phoneNumber}
-                   placeholder="Enter new phone number"/>
-            <div id="phoneNumber-error"></div>
-        </div>
+        return <tr>
+
+            <td>Phone</td>
+            <td>
+                <input id="phoneNumber"
+                       name="phoneNumber"
+                       type="email"
+                       label=""
+                       defaultValue={this.state.user.phoneNumber}
+                       onChange={this.phoneNumberChange}
+                />
+            </td>
+        </tr>
     }
 
 
@@ -246,8 +307,4 @@ export default class Profile extends Component{
     phoneNumberChange(event){
         this.setState({phoneNumber: event.target.value})
     }
-
-
-
-
 }

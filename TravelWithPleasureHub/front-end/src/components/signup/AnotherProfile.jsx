@@ -16,12 +16,11 @@ export default class AnotherProfile extends Component{
                 changed: false,
                 isLoggedOut: false
             };
-        this.handleLogout = this.handleLogout.bind(this);
     }
 
 
     componentDidMount() {
-        axios.get(`http://localhost:8080/${this.props.match.params.id}`,
+        axios.get(`http://localhost:8080/profile/${this.props.match.params.id}`,
             {
                 headers: {
                     'Access-Control-Allow-Credentials': 'include'
@@ -34,50 +33,40 @@ export default class AnotherProfile extends Component{
     }
 
     render(){
-        const value = this.state;
-        return(
-            <div>
-                {!this.state.isLoggedOut ?<div className="container">
-                    <h2 className="page-header">
-                        Your login: {value.user.username}
-                    </h2>
-                    <table className="table">
-                        <tbody>
-                        <tr>
-                            <td>Name:</td>
-                            <td>{value.user.firstName}</td>
-                        </tr>
-                        <tr>
-                            <td>Last name:</td>
-                            <td>{value.user.secondName}</td>
-                        </tr>
-                        <tr>
-                            <td>E-mail:</td>
-                            <td>{value.user.email}</td>
-                        </tr>
-                        <tr>
-                            <td>Phone:</td>
-                            <td>{value.user.phoneNumber}</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>: ""}
+        const value = this.state.user;
+        return(<div className="container">
+                <div className="row">
+                    <div className="col-md-6  offset-md-0  toppad" >
+                        <div className="card">
+                            <div className="card-body">
+                                <h2 className="card-title">{value.email}</h2>
+                                <table className="table table-user-information ">
+                                    <tbody>
+                                    <tr>
+                                        <td>Username:</td>
+                                        <td>{value.username}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>First name:</td>
+                                        <td>{value.firstName}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Second name:</td>
+                                        <td>{value.secondName}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Phone:</td>
+                                        <td>{value.phoneNumber}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         )
     }
 
-    handleLogout(e){
-        e.preventDefault();
-        axios.get("http://localhost:8080/logout").then(
-            response => {
-                if (response.status === 200){
-                    this.setState({
-                        email: "",
-                        isLoggedOut: true
-                    })
-                }
-            }
-        )
-    }
 }
 
