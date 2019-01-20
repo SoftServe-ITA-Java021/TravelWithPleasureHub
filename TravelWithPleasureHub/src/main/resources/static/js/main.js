@@ -1,6 +1,5 @@
 'use strict';
 
-var nameInput = $('#name');
 var roomInput = $('#room-id');
 var usernamePage = document.querySelector('#username-page');
 var chatPage = document.querySelector('#chat-page');
@@ -22,8 +21,19 @@ var colors = [
     '#ffc107', '#ff85af', '#FF9800', '#39bbb0'
 ];
 
+var user = {
+    username: ''
+};
 function connect(event) {
-    username = nameInput.val().trim();
+    var url = "http://localhost:8080/profile";
+    $.ajax({
+        url: url,
+        type: 'GET',
+        success: function (data) {
+            user = data;
+        }
+    });
+    username = user.username;
     Cookies.set('name', username);
     if (username) {
         usernamePage.classList.add('hidden');
@@ -63,6 +73,7 @@ function onConnected() {
 function onError(error) {
     connectingElement.textContent = 'Could not connect to WebSocket server. Please refresh this page to try again!';
     connectingElement.style.color = 'red';
+    location.reload(true)
 }
 
 function sendMessage(event) {
@@ -132,11 +143,6 @@ function getAvatarColor(messageSender) {
 }
 
 $(document).ready(function() {
-    var savedName = Cookies.get('name');
-    if (savedName) {
-        nameInput.val(savedName);
-    }
-
     var savedRoom = Cookies.get('roomId');
     if (savedRoom) {
         roomInput.val(savedRoom);
