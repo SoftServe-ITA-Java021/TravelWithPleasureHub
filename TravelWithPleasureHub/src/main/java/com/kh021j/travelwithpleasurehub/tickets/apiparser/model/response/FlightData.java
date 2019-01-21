@@ -1,10 +1,7 @@
-package com.kh021j.travelwithpleasurehub.tickets.apiparser.model.response.v2;
+package com.kh021j.travelwithpleasurehub.tickets.apiparser.model.response;
 
 import com.kh021j.travelwithpleasurehub.tickets.parser.Belavia.model.enums.Currency;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -19,8 +16,8 @@ import java.util.List;
 public class FlightData {
 
     @Id
-    @GeneratedValue
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(name = "company_id")
     private Integer companyId;
@@ -50,9 +47,9 @@ public class FlightData {
     @Column(name = "currency")
     private Currency currency;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "flight_data_flight",
             joinColumns = @JoinColumn(name = "flight_data_id"),
             inverseJoinColumns = @JoinColumn(name = "flight_id"))
-    List<Flight> flights;
+    private List<Flight> flights;
 }

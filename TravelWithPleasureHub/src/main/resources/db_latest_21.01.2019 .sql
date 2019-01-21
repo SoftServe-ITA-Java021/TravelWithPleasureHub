@@ -245,7 +245,7 @@ create table if not exists flight_data
   company_id        integer      not null,
   departure_airport varchar(40)  not null,
   arrival_airport   varchar(40)  not null,
-  quarry_date       DATE         not null,
+  query_date       DATE         not null,
   cabin_type        varchar(40)  not null,
   company           varchar(40)  not null,
   company_code      varchar(40)  not null,
