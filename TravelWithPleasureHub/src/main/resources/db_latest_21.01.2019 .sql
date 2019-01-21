@@ -282,7 +282,7 @@ create table if not exists flight_data_flight
   primary key (flight_id)
 );
 
-ALTER TABLE confirmed_users
+ALTER TABLE flight_data_flight
 
   OWNER TO postgres;
 
@@ -290,7 +290,7 @@ ALTER TABLE confirmed_users
 create table if not exists ticket
 (
   id serial  not null primary key,
-  buying_link varchar(255),
+  buying_link text,
   price       decimal not null
 );
 
@@ -313,6 +313,8 @@ create table if not exists flight_ticket
   primary key (ticket_id)
 );
 
+alter table flight_ticket
+  owner to postgres;
 
 
 create table if not exists country
