@@ -51,5 +51,8 @@ public class FlightData {
     private Currency currency;
 
     @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "flight_data_flight",
+            joinColumns = @JoinColumn(name = "flight_data_id"),
+            inverseJoinColumns = @JoinColumn(name = "flight_id"))
     List<Flight> flights;
 }

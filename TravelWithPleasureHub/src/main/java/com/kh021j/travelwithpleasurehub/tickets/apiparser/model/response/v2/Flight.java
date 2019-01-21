@@ -30,6 +30,9 @@ public class Flight {
     private ZonedDateTime arrivalTime;
 
     @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "flight_ticket",
+            joinColumns = @JoinColumn(name = "flight_id"),
+            inverseJoinColumns = @JoinColumn(name = "ticket_id"))
     private List<Ticket> tickets;
 
 }
