@@ -1,6 +1,6 @@
 package com.kh021j.travelwithpleasurehub.tickets.apiparser.model.response.v2;
 
-import com.kh021j.travelwithpleasurehub.tickets.parser.Belavia.model.enums.Currency;
+import com.kh021j.travelwithpleasurehub.tickets.parser.belavia.model.enums.Currency;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

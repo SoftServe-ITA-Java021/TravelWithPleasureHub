@@ -1,9 +1,9 @@
 
-package com.kh021j.travelwithpleasurehub.tickets.parser.Belavia.service;
+package com.kh021j.travelwithpleasurehub.tickets.parser.belavia.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kh021j.travelwithpleasurehub.tickets.parser.Belavia.BelaviaConnection;
+import com.kh021j.travelwithpleasurehub.tickets.parser.belavia.BelaviaConnection;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,9 +14,8 @@ import java.nio.charset.StandardCharsets;
 
 public class JsonService {
 
-    private static HttpURLConnection connection;
-
-    static {
+    private  HttpURLConnection connection;
+     {
         try {
             connection = new BelaviaConnection().createConnection();
         } catch (IOException e) {
@@ -32,7 +31,8 @@ public class JsonService {
 
     public String getJsonResponse(String jsonQuery) throws IOException {
         sendJsonRequest(jsonQuery);
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+        BufferedReader bufferedReader = new BufferedReader
+                (new InputStreamReader(connection.getInputStream()));
         StringBuilder jsonBuilder = new StringBuilder();
         String jsonString;
         while ((jsonString = bufferedReader.readLine()) != null) {
@@ -55,10 +55,12 @@ public class JsonService {
     }
 
     private String getInfoFromItineraries(String key, String json) throws IOException {
-        JsonNode itineraries = new JsonService().getNodeFromMainKey("itineraries", json);
+        JsonNode itineraries = new JsonService().
+                getNodeFromMainKey("itineraries", json);
         String departureDateTime = itineraries.get(0).
                 get(key).toString().replace("\"", "");
         return departureDateTime.replace("T", " ");
+
     }
 
     public String getDepartureDateTime(String json) throws IOException {

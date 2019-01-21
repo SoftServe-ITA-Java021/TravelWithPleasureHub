@@ -21,7 +21,7 @@ public class ScheduledTask {
     @Autowired
     private FlightRepository flightRepository;
 
-    @Scheduled(cron = "0 0 23 * * *")
+    @Scheduled(cron = "0 0/50 22 * * *")
     public void reportCurrentTime() throws UnirestException, JSONException {
         TopRoutes.getMonthTopRoutes();
     }
