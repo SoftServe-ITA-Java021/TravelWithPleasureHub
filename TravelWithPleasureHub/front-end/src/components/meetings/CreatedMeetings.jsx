@@ -6,7 +6,6 @@ import JwPagination from 'jw-react-pagination';
 import pStyle from './css/pagination.css';
 import {NavLink} from "react-router-dom";
 
-
 export default class CreatedMeetings extends Component {
     constructor(props) {
         super(props);
@@ -21,10 +20,25 @@ export default class CreatedMeetings extends Component {
                     }
                 ],
 
+                currentUser: {
+                    id: -1
+
+                },
+
                 pageOfItems: []
             };
         this.onChangePage = this.onChangePage.bind(this);
+        this.loadUserInfo = this.loadUserInfo.bind(this);
+    }
+    loadUserInfo = () => {
+        fetch('http://localhost:8080/profile')
+            .then(response => response.json())
+            .then(properties => this.setState({user : properties}))
+            .catch(error => { throw error } )
+    };
 
+    componentWillMount() {
+        this.loadUserInfo();
     }
 
     render() {
@@ -34,7 +48,7 @@ export default class CreatedMeetings extends Component {
             <div className="container meetingForm">
                 <div
                     className="alert alert-light bg-light row h-100 justify-content-center align-items-center"> You're
-                    watching meetings where you're organizer
+                    watching meetings where you're organizer {value.user.id}
                 </div>
 
                 {value.meetings.length > 0 && value.meetings[0].id !== -1 && value.pageOfItems.map(item =>
@@ -61,16 +75,19 @@ export default class CreatedMeetings extends Component {
         </div>
     }
 
+    componentWillMount() {
+        axios.get(`http://localhost:8080/profile`)
+            .then(json => (this.setState({currentUser: json.data})))
 
-    componentDidMount() {
-        axios.get(`http://localhost:8080/api/meetings`,
-            {
-                params: {
-                    owner: "2"
-                }
-            })
-            .then(json => this.setState({meetings: json.data}));
+            .then(() => axios.get(`http://localhost:8080/api/meetings`,
+                {
+                    params: {
+                        owner: this.state.currentUser.id
+                    }
+                })
+                .then(json => this.setState({meetings: json.data})));
     }
+
 
     onChangePage(pageOfItems) {
         this.setState({pageOfItems});

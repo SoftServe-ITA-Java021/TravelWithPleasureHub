@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import axios from 'axios';
+import profile from './css/anotherProfile.css'
+import profileCss from './css/profile.css'
 export default class AnotherProfile extends Component{
     constructor(props){
         super(props);
@@ -34,36 +36,17 @@ export default class AnotherProfile extends Component{
 
     render(){
         const value = this.state.user;
-        return(<div className="container">
-                <div className="row">
-                    <div className="col-md-6  offset-md-0  toppad" >
-                        <div className="card">
-                            <div className="card-body">
-                                <h2 className="card-title">{value.email}</h2>
-                                <table className="table table-user-information ">
-                                    <tbody>
-                                    <tr>
-                                        <td>Username:</td>
-                                        <td>{value.username}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>First name:</td>
-                                        <td>{value.firstName}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Second name:</td>
-                                        <td>{value.secondName}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Phone:</td>
-                                        <td>{value.phoneNumber}</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+        return(<div className="back1">
+                <figure className="snip0051">
+                    <img src="http://www.pano1544.com/photo/yt3.ggpht.com/-Ll1NN8njjrQ/AAAAAAAAAAI/AAAAAAAAAAA/C8QrE1kAx4Y/s900-c-k-no-mo-rj-c0xffffff/photo.jpg" alt="sample1"/>
+                    <div className="icons">
+                        <a href="http://localhost:3000/welcome"><i className="ion-ios-home-outline"></i></a>
                     </div>
-                </div>
+                    <figcaption>
+                        <h2>{value.firstName} <span>{value.secondName}</span></h2>
+                        <p>Username: {value.username}<br/>E-mail: {value.email}<br/>Phone: {value.phoneNumber}</p>
+                    </figcaption>
+                </figure>
             </div>
         )
     }

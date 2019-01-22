@@ -20,6 +20,11 @@ export default class MeetingsHistory extends Component {
                         timeOfAction: ""
                     }
                 ],
+          
+                currentUser: {
+                    id: -1
+                },
+          
                 confirmed: false,
                 wishing: false,
                 pageOfItems: []
@@ -28,6 +33,16 @@ export default class MeetingsHistory extends Component {
         this.wishing = this.wishing.bind(this);
         this.onChangePage = this.onChangePage.bind(this);
 
+    }
+
+    componentWillMount() {
+        axios.get("http://localhost:8080/profile"
+        ).then(response => {
+                this.setState({
+                    currentUser: response.data
+                });
+            }
+        )
     }
 
     render() {
@@ -86,7 +101,7 @@ export default class MeetingsHistory extends Component {
         axios.get(`http://localhost:8080/api/meetings`,
             {
                 params: {
-                    confirmedHistoryByUser: "2"
+                    confirmedHistoryByUser: this.state.currentUser.id
                 }
             })
             .then(json => this.setState({meetings: json.data, confirmed: true, wishing: false}));
@@ -97,12 +112,24 @@ export default class MeetingsHistory extends Component {
         axios.get(`http://localhost:8080/api/meetings`,
             {
                 params: {
-                    wishingHistoryByUser: "2"
+                    wishingHistoryByUser: this.state.currentUser.id
                 }
             })
             .then(json => this.setState({meetings: json.data, confirmed: false, wishing: true}));
     }
-
+    componentWillMount() {
+        axios.get(`http://localhost:8080/profile`,
+            {
+                headers: {
+                    'Access-Control-Allow-Credentials': 'include'
+                }
+            })
+            .then(response => {
+                this.setState({
+                    user: response.data
+                })
+            });
+    }
     onChangePage(pageOfItems) {
         this.setState({pageOfItems});
     }

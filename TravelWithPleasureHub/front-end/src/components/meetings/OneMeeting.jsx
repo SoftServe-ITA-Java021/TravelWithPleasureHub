@@ -20,14 +20,13 @@ export default class OneMeeting extends Component {
                     confirmedUserIds: [],
                     wishingUserIds: []
                 },
-                user:{
+
+                currentUser: {
                     id: -1,
                     username: "",
                     email: "",
                     firstName: "",
                     secondName: "",
-                    additionalInfo: "",
-                    phoneNumber: ""
                 },
 
                 changed: false,
@@ -38,10 +37,12 @@ export default class OneMeeting extends Component {
         this.deleteMeeting = this.deleteMeeting.bind(this);
         this.chatConnect = this.chatConnect.bind(this);
         OneMeeting.showInformationAboutMeeting = OneMeeting.showInformationAboutMeeting.bind(this);
+        this.containingInArray = this.containingInArray.bind(this);
     }
 
 
     render() {
+        console.dir(this.state);
         const value = this.state;
         return <div className="background">
             <MeetingNavbar/>
@@ -76,6 +77,7 @@ export default class OneMeeting extends Component {
                         </div>
                     </h1>
                     : ""}
+                {value.currentUser !== null && value.currentUser.id !== -1 &&
                 <NavLink to={`/meetings/show-meeting/confirmed-users/${value.meeting.id}`}>
                     <div className="form-row text-center">
                         <div className="col-12">
@@ -85,9 +87,10 @@ export default class OneMeeting extends Component {
                             </button>
                         </div>
                     </div>
-                </NavLink>
+                </NavLink>}
 
-                {value.meeting.ownerId !== 2 &&
+                {value.currentUser !== null && value.currentUser.id !== -1 &&
+                value.meeting.ownerId !== value.currentUser.id &&
                 <div className="form-row text-center">
                     <div className="col-12">
                         <NavLink className="nav-link" to={`/profile/${value.meeting.ownerId}`}>
@@ -99,7 +102,8 @@ export default class OneMeeting extends Component {
                     </div>
                 </div>}
 
-                {value.meeting.ownerId !== 2 && <div className="form-row text-center">
+                {value.currentUser !== null && value.currentUser.id !== -1 &&
+                value.meeting.ownerId !== value.currentUser.id && <div className="form-row text-center">
                     <div className="col-12">
                         <button type="submit"
                                 className="btn btn-primary center-block widthButton"
@@ -110,8 +114,23 @@ export default class OneMeeting extends Component {
                 </div>
                 }
 
+                {this.containingInArray() &&
+                <div className="form-row text-center">
+                    <div className="col-12">
+                        <h1 className="lead row h-100 justify-content-center align-items-center">
+                            <button
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    this.chatConnect();
+                                }}
+                                className="btn btn-primary widthButton">
+                                Go chat!
+                            </button>
+                        </h1>
+                    </div>
+                </div>}
 
-                {value.meeting.ownerId === 2 && <div>
+                {value.meeting.ownerId === value.currentUser.id && <div>
                     <div className="form-row text-center">
                         <div className="col-12">
                             <NavLink to={`/meetings/show-meeting/wishing-users/${value.meeting.id}`}>
@@ -124,20 +143,6 @@ export default class OneMeeting extends Component {
                             </NavLink>
                         </div>
                     </div>
-                    {this.state.user.username!=='' || this.state.meeting.ownerId!==-1?<div className="form-row text-center">
-                        <div className="col-12">
-                            <h1 className="lead row h-100 justify-content-center align-items-center">
-                                <button
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        this.chatConnect();
-                                    }}
-                                    className="btn btn-primary widthButton">
-                                    Go chat!
-                                </button>
-                            </h1>
-                        </div>
-                    </div>:""}
 
                     <div className="form-row text-right">
                         <div className="col-12">
@@ -174,27 +179,21 @@ export default class OneMeeting extends Component {
         </div>
     }
 
-
-    componentDidMount() {
-        axios.get(`http://localhost:8080/api/meetings/${this.props.match.params.id}`,
-            {
-                headers: {
-                    'Access-Control-Allow-Credentials': 'include'
-                }
-            })
-            .then(json => this.setState({meeting: json.data, changed: true}));
-    }
     componentWillMount() {
-        axios.get(`http://localhost:8080/api/meetings/confirmed-users/${this.props.match.params.id}`)
-            .then(json => (this.setState({users: json.data, isDownloaded: true})));
+        axios.get(`http://localhost:8080/profile`)
+            .then(json => (this.setState({currentUser: json.data})))
+
+            .then(() => axios.get(`http://localhost:8080/api/meetings/${this.props.match.params.id}`)
+                .then(json => this.setState({meeting: json.data, changed: true, isDownloaded: true})));
     }
+
 
     sendRequest(e) {
         e.preventDefault();
         let value = this.state;
         let formData = new FormData();
         formData.append("meetingId", value.meeting.id);
-        formData.append("userId", "2");
+        formData.append("userId", JSON.stringify(this.state.currentUser.id));
 
         axios.post("http://localhost:8080/api/meetings/request-for-meeting/",
             formData
@@ -219,7 +218,19 @@ export default class OneMeeting extends Component {
                 })
         }
     }
-    chatConnect(){
+
+    chatConnect() {
         window.location.replace("http://localhost:8080");
+    }
+
+    containingInArray() {
+        if (this.state.meeting.ownerId === this.state.currentUser.id) {
+            return true;
+        }
+        let arr = this.state.meeting.confirmedUserIds;
+        for (let i = 0; i < arr.length; i++) {
+            if (arr[i] === this.state.currentUser.id) return true;
+        }
+        return false;
     }
 }
