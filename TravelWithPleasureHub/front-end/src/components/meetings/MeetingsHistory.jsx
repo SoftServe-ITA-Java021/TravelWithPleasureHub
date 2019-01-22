@@ -20,6 +20,15 @@ export default class MeetingsHistory extends Component {
                         timeOfAction: ""
                     }
                 ],
+                user:{
+                    id: -1,
+                    username: "",
+                    email: "",
+                    firstName: "",
+                    secondName: "",
+                    additionalInfo: "",
+                    phoneNumber: ""
+                },
                 confirmed: false,
                 wishing: false,
                 pageOfItems: []
@@ -86,7 +95,7 @@ export default class MeetingsHistory extends Component {
         axios.get(`http://localhost:8080/api/meetings`,
             {
                 params: {
-                    confirmedHistoryByUser: "2"
+                    confirmedHistoryByUser: this.state.user.id
                 }
             })
             .then(json => this.setState({meetings: json.data, confirmed: true, wishing: false}));
@@ -97,12 +106,24 @@ export default class MeetingsHistory extends Component {
         axios.get(`http://localhost:8080/api/meetings`,
             {
                 params: {
-                    wishingHistoryByUser: "2"
+                    wishingHistoryByUser: this.state.user.id
                 }
             })
             .then(json => this.setState({meetings: json.data, confirmed: false, wishing: true}));
     }
-
+    componentWillMount() {
+        axios.get(`http://localhost:8080/profile`,
+            {
+                headers: {
+                    'Access-Control-Allow-Credentials': 'include'
+                }
+            })
+            .then(response => {
+                this.setState({
+                    user: response.data
+                })
+            });
+    }
     onChangePage(pageOfItems) {
         this.setState({pageOfItems});
     }

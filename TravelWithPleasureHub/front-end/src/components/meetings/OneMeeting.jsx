@@ -87,7 +87,7 @@ export default class OneMeeting extends Component {
                     </div>
                 </NavLink>
 
-                {value.meeting.ownerId !== 2 &&
+                {value.meeting.ownerId !== value.user.id &&
                 <div className="form-row text-center">
                     <div className="col-12">
                         <NavLink className="nav-link" to={`/profile/${value.meeting.ownerId}`}>
@@ -99,7 +99,7 @@ export default class OneMeeting extends Component {
                     </div>
                 </div>}
 
-                {value.meeting.ownerId !== 2 && <div className="form-row text-center">
+                {value.meeting.ownerId !== value.user.id && <div className="form-row text-center">
                     <div className="col-12">
                         <button type="submit"
                                 className="btn btn-primary center-block widthButton"
@@ -111,7 +111,7 @@ export default class OneMeeting extends Component {
                 }
 
 
-                {value.meeting.ownerId === 2 && <div>
+                {value.meeting.ownerId === value.user.id && <div>
                     <div className="form-row text-center">
                         <div className="col-12">
                             <NavLink to={`/meetings/show-meeting/wishing-users/${value.meeting.id}`}>
@@ -187,14 +187,26 @@ export default class OneMeeting extends Component {
     componentWillMount() {
         axios.get(`http://localhost:8080/api/meetings/confirmed-users/${this.props.match.params.id}`)
             .then(json => (this.setState({users: json.data, isDownloaded: true})));
+        axios.get(`http://localhost:8080/profile`,
+            {
+                headers: {
+                    'Access-Control-Allow-Credentials': 'include'
+                }
+            })
+            .then(response => {
+                this.setState({
+                    user: response.data
+                })
+            });
     }
+
 
     sendRequest(e) {
         e.preventDefault();
         let value = this.state;
         let formData = new FormData();
         formData.append("meetingId", value.meeting.id);
-        formData.append("userId", "2");
+        formData.append("userId", value.user.id);
 
         axios.post("http://localhost:8080/api/meetings/request-for-meeting/",
             formData

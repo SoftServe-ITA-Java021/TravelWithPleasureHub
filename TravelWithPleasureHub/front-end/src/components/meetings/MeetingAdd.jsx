@@ -74,16 +74,19 @@ export default class MeetingAdd extends Component {
         </div>
     }
 
-    // componentWillMount() {
-    //     axios.get("http://localhost:8080/profile"
-    //     ).then(response => {
-    //             this.setState({
-    //                 user: response.data
-    //             });
-    //         alert(response.data)
-    //         }
-    //     )
-    // }
+     componentWillMount() {
+         axios.get(`http://localhost:8080/profile`,
+             {
+                 headers: {
+                     'Access-Control-Allow-Credentials': 'include'
+                 }
+             })
+             .then(response => {
+                 this.setState({
+                     user: response.data
+                 })
+             });
+     }
 
     sendRequest(e) {
         e.preventDefault();
@@ -94,7 +97,7 @@ export default class MeetingAdd extends Component {
         formData.append("content", value.content);
         formData.append("location", value.location);
         formData.append("timeOfAction", value.timeOfAction);
-        formData.append("ownerId", JSON.stringify(2));
+        formData.append("ownerId", value.user.id);
 
         axios.post("http://localhost:8080/api/meetings",
             formData
