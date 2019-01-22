@@ -21,6 +21,7 @@ import ConfirmedUsers from "./components/meetings/ConfirmedUsers";
 import MeetingUpdate from "./components/meetings/MeetingUpdate";
 import AnotherProfile from "./components/signup/AnotherProfile";
 import SignUp from "./components/SignUp";
+import NotFound from "./components/NotFound";
 
 class App extends Component {
     constructor(props){
@@ -76,6 +77,8 @@ class App extends Component {
 										   component={ConfirmedUsers}/>
 									<Route  path="/welcome" component={Home}/>
 
+
+                                    <Route path="/404" component={NotFound} />
 									<Route path="*" component={NoMatch}/>
 								</Switch>
 

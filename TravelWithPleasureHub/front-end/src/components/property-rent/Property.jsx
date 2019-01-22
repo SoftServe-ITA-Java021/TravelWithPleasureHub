@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Calendar from 'react-calendar';
 import moment from 'moment';
+import {Redirect} from "react-router-dom";
+
 
 class Property extends Component {
 	constructor(props) {
@@ -8,13 +10,16 @@ class Property extends Component {
 		this.state = {
 			title : "",
 			description: "",
+			locality: "",
 			address: "",
 			price : "",
 			checkIn: "",
 			checkOut: "",
 			imageLinkObjects: [],
 			propertyBookedDates: [],
-			successfullyBooked: false
+			successfullyBooked: false,
+			messageType: "",
+			message: ""
 		};
 		this.loadPropertyData = this.loadPropertyData.bind(this);
 		this.loadImages = this.loadImages.bind(this);
@@ -27,19 +32,23 @@ class Property extends Component {
 	loadPropertyData = () => {
 		fetch(`http://localhost:8080/api/properties/${this.props.match.params.id}`)
 			.then(response => response.json())
-			.then(response => this.setState(response))
-			.catch(error => console.log(error))
+			.then(response => {
+				console.log(response);
+				if(!response.title) {
+					this.props.history.push('/404');
+				} else this.setState(response)
+			})
+			.catch(error => { throw error } )
 	};
 
 	loadImages = () => {
 		fetch(`http://localhost:8080/api/property-image/property/${this.props.match.params.id}`)
 			.then(response => response.json())
 			.then(responseJSON => this.setState({imageLinkObjects: responseJSON}))
-			.catch(error => console.log(error))
+			.catch(error => { throw error } )
 	};
 
 	loadPropertyAvailability = () => {
-		console.log(this.props.match.params.id);
 		fetch(`http://localhost:8080/api/property-availability/${this.props.match.params.id}`)
 			.then(response => response.json())
 			.then(response => {
@@ -106,6 +115,10 @@ class Property extends Component {
 	};
 
 	onBookButtonClick = () => {
+		this.setState({
+			messageType: 'dark',
+			message: 'Loading...'
+		});
 		let formData = new FormData();
 		formData.append('checkIn', this.state.checkIn);
 		formData.append('checkOut', this.state.checkOut);
@@ -114,13 +127,28 @@ class Property extends Component {
 			method: "POST",
 			body: formData
 		})
-			.then(response => response.json())
-			.then(response => console.log(response))
+			.then(response => {
+				if(response.ok) {
+					this.setState({
+						messageType: 'success',
+						message: 'Success! You have successfully booked since '
+							+ this.state.checkIn + ' until ' + this.state.checkOut
+					});
+				} else {
+					this.setState({
+						messageType: 'danger',
+						message: 'Error'
+					});
+				}
+				return response.json()
+			})
+
 			.catch(error => { throw error } )
 	};
 
 
 	render() {
+
 		return (
 			<div className="container">
 				<div id="carouselExampleIndicators" className="carousel slide" data-interval="false"
@@ -129,9 +157,9 @@ class Property extends Component {
 						{
 							this.state.imageLinkObjects.map((_, index) =>
 								index === 0 ?
-									<li data-target="#carouselExampleIndicators" data-slide-to={index} className="active"/>
+									<li key={index} data-target="#carouselExampleIndicators" data-slide-to={index} className="active"/>
 									:
-									<li data-target="#carouselExampleIndicators" data-slide-to={index}/>
+									<li key={index} data-target="#carouselExampleIndicators" data-slide-to={index}/>
 							)
 						}
 					</ol>
@@ -140,11 +168,11 @@ class Property extends Component {
 							this.state.imageLinkObjects.map((imageLinkObject, index) =>
 
 								index === 0 ?
-									<div className="carousel-item active">
+									<div key={index} className="carousel-item active">
 										<img className="d-block w-100" src={imageLinkObject.imageLink}/>
 									</div>
 									:
-									<div className="carousel-item"> :
+									<div key={index} className="carousel-item"> :
 										<img className="d-block w-100" src={imageLinkObject.imageLink}/>
 									</div>
 
@@ -166,7 +194,7 @@ class Property extends Component {
 					<div className="col-11  text-black">
 						<h1>{this.state.title}</h1>
 					</div>
-					<p className="col-11">{this.state.address}</p>
+					<p className="col-11">{this.state.locality},  {this.state.address}</p>
 				</div>
 
 				<div className="row mt-4 justify-content-around">
@@ -174,6 +202,12 @@ class Property extends Component {
 						<p>{this.state.description}</p>
 					</div>
 					<div className="col-4 text-black text-center">
+						{
+							this.state.messageType !== "" &&
+							<div className={"alert alert-" + this.state.messageType}>
+								{this.state.message}
+							</div>
+						}
 						<Calendar
 							onChange={this.onCalendarDateChange}
 							selectRange={true}
