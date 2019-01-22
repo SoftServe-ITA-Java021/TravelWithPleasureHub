@@ -10,7 +10,9 @@ class PropertyUpload extends Component {
 			price: null,
 			description: null,
 			photos: [],
-			fileFormPlaceholder: "Choose photos"
+			fileFormPlaceholder: "Choose photos",
+			messageType: "",
+			message: ""
 		};
 		this.handleFieldChange = this.handleFieldChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
@@ -30,6 +32,10 @@ class PropertyUpload extends Component {
 
 	handleSubmit = (e) => {
 		e.preventDefault();
+		this.setState({
+			messageType: 'dark',
+			message: 'Loading...'
+		});
 		let formData = new FormData();
 		formData.append('title', this.state.title);
 		formData.append('locality', this.state.locality);
@@ -43,8 +49,20 @@ class PropertyUpload extends Component {
 			method: "POST",
 			body: formData
 		})
-			.then(response => response.json())
-			.then(response => console.log(response))
+			.then(response => {
+				if(response.ok) {
+					this.setState({
+						messageType: 'success',
+						message: 'Success! You have successfully added your ad!'
+					});
+				} else {
+					this.setState({
+						messageType: 'danger',
+						message: 'Error'
+					});
+				}
+				return response.json();
+			})
 			.catch(error => { throw error } )
 	};
 
@@ -52,6 +70,12 @@ class PropertyUpload extends Component {
 		return (
 			<div className="container d-flex justify-content-center">
 				<div className="w-75">
+					{
+						this.state.messageType !== "" &&
+						<div className={"alert alert-" + this.state.messageType}>
+							{this.state.message}
+						</div>
+					}
 					<form onSubmit={this.handleSubmit}>
 						<div className="form-group">
 							<label htmlFor="property-title-input">Title</label>
