@@ -5,6 +5,7 @@ import com.kh021j.travelwithpleasurehub.tickets.apiparser.model.response.v2.Flig
 import com.kh021j.travelwithpleasurehub.tickets.apiparser.model.response.v2.FlightData;
 import com.kh021j.travelwithpleasurehub.tickets.apiparser.repository.FlightDataRepository;
 import com.kh021j.travelwithpleasurehub.tickets.apiparser.repository.FlightRepository;
+import com.kh021j.travelwithpleasurehub.tickets.apiparser.service.data.FlightDataService;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ public class ScheduledTask {
     @Autowired
     private FlightRepository flightRepository;
 
-    @Scheduled(cron = "0 0/50 22 * * *")
+    @Scheduled(cron = "0 0/39 15 * * *")
     public void reportCurrentTime() throws UnirestException, JSONException {
         TopRoutes.getMonthTopRoutes();
     }

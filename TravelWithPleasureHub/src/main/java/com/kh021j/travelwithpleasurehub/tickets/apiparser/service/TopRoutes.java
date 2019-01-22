@@ -6,12 +6,14 @@ import com.kh021j.travelwithpleasurehub.tickets.apiparser.model.response.v2.Flig
 import com.kh021j.travelwithpleasurehub.tickets.apiparser.model.response.v2.FlightData;
 import com.kh021j.travelwithpleasurehub.tickets.apiparser.model.response.v2.Ticket;
 import com.kh021j.travelwithpleasurehub.tickets.apiparser.repository.FlightDataRepository;
+import com.kh021j.travelwithpleasurehub.tickets.apiparser.service.data.FlightDataService;
 import com.kh021j.travelwithpleasurehub.tickets.parser.belavia.model.enums.Currency;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -21,12 +23,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-
+@Service
 public class TopRoutes {
 
     private static Date currentDate = new Date();
-    @Autowired
-    static FlightDataRepository flightDataRepository;
 
     public static List<FlightData> getMonthTopRoutes() throws UnirestException, JSONException {
         LocalDate localDate = currentDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
@@ -34,12 +34,11 @@ public class TopRoutes {
         List<FlightData> flightDataList = new ArrayList<>();
 
         for (RequestModel entity : list) {
-            for (int i = 1; i < 31; i++) {
-                localDate.plusDays(i).toString();
+            for (int i = 1; i < 2; i++) {
+                System.out.println(localDate.plusDays(i).toString());
                 entity.setOutboundDate(localDate.plusDays(i).toString());
-                System.out.println(getFlightsData(entity));
-                flightDataList.addAll(getFlightsData(entity));
-                System.out.println(flightDataRepository.saveAll(getFlightsData(entity)));
+                //System.out.println(getFlightsData(entity));
+                new FlightDataService().saveFlightData(getFlightsData(entity));
             }
         }
 
@@ -128,7 +127,7 @@ public class TopRoutes {
         list.add(new RequestModel("US", "USD", "en-US",
                 "ICN", "CJU", localDate.toString(),
                 1, "economy", 0, 0));
-        list.add(new RequestModel("US", "USD", "en-US",
+        /*list.add(new RequestModel("US", "USD", "en-US",
                 "MEL", "SYD", localDate.toString(),
                 1, "economy", 0, 0));
         list.add(new RequestModel("US", "USD", "en-US",
@@ -169,7 +168,7 @@ public class TopRoutes {
                 1, "economy", 0, 0));
         list.add(new RequestModel("US", "USD", "en-US",
                 "CGK", "SIN", localDate.toString(),
-                1, "economy", 0, 0));
+                1, "economy", 0, 0));*/
         return list;
     }
 }
