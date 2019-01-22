@@ -9,19 +9,6 @@ export default class MeetingUpdate extends Component {
         super(props);
         this.state =
             {
-                meeting: {
-                    id: -1,
-                    header: "",
-                    meetingType: "walking",
-                    content: "",
-                    location: "",
-                    links: [],
-                    timeOfAction: "",
-                    ownerId: -1,
-                    confirmedUserIds: [],
-                    wishingUserIds: []
-                },
-
                 id: this.props.match.params.id,
                 header: "",
                 meetingType: "",
@@ -29,6 +16,8 @@ export default class MeetingUpdate extends Component {
                 location: "",
                 timeOfAction: "",
                 ownerId: -1,
+                confirmedUserIds: [],
+                wishingUserIds: [],
 
                 isUpdated: false
             };
@@ -91,9 +80,9 @@ export default class MeetingUpdate extends Component {
     componentWillMount() {
         axios.get(`http://localhost:8080/api/meetings/${this.props.match.params.id}`,
         ).then(response => {
-            this.setState({
-                meeting: response.data
-            })
+            this.setState(
+                response.data
+            )
         })
     }
 
@@ -102,15 +91,15 @@ export default class MeetingUpdate extends Component {
         let value = this.state;
         let formData = new FormData();
         formData.append("id", value.id);
-        formData.append("header", value.header.length > 0 ? value.header : value.meeting.header);
-        formData.append("meetingType", value.meetingType.length > 0 ? value.meetingType : value.meeting.meetingType);
-        formData.append("content", value.content.length > 0 ? value.content : value.meeting.content);
-        formData.append("location", value.location.length > 0 ? value.location : value.meeting.location);
-        formData.append("timeOfAction", value.timeOfAction.length > 0 ? value.timeOfAction : value.meeting.timeOfAction.substring(0, 16));
-        formData.append("links", value.meeting.links.toString());
-        formData.append("ownerId", JSON.stringify(value.meeting.ownerId));
-        formData.append("confirmedUserIds", value.meeting.confirmedUserIds.toString());
-        formData.append("wishingUserIds", value.meeting.wishingUserIds.toString());
+        formData.append("header", value.header);
+        formData.append("meetingType", value.meetingType);
+        formData.append("content", value.content);
+        formData.append("location", value.location);
+        formData.append("timeOfAction", value.timeOfAction.substring(0, 16));
+        formData.append("links", JSON.stringify([]));
+        formData.append("ownerId", value.ownerId);
+        formData.append("confirmedUserIds", value.confirmedUserIds.toString());
+        formData.append("wishingUserIds", value.wishingUserIds.toString());
 
         axios.put("http://localhost:8080/api/meetings",
             formData
@@ -130,7 +119,7 @@ export default class MeetingUpdate extends Component {
                 required
                 type="text"
                 className="form-control"
-                defaultValue={this.state.meeting.header}
+                value={this.state.header}
                 onChange={this.headerChange}
                 placeholder="Enter header"
             />
@@ -141,7 +130,7 @@ export default class MeetingUpdate extends Component {
         return <div className="form-group row h-100 justify-content-center align-items-center">
             <label>Meeting type:</label>
             <select className="form-control"
-                    value={this.state.meeting.meetingType}
+                    value={this.state.meetingType}
                     onChange={this.meetingTypeChange}>
                 <option
                     value="WALKING">
@@ -176,7 +165,7 @@ export default class MeetingUpdate extends Component {
             <label>Description:</label>
             <textarea
                 className="form-control"
-                value={this.state.meeting.content}
+                value={this.state.content}
                 onChange={this.contentChange}
                 placeholder="Enter content of meeting"
             />
@@ -190,7 +179,7 @@ export default class MeetingUpdate extends Component {
                 required
                 type="text"
                 className="form-control"
-                defaultValue={this.state.meeting.location}
+                value={this.state.location}
                 onChange={this.locationChange}
                 placeholder="Enter location"
             />
@@ -207,7 +196,7 @@ export default class MeetingUpdate extends Component {
                 required
                 type="datetime-local"
                 className="form-control"
-                value={this.state.meeting.timeOfAction.substring(0,16)}
+                value={this.state.timeOfAction.substring(0, 16)}
                 onChange={this.timeOfActionChange}
             />
         </div>
