@@ -114,7 +114,6 @@ export default class OneMeeting extends Component {
                 </div>
                 }
 
-
                 {this.containingInArray() &&
                 <div className="form-row text-center">
                     <div className="col-12">
@@ -180,7 +179,6 @@ export default class OneMeeting extends Component {
         </div>
     }
 
-
     componentWillMount() {
         axios.get(`http://localhost:8080/profile`)
             .then(json => (this.setState({currentUser: json.data})))
@@ -188,6 +186,7 @@ export default class OneMeeting extends Component {
             .then(() => axios.get(`http://localhost:8080/api/meetings/${this.props.match.params.id}`)
                 .then(json => this.setState({meeting: json.data, changed: true, isDownloaded: true})));
     }
+
 
     sendRequest(e) {
         e.preventDefault();

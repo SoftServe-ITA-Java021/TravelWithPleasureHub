@@ -20,11 +20,11 @@ export default class MeetingsHistory extends Component {
                         timeOfAction: ""
                     }
                 ],
-
+          
                 currentUser: {
                     id: -1
                 },
-
+          
                 confirmed: false,
                 wishing: false,
                 pageOfItems: []
@@ -117,7 +117,19 @@ export default class MeetingsHistory extends Component {
             })
             .then(json => this.setState({meetings: json.data, confirmed: false, wishing: true}));
     }
-
+    componentWillMount() {
+        axios.get(`http://localhost:8080/profile`,
+            {
+                headers: {
+                    'Access-Control-Allow-Credentials': 'include'
+                }
+            })
+            .then(response => {
+                this.setState({
+                    user: response.data
+                })
+            });
+    }
     onChangePage(pageOfItems) {
         this.setState({pageOfItems});
     }
