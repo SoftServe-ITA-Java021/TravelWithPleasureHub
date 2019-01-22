@@ -2,14 +2,13 @@ package com.kh021j.travelwithpleasurehub.propertyrent.controller;
 
 import com.kh021j.travelwithpleasurehub.propertyrent.model.Property;
 import com.kh021j.travelwithpleasurehub.propertyrent.model.PropertyImage;
-import com.kh021j.travelwithpleasurehub.propertyrent.service.ImgurAPIService;
-import com.kh021j.travelwithpleasurehub.propertyrent.service.PropertyImageService;
-import com.kh021j.travelwithpleasurehub.propertyrent.service.PropertyService;
-import com.kh021j.travelwithpleasurehub.propertyrent.service.PropertyTypeService;
+import com.kh021j.travelwithpleasurehub.propertyrent.service.*;
 import com.kh021j.travelwithpleasurehub.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "/api/properties")
@@ -29,11 +28,20 @@ public class PropertyController {
     private ImgurAPIService imgurAPIService;
 
     @Autowired
+    private HEREMapsGeocoderAPIService hereMapsGeocoderAPIService;
+
+    @Autowired
     private PropertyImageService propertyImageService;
 
     @GetMapping
     public @ResponseBody Iterable<Property> getAllProperties(){
         return propertyService.findAll();
+    }
+
+    @GetMapping("/5km")
+    public @ResponseBody List<Property> getAllPropertiesWithin5kmRadius(@RequestParam String latitude,
+                                                                        @RequestParam String longitude) {
+        return propertyService.findBy5kmRadius(Double.parseDouble(latitude), Double.parseDouble(longitude));
     }
 
     @PostMapping("/search")
@@ -52,13 +60,7 @@ public class PropertyController {
                                               @RequestParam String description,
                                               @RequestParam MultipartFile[] photos
     ) {
-        Property property = new Property(title, description,
-                propertyTypeService.findById(1), userService.getById(1).get(), locality, address, price);
-        Property savedProperty = propertyService.add(property);
-        for(MultipartFile photo : photos) {
-            propertyImageService.add(new PropertyImage(imgurAPIService.uploadPictures(photo), savedProperty));
-        }
-        return savedProperty;
+        return propertyService.add(title, locality, address, price, description, photos);
     }
 
     @PutMapping

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropertyThumbnail from "./PropertyThumbnail";
 import {Link} from "react-router-dom";
-import ErrorBoundary from "../../ErrorBoundary";
+import PropertyOnMap from "./map/PropertyOnMap";
 
 class PropertyList extends Component {
 	constructor(props) {
@@ -11,12 +11,16 @@ class PropertyList extends Component {
 			locality: "",
 			address: "",
 			checkIn: "",
-			checkOut: ""
+			checkOut: "",
+			displayMap: false,
+			mapCenterLatitude: null,
+			mapCenterLongitude: null
 		};
 		this.loadProperties = this.loadProperties.bind(this);
 		this.onFieldChange = this.onFieldChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.loadMatchingProperties = this.loadMatchingProperties.bind(this);
+		this.loadCoordinatesOfAddress = this.loadCoordinatesOfAddress.bind(this);
 	}
 
 	loadProperties = () => {
@@ -26,8 +30,9 @@ class PropertyList extends Component {
 			.catch(error => { throw error } )
 	};
 
+
 	onFieldChange = e => {
-		this.setState( { [e.target.name]: e.target.value });
+		this.setState({ [e.target.name]: e.target.value });
 	};
 
 	handleSubmit = e => {
@@ -36,7 +41,6 @@ class PropertyList extends Component {
 	};
 
 	loadMatchingProperties = () => {
-
 		let formData = new FormData();
 		formData.append('locality', this.state.locality);
 		formData.append('address', this.state.address);
@@ -47,8 +51,32 @@ class PropertyList extends Component {
 			body: formData
 		})
 			.then(response => response.json())
-			.then(properties => this.setState({properties : properties}))
+			.then(properties => {
+				if(properties.length === 0)
+					this.loadCoordinatesOfAddress();
+				this.setState({
+					properties : properties,
+				});
+
+			})
 			.catch(error => { throw error })
+	};
+
+	loadCoordinatesOfAddress = () => {
+		this.setState({displayMap: false});
+		if(this.state.address === "" && this.state.locality === "") return;
+		let fullAddress = this.state.address + ' ' + this.state.locality;
+		fullAddress = fullAddress.replace(/ /g, '+');
+		fetch(`https://geocoder.api.here.com/6.2/geocode.json?searchtext=${fullAddress}&app_code=${'AR8OAZmJZPtl8mNegMW94w'}&app_id=${'6J9fCy6htv1xIoObLj3n'}`)
+			.then(response => response.json())
+			.then(response => {
+				let coordinates = response.Response.View[0].Result[0].Location.NavigationPosition[0];
+				this.setState({
+					mapCenterLatitude: coordinates.Latitude,
+					mapCenterLongitude: coordinates.Longitude,
+					displayMap: true
+				})
+			})
 	};
 
 	componentWillMount() {
@@ -57,7 +85,6 @@ class PropertyList extends Component {
 
 
 	render() {
-
 		return (
 			<div className="container">
 				<h2 className="ml-3 ">Search property you need!</h2>
@@ -88,21 +115,28 @@ class PropertyList extends Component {
 						</div>
 					</div>
 				</form>
-				<div className="p-3 text-white">
+				<div className="p-3">
 					<div className="row justify-content-center">
 						{
-							this.state.properties.map(property =>
-								<div className="col-md-4">
-										<PropertyThumbnail key={property.id} id={property.id} title={property.title}
-									                   price={property.price} />
-								</div>
-							)
+							this.state.properties.length !== 0 ?
+								this.state.properties.map(property =>
+									<div key={property.id} className="col-md-4">
+											<PropertyThumbnail id={property.id} title={property.title}
+										                   price={property.price} />
+									</div>
+								)
+								:
+								<h1>Nothing was found at this address</h1>
 						}
 					</div>
 				</div>
+				{this.state.displayMap === true && <PropertyOnMap
+					centerLatitude={this.state.mapCenterLatitude}
+						centerLongitude={this.state.mapCenterLongitude}/>}
+
 				<div className="text-center">
 					<Link to='/upload/property'>
-						<button type="button" className="mt-5 btn btn-outline-primary w-75">Publish advert of your property</button>
+						<button type="button" className="mt-5 btn btn-outline-secondary w-75">Publish advert of your property</button>
 					</Link>
 				</div>
 			</div>

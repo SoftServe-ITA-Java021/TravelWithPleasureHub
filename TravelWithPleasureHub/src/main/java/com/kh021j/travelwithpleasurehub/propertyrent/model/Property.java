@@ -38,8 +38,16 @@ public class Property {
 
     private Integer price;
 
-    public Property(String title, String description, PropertyType propertyType,
-                    User userTable, String locality, String address, Integer price) {
+    private Double latitude;
+
+    private Double longitude;
+
+    public Property(String title, String description,
+                        PropertyType propertyType, User userTable,
+                        String locality, String address,
+                        Integer price, Double latitude,
+                        Double longitude
+    ) {
         this.title = title;
         this.description = description;
         this.propertyType = propertyType;
@@ -47,5 +55,7 @@ public class Property {
         this.locality = locality;
         this.address = address;
         this.price = price;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 }
