@@ -96,11 +96,11 @@ public class PropertyRepositoryTest extends RepositoryBaseDomain {
         assertThat(propertyRepository.findByLocality("locality").isPresent()).isTrue();
     }
 
-    @Test
+  /*  @Test
     @Transactional
     public void findByAddress() {
         assertThat(propertyRepository.findByAddress("Address").isPresent()).isTrue();
-    }
+    }*/
 
     @Test
     @Transactional

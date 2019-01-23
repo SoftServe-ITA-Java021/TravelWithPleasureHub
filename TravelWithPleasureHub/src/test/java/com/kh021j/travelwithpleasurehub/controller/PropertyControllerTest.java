@@ -95,8 +95,8 @@ public class PropertyControllerTest {
                 .thenReturn(Optional.of(new ArrayList<>(Arrays.asList(property1, property2))));
         when(propertyRepository.findByLocality("locality"))
                 .thenReturn(Optional.of(Collections.singletonList(property1)));
-        when(propertyRepository.findByAddress("Address"))
-                .thenReturn(Optional.of(Collections.singletonList(property1)));
+        /*when(propertyRepository.findByAddress("Address"))
+                .thenReturn(Optional.of(Collections.singletonList(property1)));*/
         when(propertyRepository.findByAvailabilityInPeriodAndSort(LocalDate.of(2000, 12, 12),
                 LocalDate.of(2020, 12, 12), "desc"))
                 .thenReturn(Optional.of(new ArrayList<>(Arrays.asList(property1, property2))));

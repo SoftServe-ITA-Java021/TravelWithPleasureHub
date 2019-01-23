@@ -66,7 +66,12 @@ function enterRoom(newRoomId) {
 }
 
 function onConnected() {
-    enterRoom(roomInput.val());
+    let arr = /\?id=([0-9]+)/i.exec(window.location.search);
+    if(arr !== null) {
+        let id = arr[0];
+        let subId =  id.substring(4);
+        enterRoom(subId);
+    }
     connectingElement.classList.add('hidden');
 }
 
