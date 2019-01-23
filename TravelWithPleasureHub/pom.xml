@@ -119,8 +119,6 @@
             <version>2.3.3</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.webjars/jquery -->
-<<<<<<< HEAD
-=======
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>jquery</artifactId>
@@ -132,7 +130,6 @@
             <artifactId>webjars-locator</artifactId>
             <version>0.32</version>
         </dependency>
->>>>>>> origin/KHJA-9_5
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>jquery</artifactId>
