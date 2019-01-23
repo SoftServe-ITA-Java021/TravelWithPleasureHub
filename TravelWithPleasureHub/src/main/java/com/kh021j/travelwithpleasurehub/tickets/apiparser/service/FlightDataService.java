@@ -1,18 +1,19 @@
-
 package com.kh021j.travelwithpleasurehub.tickets.apiparser.service;
 
 import com.kh021j.travelwithpleasurehub.tickets.apiparser.model.RequestModel;
-import com.kh021j.travelwithpleasurehub.tickets.apiparser.model.response.v2.Flight;
-import com.kh021j.travelwithpleasurehub.tickets.apiparser.model.response.v2.FlightData;
-import com.kh021j.travelwithpleasurehub.tickets.apiparser.model.response.v2.Ticket;
+import com.kh021j.travelwithpleasurehub.tickets.apiparser.model.response.Flight;
+import com.kh021j.travelwithpleasurehub.tickets.apiparser.model.response.FlightData;
+import com.kh021j.travelwithpleasurehub.tickets.apiparser.model.response.Ticket;
 import com.kh021j.travelwithpleasurehub.tickets.apiparser.repository.FlightDataRepository;
-import com.kh021j.travelwithpleasurehub.tickets.apiparser.service.data.FlightDataService;
-import com.kh021j.travelwithpleasurehub.tickets.parser.belavia.model.enums.Currency;
+import com.kh021j.travelwithpleasurehub.tickets.apiparser.repository.FlightRepository;
+import com.kh021j.travelwithpleasurehub.tickets.parser.Belavia.model.enums.Currency;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -24,28 +25,42 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class TopRoutes {
-
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+public class FlightDataService {
     private static Date currentDate = new Date();
 
-    public static List<FlightData> getMonthTopRoutes() throws UnirestException, JSONException {
-        LocalDate localDate = currentDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        List<RequestModel> list = getTopRoutes();
-        List<FlightData> flightDataList = new ArrayList<>();
+    private final FlightDataRepository flightDataRepository;
 
-        for (RequestModel entity : list) {
-            for (int i = 1; i < 2; i++) {
-                System.out.println(localDate.plusDays(i).toString());
-                entity.setOutboundDate(localDate.plusDays(i).toString());
-                //System.out.println(getFlightsData(entity));
-                new FlightDataService().saveFlightData(getFlightsData(entity));
-            }
+    private final FlightRepository flightRepository;
+
+    public List<FlightData> getResponse(RequestModel requestModel) throws JSONException, UnirestException {
+        List<FlightData> result = flightDataRepository.findAllByArrivalAirportAndDepartureAirportAndQueryDate(
+                requestModel.getOriginPlace(),
+                requestModel.getDestinationPlace(),
+                LocalDate.parse(requestModel.getOutboundDate()));
+        if (result != null && !result.isEmpty()) {
+            return result;
+        } else {
+            return getFlightsData(requestModel);
         }
-
-        return flightDataList;
     }
 
-    public static List<FlightData> getFlightsData(RequestModel entity) throws JSONException, UnirestException {
+    public List<FlightData> getMonthTopRoutes() throws UnirestException, JSONException {
+        LocalDate localDate = currentDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        List<RequestModel> list = getTopRoutes();
+
+        for (RequestModel entity : list) {
+            for (int i = 1; i < 31; i++) {
+                entity.setOutboundDate(localDate.plusDays(i).toString());
+                for (FlightData flightData : getFlightsData(entity)) {
+                    flightDataRepository.saveAndFlush(flightData);
+                }
+            }
+        }
+        return flightDataRepository.findAll();
+    }
+
+    private List<FlightData> getFlightsData(RequestModel entity) throws JSONException, UnirestException {
         OneWayOptionRequestService oneWayOptionRequestService = new OneWayOptionRequestService();
         List<FlightData> flightDataList = new ArrayList<>();
         if (entity != null) {
@@ -68,7 +83,7 @@ public class TopRoutes {
                             .company(carrier.getJSONObject(j).getString("Name"))
                             .companyCode(carrier.getJSONObject(j).getString("DisplayCode"))
                             .imageCompany(carrier.getJSONObject(j).getString("ImageUrl"))
-                            .flights(getFlightsForResponse(obj, carrier.getJSONObject(j).getString("Id")))
+                            .flights(getFlightsForFlightData(obj, carrier.getJSONObject(j).getString("Id")))
                             .build();
                     if (!flightData.getFlights().isEmpty()) {
                         flightDataList.add(flightData);
@@ -80,7 +95,27 @@ public class TopRoutes {
 
     }
 
-    private static List<Flight> getFlightsForResponse(JsonNode obj, String carrierId) throws JSONException {
+    @Scheduled(cron = "0 0 23 * * *")
+    public void reportCurrentTime() throws UnirestException, JSONException {
+        getMonthTopRoutes();
+    }
+
+    @Scheduled(cron = "0 1 1 ? * *")
+    public void deleteOldData() {
+        for (FlightData flightData : flightDataRepository.findAll()) {
+            for (Flight flight : flightData.getFlights()) {
+                if (flight.getArrivalTime().isAfter(ZonedDateTime.now())) {
+                    flightRepository.delete(flight);
+                }
+            }
+            if (flightData.getFlights().isEmpty()) {
+                flightDataRepository.delete(flightData);
+            }
+        }
+    }
+
+
+    private List<Flight> getFlightsForFlightData(JsonNode obj, String carrierId) throws JSONException {
         JSONArray legs = obj.getObject().getJSONArray("Legs");
         List<Flight> flights = new ArrayList<>();
         for (int i = 0; i < legs.length(); i++) {
@@ -102,7 +137,7 @@ public class TopRoutes {
         return flights;
     }
 
-    private static List<Ticket> getTicketsForFlight(JsonNode obj, String legId) throws JSONException {
+    private List<Ticket> getTicketsForFlight(JsonNode obj, String legId) throws JSONException {
         JSONArray itineraries = obj.getObject().getJSONArray("Itineraries");
         List<Ticket> tickets = new ArrayList<>();
         for (int i = 0; i < itineraries.length(); i++) {
@@ -120,14 +155,14 @@ public class TopRoutes {
         return tickets;
     }
 
-    public static List<RequestModel> getTopRoutes() {
+    private List<RequestModel> getTopRoutes() {
         List<RequestModel> list = new ArrayList<>();
         LocalDate localDate = currentDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
         list.add(new RequestModel("US", "USD", "en-US",
                 "ICN", "CJU", localDate.toString(),
                 1, "economy", 0, 0));
-        /*list.add(new RequestModel("US", "USD", "en-US",
+        list.add(new RequestModel("US", "USD", "en-US",
                 "MEL", "SYD", localDate.toString(),
                 1, "economy", 0, 0));
         list.add(new RequestModel("US", "USD", "en-US",
@@ -168,7 +203,7 @@ public class TopRoutes {
                 1, "economy", 0, 0));
         list.add(new RequestModel("US", "USD", "en-US",
                 "CGK", "SIN", localDate.toString(),
-                1, "economy", 0, 0));*/
+                1, "economy", 0, 0));
         return list;
     }
 }

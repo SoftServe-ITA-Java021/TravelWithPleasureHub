@@ -1,4 +1,4 @@
-package com.kh021j.travelwithpleasurehub.tickets.apiparser.model.response.v2;
+package com.kh021j.travelwithpleasurehub.tickets.apiparser.model.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,8 +17,8 @@ import java.util.List;
 @Table(name = "flight")
 public class Flight {
     @Id
-    @GeneratedValue
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(name = "duration")
     private Integer duration;
@@ -29,7 +29,7 @@ public class Flight {
     @Column(name = "arrival_time")
     private ZonedDateTime arrivalTime;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "flight_ticket",
             joinColumns = @JoinColumn(name = "flight_id"),
             inverseJoinColumns = @JoinColumn(name = "ticket_id"))

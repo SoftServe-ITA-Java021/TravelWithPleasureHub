@@ -51,7 +51,7 @@ public class OneWayOptionRequestService {
     private HttpResponse<JsonNode> getAllItineraries(String sessionKey) throws UnirestException {
 
         String url = String.format("https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com/apiservices/pricing/uk2/v1.0/%s?pageIndex=0&pageSize=10", sessionKey);
-
+        Unirest.setTimeouts(100000, 100000);
         return Unirest.get(url)
                 .header("X-RapidAPI-Key", "bcd36fed2dmsh5b3b47a2027f3f3p156b2ejsn65d554031160").asJson();
     }
