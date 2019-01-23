@@ -220,7 +220,22 @@ export default class OneMeeting extends Component {
     }
 
     chatConnect() {
+<<<<<<< HEAD
         window.location.replace(`http://localhost:8080?id=${this.state.meeting.id}`);
+    }
+
+    containingInArray() {
+        if (this.state.meeting.ownerId === this.state.currentUser.id) {
+            return true;
+        }
+        let arr = this.state.meeting.confirmedUserIds;
+        for (let i = 0; i < arr.length; i++) {
+            if (arr[i] === this.state.currentUser.id) return true;
+        }
+        return false;
+=======
+        window.location.replace("http://localhost:8080");
+>>>>>>> origin/KHJA-9_5
     }
 
     containingInArray() {
