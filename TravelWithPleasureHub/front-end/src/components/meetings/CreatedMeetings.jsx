@@ -19,13 +19,10 @@ export default class CreatedMeetings extends Component {
                         timeOfAction: ""
                     }
                 ],
-                user: {
-                    id: -1,
-                    username: "",
-                    firstName: "",
-                    secondName: "",
-                    email: "",
-                    phoneNumber: "",
+
+                currentUser: {
+                    id: -1
+
                 },
 
                 pageOfItems: []
@@ -77,17 +74,20 @@ export default class CreatedMeetings extends Component {
             </div>
         </div>
     }
-//request in then
 
-    componentDidMount() {
-        axios.get(`http://localhost:8080/api/meetings`,
-            {
-                params: {
-                    owner: this.state.user.id
-                }
-            })
-            .then(json => this.setState({meetings: json.data}));
+    componentWillMount() {
+        axios.get(`http://localhost:8080/profile`)
+            .then(json => (this.setState({currentUser: json.data})))
+
+            .then(() => axios.get(`http://localhost:8080/api/meetings`,
+                {
+                    params: {
+                        owner: this.state.currentUser.id
+                    }
+                })
+                .then(json => this.setState({meetings: json.data})));
     }
+
 
     onChangePage(pageOfItems) {
         this.setState({pageOfItems});

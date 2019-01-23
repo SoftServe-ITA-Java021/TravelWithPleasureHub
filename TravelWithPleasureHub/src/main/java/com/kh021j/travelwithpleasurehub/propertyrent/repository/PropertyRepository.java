@@ -16,9 +16,9 @@ public interface PropertyRepository extends JpaRepository<Property, Integer> {
 
     Optional<List<Property>> findByLocality(String locality);
 
-    Optional<List<Property>> findByAddress(String address);
+    Optional<List<Property>> findByAddressContaining(String address);
 
-    Optional<List<Property>> findByLocalityAndAddress(String locality, String address);
+    Optional<List<Property>> findByLocalityContainingAndAddressContaining(String locality, String address);
 
     @Query(value = "SELECT distinct property.id, title, description, locality, address," +
             " user_id, property_type_id, price" +
@@ -35,12 +35,23 @@ public interface PropertyRepository extends JpaRepository<Property, Integer> {
             " user_id, property_type_id, price" +
             " FROM property" +
             " LEFT JOIN property_availability ON property.id = property_availability.property_id" +
-            " WHERE property_availability.id IS NULL and locality = ?3" +
+            " WHERE property_availability.id IS NULL and locality LIKE ?3" +
             " or property.id not in(select property_id from property_availability where" +
             " booked_since  between ?1 and ?2 or booked_until between ?1 and ?2 or" +
             " (booked_since < ?1 and  booked_until > ?2)) and locality = ?3",
             nativeQuery = true)
     Optional<List<Property>> findByAvailabilityInPeriodAndLocality(LocalDate start, LocalDate end, String locality);
+
+    @Query(value = "SELECT distinct property.id, title, description, locality, address," +
+            " user_id, property_type_id, price" +
+            " FROM property" +
+            " LEFT JOIN property_availability ON property.id = property_availability.property_id" +
+            " WHERE property_availability.id IS NULL and locality = ?3 and address = ?4" +
+            " or property.id not in(select property_id from property_availability where" +
+            " booked_since  between ?1 and ?2 or booked_until between ?1 and ?2 or" +
+            " (booked_since < ?1 and  booked_until > ?2)) and locality = ?3 and address = ?4",
+            nativeQuery = true)
+    Optional<List<Property>> findByAvailabilityInPeriodAndLocalityAndAddress(LocalDate start, LocalDate end, String locality, String address);
 
     @Query(value = "SELECT distinct property.id, title, description, locality, address," +
             " user_id, property_type_id, price" +

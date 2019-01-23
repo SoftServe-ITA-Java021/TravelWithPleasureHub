@@ -25,7 +25,7 @@ public class ImgurAPIService {
     public static void getToken() {
         final String uri = "https://api.imgur.com/oauth2/token";
 
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, String> params = new HashMap<>();
         params.put("refresh_token", "d71cf4db9f8f2b140e4cf668dda84f7d02789026");
         params.put("client_id", "63a19ad5929af06");
         params.put("client_secret", "8341a1bc88b6f201f4f3851bf31696b21e370b83");
@@ -33,8 +33,6 @@ public class ImgurAPIService {
 
         RestTemplate restTemplate = new RestTemplate();
         String result = restTemplate.postForObject(uri, params, String.class);
-
-        System.out.println(result);
 
         ObjectMapper mapper = new ObjectMapper();
         Map map = null;
@@ -56,7 +54,6 @@ public class ImgurAPIService {
             e.printStackTrace();
         }
 
-
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + token);
 
@@ -65,15 +62,6 @@ public class ImgurAPIService {
         RestTemplate restTemplate = new RestTemplate();
         String result = restTemplate.postForObject(uri, request, String.class);
 
-        System.out.println(result);
-
-        ObjectMapper mapper = new ObjectMapper();
-        Map map = null;
-        try {
-            map = mapper.readValue(result, Map.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         String link = null;
         try {
             JSONObject obj = new JSONObject(result);
