@@ -262,7 +262,7 @@ alter table flight_data
 create table if not exists flight
 (
   id             serial  not null primary key,
-  duration       integer not null,
+  duration       varchar(40) not null,
   departure_time time    not null,
   arrival_time   time    not null
 );

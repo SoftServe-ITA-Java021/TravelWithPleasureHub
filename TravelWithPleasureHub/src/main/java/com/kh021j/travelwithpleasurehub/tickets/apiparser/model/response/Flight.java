@@ -20,7 +20,7 @@ public class Flight {
     private Long id;
 
     @Column(name = "duration")
-    private Integer duration;
+    private String duration;
 
     @Column(name = "departure_time")
     private ZonedDateTime departureTime;

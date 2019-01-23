@@ -35,7 +35,7 @@ public class OneWayOptionRequestService {
                 .field("destinationPlace", formatDate(requestModel.getDestinationPlace()))
                 .field("outboundDate", requestModel.getOutboundDate())
                 .field("adults", requestModel.getAdults())
-                .field("cabinClass", requestModel.getCabinType())
+                .field("cabinClass", requestModel.getCabinClass())
                 .field("children", requestModel.getChildren())
                 .field("infants", requestModel.getInfants())
                 .asJson();

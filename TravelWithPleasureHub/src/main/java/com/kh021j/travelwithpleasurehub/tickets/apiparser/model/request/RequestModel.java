@@ -15,7 +15,7 @@ public class RequestModel {
     private String destinationPlace;
     private String outboundDate;
     private int adults;
-    private String cabinType;
+    private String cabinClass;
     private int children;
     private int infants;
 }
