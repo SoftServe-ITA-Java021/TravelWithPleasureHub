@@ -77,7 +77,7 @@ export default class CreatedMeetings extends Component {
             </div>
         </div>
     }
-
+//request in then
 
     componentDidMount() {
         axios.get(`http://localhost:8080/api/meetings`,
