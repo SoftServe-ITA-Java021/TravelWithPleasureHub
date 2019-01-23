@@ -2,7 +2,7 @@
 (
   id              serial       not null
     constraint "User_pkey"
-      primary key,
+    primary key,
   username        varchar(40)  not null,
   password        varchar(40)  not null,
   first_name      varchar(40),
@@ -23,7 +23,7 @@ create table if not exists property_type
 (
   id    serial       not null
     constraint "Property_type_pkey"
-      primary key,
+    primary key,
   title varchar(255) not null
 );
 
@@ -34,14 +34,14 @@ create table if not exists user_review
 (
   id              serial  not null
     constraint "User_review_pkey"
-      primary key,
+    primary key,
   made_by_user_id integer not null,
   review_text     text    not null,
   rate            integer not null,
   date_rated      date    not null,
   user_id         integer not null
     constraint user_id
-      references users
+    references users
 );
 
 alter table user_review
@@ -51,17 +51,17 @@ create table if not exists property
 (
   id               serial       not null
     constraint property_pkey
-      primary key,
+    primary key,
   title            varchar(255) not null,
   description      text         not null,
   locality         varchar(255) not null,
   address          varchar(255) not null,
   user_id          integer      not null
     constraint user_id
-      references users,
+    references users,
   property_type_id integer      not null
     constraint property_type_id
-      references property_type,
+    references property_type,
   price            integer      not null,
   path_to_photo    text
 );
@@ -76,16 +76,16 @@ create table if not exists property_review
 (
   id          serial  not null
     constraint "Property_review_pkey"
-      primary key,
+    primary key,
   review_text text    not null,
   rate        integer not null,
   date_rated  date    not null,
   user_id     integer not null
     constraint user_id
-      references users,
+    references users,
   property_id integer not null
     constraint property_id
-      references property
+    references property
 );
 
 alter table property_review
@@ -95,17 +95,17 @@ create table if not exists application
 (
   id               serial  not null
     constraint "Application_pkey"
-      primary key,
+    primary key,
   rent_since       date    not null,
   rent_until       date    not null,
   application_text text,
   is_approved      boolean,
   property_id      integer not null
     constraint property_id
-      references property,
+    references property,
   user_id          integer not null
     constraint user_id
-      references users
+    references users
 );
 
 alter table application
@@ -118,12 +118,12 @@ create table if not exists property_availability
 (
   id           serial  not null
     constraint "Availability_of_property_pkey"
-      primary key,
+    primary key,
   booked_since date    not null,
   booked_until date    not null,
   property_id  integer not null
     constraint property_id
-      references property
+    references property
 );
 
 alter table property_availability
@@ -135,7 +135,7 @@ create table if not exists meeting
 
   id           serial      not null
     constraint "Meeting_pkey"
-      primary key,
+    primary key,
 
   header       varchar(40) not null,
 
@@ -149,7 +149,7 @@ create table if not exists meeting
 
   owner_id     serial      not null
     constraint owner_id
-      references users
+    references users
 
 );
 alter table meeting
@@ -162,13 +162,13 @@ create table if not exists link
 
   id         serial  not null
     constraint "link_pkey"
-      primary key,
+    primary key,
 
   links      varchar not null,
 
   meeting_id integer
-    constraint meeting_id
-      not null references meeting
+                     constraint meeting_id
+                     not null references meeting
 );
 alter table link
   OWNER to postgres;
@@ -178,7 +178,7 @@ create table if not exists meeting_feedback
 (
   id            serial  NOT NULL
     constraint "meeting_feedback_pkey"
-      primary key,
+    primary key,
 
   text          varchar NOT NULL,
 
@@ -186,12 +186,12 @@ create table if not exists meeting_feedback
 
   owner_id      integer not null
     constraint owner_id
-      references users,
+    references users,
 
   meeting_id    integer not null
-    constraint meeting_id
-      not null references meeting
-    ON UPDATE CASCADE ON DELETE SET NULL
+                        constraint meeting_id
+                        not null references meeting
+  ON UPDATE CASCADE ON DELETE SET NULL
 );
 
 ALTER TABLE meeting_feedback
@@ -203,13 +203,13 @@ create table if not exists wishing_users
 (
   meeting_id integer not null
     constraint meeting_id
-      references meeting
-      ON UPDATE CASCADE ON DELETE SET NULL,
+    references meeting
+    ON UPDATE CASCADE ON DELETE SET NULL,
 
   user_id    integer not null
     constraint user_id
-      references users
-      ON UPDATE CASCADE ON DELETE SET NULL,
+    references users
+    ON UPDATE CASCADE ON DELETE SET NULL,
 
   primary key (meeting_id, user_id)
 );
@@ -223,13 +223,13 @@ create table if not exists confirmed_users
 (
   meeting_id integer not null
     constraint meeting_id
-      references meeting
-      ON UPDATE CASCADE ON DELETE SET NULL,
+    references meeting
+    ON UPDATE CASCADE ON DELETE SET NULL,
 
   user_id    integer not null
     constraint user_id
-      references users
-      ON UPDATE CASCADE ON DELETE SET NULL,
+    references users
+    ON UPDATE CASCADE ON DELETE SET NULL,
 
   primary key (meeting_id, user_id)
 );
@@ -245,12 +245,15 @@ create table if not exists flight_data
   company_id        integer      not null,
   departure_airport varchar(40)  not null,
   arrival_airport   varchar(40)  not null,
-  query_date       DATE         not null,
+  query_date        DATE         not null,
   cabin_type        varchar(40)  not null,
   company           varchar(40)  not null,
   company_code      varchar(40)  not null,
   image_company     varchar(255) not null,
-  currency          varchar(40)  not null
+  currency          varchar(40)  not null,
+  adults            integer      not null,
+  children          integer      not null,
+  infants           integer      not null
 );
 
 alter table flight_data
@@ -271,13 +274,13 @@ create table if not exists flight_data_flight
 (
   flight_data_id integer not null
     constraint flight_data_id
-      references flight_data
-      ON UPDATE CASCADE ON DELETE SET NULL,
+    references flight_data
+    ON UPDATE CASCADE ON DELETE SET NULL,
 
-  flight_id    integer not null
+  flight_id      integer not null
     constraint flight_id
-      references flight
-      ON UPDATE CASCADE ON DELETE SET NULL,
+    references flight
+    ON UPDATE CASCADE ON DELETE SET NULL,
 
   primary key (flight_id)
 );
@@ -289,7 +292,7 @@ ALTER TABLE flight_data_flight
 
 create table if not exists ticket
 (
-  id serial  not null primary key,
+  id          serial  not null primary key,
   buying_link text,
   price       decimal not null
 );
@@ -302,13 +305,13 @@ create table if not exists flight_ticket
 (
   flight_id integer not null
     constraint flight2_id
-      references flight
-      ON UPDATE CASCADE ON DELETE SET NULL,
+    references flight
+    ON UPDATE CASCADE ON DELETE SET NULL,
 
-  ticket_id    integer not null
+  ticket_id integer not null
     constraint ticket_id
-      references ticket
-      ON UPDATE CASCADE ON DELETE SET NULL,
+    references ticket
+    ON UPDATE CASCADE ON DELETE SET NULL,
 
   primary key (ticket_id)
 );
@@ -329,10 +332,10 @@ alter table country
 
 create table if not exists city
 (
-  id        serial      not null
+  id         serial      not null
     primary key,
-  city_name varchar(40) not null,
-    country_id serial not null
+  city_name  varchar(40) not null,
+  country_id serial      not null
     references country
 );
 
@@ -344,7 +347,7 @@ create table if not exists airport
   id           serial      not null
     constraint "airport_id" primary key,
   airport_code varchar(40) not null,
-  city_id serial not null
+  city_id      serial      not null
     references city
 );
 

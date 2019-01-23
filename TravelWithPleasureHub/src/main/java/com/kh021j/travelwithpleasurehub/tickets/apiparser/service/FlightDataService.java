@@ -1,17 +1,20 @@
+
 package com.kh021j.travelwithpleasurehub.tickets.apiparser.service;
 
-import com.kh021j.travelwithpleasurehub.tickets.apiparser.model.RequestModel;
+import com.kh021j.travelwithpleasurehub.tickets.apiparser.model.request.RequestModel;
 import com.kh021j.travelwithpleasurehub.tickets.apiparser.model.response.Flight;
 import com.kh021j.travelwithpleasurehub.tickets.apiparser.model.response.FlightData;
 import com.kh021j.travelwithpleasurehub.tickets.apiparser.model.response.Ticket;
 import com.kh021j.travelwithpleasurehub.tickets.apiparser.repository.FlightDataRepository;
 import com.kh021j.travelwithpleasurehub.tickets.apiparser.repository.FlightRepository;
-import com.kh021j.travelwithpleasurehub.tickets.parser.Belavia.model.enums.Currency;
+import com.kh021j.travelwithpleasurehub.tickets.parser.belavia.model.enums.Currency;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -29,18 +32,32 @@ import java.util.List;
 public class FlightDataService {
     private static Date currentDate = new Date();
 
+    @Autowired
     private final FlightDataRepository flightDataRepository;
 
     private final FlightRepository flightRepository;
 
+    private static final Logger logger = LoggerFactory.getLogger(FlightDataService.class);
+
     public List<FlightData> getResponse(RequestModel requestModel) throws JSONException, UnirestException {
-        List<FlightData> result = flightDataRepository.findAllByArrivalAirportAndDepartureAirportAndQueryDate(
-                requestModel.getOriginPlace(),
-                requestModel.getDestinationPlace(),
-                LocalDate.parse(requestModel.getOutboundDate()));
+        List<FlightData> result = flightDataRepository.
+                findAllByArrivalAirportAndDepartureAirportAndQueryDateAndAdultsAndChildrenAndInfants(
+                        requestModel.getDestinationPlace(),
+                        requestModel.getOriginPlace(),
+                        LocalDate.parse(requestModel.getOutboundDate()),
+                        requestModel.getAdults(),
+                        requestModel.getChildren(),
+                        requestModel.getInfants());
+        logger.info("flightDataRepo " + flightDataRepository);
+        logger.info("Date " + LocalDate.parse(requestModel.getOutboundDate()));
+        logger.info("OriginPlace " + requestModel.getOriginPlace());
+        logger.info("DestinationPlace " + requestModel.getDestinationPlace());
+        logger.info("Entity " + result);
         if (result != null && !result.isEmpty()) {
+            logger.info("Database");
             return result;
         } else {
+            logger.info("Request");
             return getFlightsData(requestModel);
         }
     }
@@ -83,6 +100,9 @@ public class FlightDataService {
                             .company(carrier.getJSONObject(j).getString("Name"))
                             .companyCode(carrier.getJSONObject(j).getString("DisplayCode"))
                             .imageCompany(carrier.getJSONObject(j).getString("ImageUrl"))
+                            .adults(entity.getAdults())
+                            .children(entity.getChildren())
+                            .infants(entity.getInfants())
                             .flights(getFlightsForFlightData(obj, carrier.getJSONObject(j).getString("Id")))
                             .build();
                     if (!flightData.getFlights().isEmpty()) {
@@ -92,10 +112,9 @@ public class FlightDataService {
             }
         }
         return flightDataList;
-
     }
 
-    @Scheduled(cron = "0 0 23 * * *")
+    @Scheduled(cron = "0 0/46 23 * * *")
     public void reportCurrentTime() throws UnirestException, JSONException {
         getMonthTopRoutes();
     }
@@ -113,7 +132,6 @@ public class FlightDataService {
             }
         }
     }
-
 
     private List<Flight> getFlightsForFlightData(JsonNode obj, String carrierId) throws JSONException {
         JSONArray legs = obj.getObject().getJSONArray("Legs");
@@ -155,7 +173,7 @@ public class FlightDataService {
         return tickets;
     }
 
-    private List<RequestModel> getTopRoutes() {
+    public static List<RequestModel> getTopRoutes() {
         List<RequestModel> list = new ArrayList<>();
         LocalDate localDate = currentDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 

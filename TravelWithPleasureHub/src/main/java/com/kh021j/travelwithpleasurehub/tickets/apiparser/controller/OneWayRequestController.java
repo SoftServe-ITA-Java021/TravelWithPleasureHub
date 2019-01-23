@@ -1,14 +1,14 @@
 package com.kh021j.travelwithpleasurehub.tickets.apiparser.controller;
 
+import com.kh021j.travelwithpleasurehub.tickets.apiparser.model.request.RequestModel;
 import com.kh021j.travelwithpleasurehub.tickets.apiparser.model.response.FlightData;
 import com.kh021j.travelwithpleasurehub.tickets.apiparser.service.FlightDataService;
+import com.kh021j.travelwithpleasurehub.tickets.apiparser.service.OneWayOptionRequestService;
+import com.mashape.unirest.http.exceptions.UnirestException;
 import org.json.JSONException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.mashape.unirest.http.exceptions.UnirestException;
-import org.springframework.beans.factory.annotation.Autowired;
-import com.kh021j.travelwithpleasurehub.tickets.apiparser.model.RequestModel;
-import com.kh021j.travelwithpleasurehub.tickets.apiparser.service.OneWayOptionRequestService;
 
 import java.util.List;
 

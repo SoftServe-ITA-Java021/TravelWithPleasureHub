@@ -1,6 +1,6 @@
 package com.kh021j.travelwithpleasurehub.tickets.apiparser.model.response;
 
-import com.kh021j.travelwithpleasurehub.tickets.parser.Belavia.model.enums.Currency;
+import com.kh021j.travelwithpleasurehub.tickets.parser.belavia.model.enums.Currency;
 import lombok.*;
 
 import javax.persistence.*;
@@ -46,6 +46,15 @@ public class FlightData {
     @Enumerated(EnumType.STRING)
     @Column(name = "currency")
     private Currency currency;
+
+    @Column(name = "adults")
+    private Integer adults;
+
+    @Column(name = "children")
+    private Integer children;
+
+    @Column(name = "infants")
+    private Integer infants;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "flight_data_flight",

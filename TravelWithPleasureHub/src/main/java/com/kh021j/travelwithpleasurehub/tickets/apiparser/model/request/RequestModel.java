@@ -1,5 +1,4 @@
-
-package com.kh021j.travelwithpleasurehub.tickets.apiparser.model;
+package com.kh021j.travelwithpleasurehub.tickets.apiparser.model.request;
 
 import lombok.*;
 

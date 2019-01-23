@@ -9,6 +9,8 @@ import java.util.List;
 
 @Repository
 public interface FlightDataRepository extends JpaRepository<FlightData, Long> {
-    List<FlightData> findAllByArrivalAirportAndDepartureAirportAndQueryDate(
-            String arrivalAirport, String departureAirport, LocalDate queryDate);
+    List<FlightData>
+    findAllByArrivalAirportAndDepartureAirportAndQueryDateAndAdultsAndChildrenAndInfants(
+            String arrivalAirport, String departureAirport, LocalDate queryDate,
+            int adults, int children, int infants);
 }

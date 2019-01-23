@@ -7,7 +7,7 @@ import com.mashape.unirest.http.HttpResponse;
 import org.springframework.stereotype.Service;
 import com.mashape.unirest.request.HttpRequestWithBody;
 import com.mashape.unirest.http.exceptions.UnirestException;
-import com.kh021j.travelwithpleasurehub.tickets.apiparser.model.RequestModel;
+import com.kh021j.travelwithpleasurehub.tickets.apiparser.model.request.RequestModel;
 
 @Service
 public class OneWayOptionRequestService {

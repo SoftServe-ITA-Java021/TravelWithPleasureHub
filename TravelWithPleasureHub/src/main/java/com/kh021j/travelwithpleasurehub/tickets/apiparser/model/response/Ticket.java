@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 
 @Builder(toBuilder = true)
@@ -23,5 +22,4 @@ public class Ticket {
 
     @Column(name = "price")
     private Double price;
-
 }
