@@ -31,6 +31,7 @@ class PropertyUpload extends Component {
 			.then(response => {
 				this.setState({currentUserId: response.id})
 			})
+			.catch(() => { throw 'Please, authorize' } )
 	};
 
 	handleFieldChange = (e) => {

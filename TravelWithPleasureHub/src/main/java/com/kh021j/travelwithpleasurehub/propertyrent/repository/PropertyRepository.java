@@ -15,17 +15,17 @@ public interface PropertyRepository extends JpaRepository<Property, Integer> {
     Optional<List<Property>> findByPriceLessThanEqual(Integer price);
 
 
-    @Query(value = "select * from property where lower(locality) like concat('%', lower(?1), '%')",
+    @Query(value = "select * from property where lower(locality) like concat('%', lower(?1), '%') order by price asc",
             nativeQuery = true)
     Optional<Iterable<Property>> findByLocality(String locality);
 
-    @Query(value = "select * from property where lower(address) like concat('%', lower(?1), '%')",
+    @Query(value = "select * from property where lower(address) like concat('%', lower(?1), '%') order by price asc",
             nativeQuery = true)
     Optional<List<Property>> findByAddressContaining(String address);
 
 
     @Query(value = "select * from property where lower(locality) like concat('%', lower(?1), '%') and " +
-            " lower(address) like concat('%', lower(?2), '%')",
+            " lower(address) like concat('%', lower(?2), '%') order by price asc",
             nativeQuery = true)
     Optional<List<Property>> findByLocalityContainingAndAddressContaining(String locality, String address);
 
@@ -36,7 +36,7 @@ public interface PropertyRepository extends JpaRepository<Property, Integer> {
             " WHERE property_availability.id IS NULL" +
             " or property.id not in(select property_id from property_availability where" +
             " booked_since  between ?1 and ?2 or booked_until between ?1 and ?2 or" +
-            " (booked_since < ?1 and  booked_until > ?2))",
+            " (booked_since < ?1 and  booked_until > ?2)) order by price asc",
             nativeQuery = true)
     Optional<List<Property>> findByAvailabilityInPeriod(LocalDate start, LocalDate end);
 
@@ -46,7 +46,7 @@ public interface PropertyRepository extends JpaRepository<Property, Integer> {
             " WHERE property_availability.id IS NULL and lower(locality) like concat('%', lower(?3), '%')" +
             " or property.id not in(select property_id from property_availability where" +
             " booked_since  between ?1 and ?2 or booked_until between ?1 and ?2 or" +
-            " (booked_since < ?1 and  booked_until > ?2)) and locality = ?3",
+            " (booked_since < ?1 and  booked_until > ?2)) and locality = ?3 order by price asc",
             nativeQuery = true)
     Optional<List<Property>> findByAvailabilityInPeriodAndLocality(LocalDate start, LocalDate end, String locality);
 

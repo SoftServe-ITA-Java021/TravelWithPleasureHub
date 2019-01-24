@@ -38,7 +38,6 @@ class Property extends Component {
 		fetch(`http://localhost:8080/api/properties/${this.props.match.params.id}`)
 			.then(response => response.json())
 			.then(response => {
-				console.log(response);
 				if(!response.title) {
 					this.props.history.push('/404');
 				} else this.setState(response);
@@ -52,7 +51,6 @@ class Property extends Component {
 		fetch(`http://localhost:8080/api/property-image/property/${this.props.match.params.id}`)
 			.then(response => response.json())
 			.then(responseJSON => {
-				console.log(responseJSON);
 				if(responseJSON[0])
 					this.setState({imageLinkObjects: responseJSON});
 				else

@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import PropertyThumbnail from "./PropertyThumbnail";
-import {Link} from "react-router-dom";
 import PropertyOnMap from "./map/PropertyOnMap";
 import PropertyRentNavbar from "./PropertyRentNavbar";
+import JwPagination from "jw-react-pagination";
+import pStyle from "../meetings/css/pagination.css";
 
 class PropertyList extends Component {
 	constructor(props) {
@@ -15,13 +16,15 @@ class PropertyList extends Component {
 			checkOut: "",
 			displayMap: false,
 			mapCenterLatitude: null,
-			mapCenterLongitude: null
+			mapCenterLongitude: null,
+			pageOfItems: []
 		};
 		this.loadProperties = this.loadProperties.bind(this);
 		this.onFieldChange = this.onFieldChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.loadMatchingProperties = this.loadMatchingProperties.bind(this);
 		this.loadCoordinatesOfAddress = this.loadCoordinatesOfAddress.bind(this);
+		this.onChangePage = this.onChangePage.bind(this);
 	}
 
 	loadProperties = () => {
@@ -31,6 +34,9 @@ class PropertyList extends Component {
 			.catch(error => { throw error } )
 	};
 
+	onChangePage(pageOfItems) {
+		this.setState({pageOfItems});
+	}
 
 	onFieldChange = e => {
 		this.setState({ [e.target.name]: e.target.value });
@@ -62,9 +68,7 @@ class PropertyList extends Component {
 				});
 
 			})
-			.catch(error => {
-				throw error
-			})
+			.catch(error => { throw error } )
 
 	};
 
@@ -85,6 +89,7 @@ class PropertyList extends Component {
 					})
 				}
 			})
+			.catch(error => { throw error } )
 	};
 
 	componentWillMount() {
@@ -93,6 +98,7 @@ class PropertyList extends Component {
 
 
 	render() {
+
 		return (
 			<div className="container">
 				<PropertyRentNavbar />
@@ -128,7 +134,7 @@ class PropertyList extends Component {
 					<div className="row justify-content-center">
 						{
 							this.state.properties.length !== 0 ?
-								this.state.properties.map((property, index) =>
+								this.state.pageOfItems.map((property, index) =>
 									<div key={index} className="col-md-4">
 											<PropertyThumbnail id={property.id} title={property.title}
 										                   price={property.price} />
@@ -136,12 +142,27 @@ class PropertyList extends Component {
 								)
 								:
 								<h1>Nothing was found at this address</h1>
+
 						}
+
 					</div>
 				</div>
-				{this.state.displayMap === true && <PropertyOnMap
+				{
+					this.state.properties.length !== 0 && <div className="form-row text-center">
+						<div className="col-12">
+							<JwPagination
+								items={this.state.properties}
+								onChangePage={this.onChangePage}
+								pageSize={6}
+								styles={pStyle}/>
+						</div>
+					</div>
+				}
+				{
+					this.state.displayMap === true && <PropertyOnMap
 					centerLatitude={this.state.mapCenterLatitude}
-						centerLongitude={this.state.mapCenterLongitude}/>}
+						centerLongitude={this.state.mapCenterLongitude}/>
+				}
 			</div>
 
 		);
