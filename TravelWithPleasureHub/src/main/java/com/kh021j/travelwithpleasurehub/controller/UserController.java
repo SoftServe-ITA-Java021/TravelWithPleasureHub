@@ -34,7 +34,6 @@ public class UserController {
         return user.map(body -> ResponseEntity.ok(ConverterUserDTO.toUserDTO(body))).orElseGet(()->ResponseEntity.notFound().build());
     }
 
-    //is not correct according to Richardson model
     @GetMapping(path = "/username/{username}")
     @ResponseBody
     public List<UserDTO> getUserByName(@PathVariable String username) {

@@ -37,7 +37,8 @@ export default class OneMeeting extends Component {
         this.deleteMeeting = this.deleteMeeting.bind(this);
         this.chatConnect = this.chatConnect.bind(this);
         OneMeeting.showInformationAboutMeeting = OneMeeting.showInformationAboutMeeting.bind(this);
-        this.containingInArray = this.containingInArray.bind(this);
+        this.containingInConfirmedUsers = this.containingInConfirmedUsers.bind(this);
+        this.containingInAnyListOfUsers = this.containingInAnyListOfUsers.bind(this);
     }
 
 
@@ -103,7 +104,7 @@ export default class OneMeeting extends Component {
                 </div>}
 
                 {value.currentUser !== null && value.currentUser.id !== -1 &&
-                value.meeting.ownerId !== value.currentUser.id && <div className="form-row text-center">
+                this.containingInAnyListOfUsers() && <div className="form-row text-center">
                     <div className="col-12">
                         <button type="submit"
                                 className="btn btn-primary center-block widthButton"
@@ -114,7 +115,7 @@ export default class OneMeeting extends Component {
                 </div>
                 }
 
-                {this.containingInArray() &&
+                {this.containingInConfirmedUsers() &&
                 <div className="form-row text-center">
                     <div className="col-12">
                         <h1 className="lead row h-100 justify-content-center align-items-center">
@@ -230,7 +231,7 @@ export default class OneMeeting extends Component {
         window.location.replace(`http://localhost:8080?id=${this.state.meeting.id}`);
     }
 
-    containingInArray() {
+    containingInConfirmedUsers() {
         if (this.state.meeting.ownerId === this.state.currentUser.id) {
             return true;
         }
@@ -239,5 +240,20 @@ export default class OneMeeting extends Component {
             if (arr[i] === this.state.currentUser.id) return true;
         }
         return false;
+    }
+
+    containingInAnyListOfUsers() {
+        if (this.state.meeting.ownerId === this.state.currentUser.id) {
+            return false;
+        }
+        let confArr = this.state.meeting.confirmedUserIds;
+        for (let i = 0; i < confArr.length; i++) {
+            if (confArr[i] === this.state.currentUser.id) return false;
+        }
+        let wishArr = this.state.meeting.wishingUserIds;
+        for (let i = 0; i < wishArr.length; i++) {
+            if (wishArr[i] === this.state.currentUser.id) return false;
+        }
+        return true;
     }
 }
