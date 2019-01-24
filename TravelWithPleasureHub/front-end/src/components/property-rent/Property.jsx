@@ -1,31 +1,36 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import Calendar from 'react-calendar';
 import moment from 'moment';
-import {Redirect} from "react-router-dom";
 
 
 class Property extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			title : "",
+			id: null,
+			title: "",
 			description: "",
 			locality: "",
 			address: "",
-			price : "",
+			price: "",
 			checkIn: "",
 			checkOut: "",
 			imageLinkObjects: [],
 			propertyBookedDates: [],
 			successfullyBooked: false,
 			messageType: "",
-			message: ""
+			message: "",
+			currentUserId: null,
+			ownerId: null,
+			propertyBookDatesOfUser: []
 		};
+
 		this.loadPropertyData = this.loadPropertyData.bind(this);
 		this.loadImages = this.loadImages.bind(this);
 		this.onCalendarDateChange = this.onCalendarDateChange.bind(this);
 		this.loadPropertyAvailability = this.loadPropertyAvailability.bind(this);
 		this.onCalendarDateChange = this.onCalendarDateChange.bind(this);
+		this.loadCurrentUser = this.loadCurrentUser.bind(this);
 	}
 
 
@@ -36,20 +41,28 @@ class Property extends Component {
 				console.log(response);
 				if(!response.title) {
 					this.props.history.push('/404');
-				} else this.setState(response)
+				} else this.setState(response);
+
 			})
+			.then(() => this.loadPropertyBookDatesOfUser())
 			.catch(error => { throw error } )
 	};
 
 	loadImages = () => {
 		fetch(`http://localhost:8080/api/property-image/property/${this.props.match.params.id}`)
 			.then(response => response.json())
-			.then(responseJSON => this.setState({imageLinkObjects: responseJSON}))
+			.then(responseJSON => {
+				console.log(responseJSON);
+				if(responseJSON[0])
+					this.setState({imageLinkObjects: responseJSON});
+				else
+					this.setState({imageLinkObjects: Array.from(['https://i.imgur.com/SCJSLeS.png'])})
+			})
 			.catch(error => { throw error } )
 	};
 
 	loadPropertyAvailability = () => {
-		fetch(`http://localhost:8080/api/property-availability/${this.props.match.params.id}`)
+		fetch(`http://localhost:8080/api/property-availability/property/${this.props.match.params.id}`)
 			.then(response => response.json())
 			.then(response => {
 				this.setState({
@@ -60,17 +73,37 @@ class Property extends Component {
 	};
 
 	componentWillMount() {
-		this.loadPropertyData();
-		this.loadImages();
+		this.loadCurrentUser();
 		this.loadPropertyAvailability();
+		this.loadImages();
 	}
+
+	loadCurrentUser = () => {
+		fetch('http://localhost:8080/profile')
+			.then(response => response.json())
+			.then(response => {
+				this.setState({currentUserId: response.id});
+			})
+			.then(() => this.loadPropertyData())
+			.catch(() => { throw 'Please, authorize'} )
+	};
+
+	loadPropertyBookDatesOfUser = () => {
+		fetch(`http://localhost:8080/api/property-availability?userId=${this.state.currentUserId}&propertyId=${this.state.id}`)
+			.then(response => response.json())
+			.then(response => {
+				this.setState({propertyBookDatesOfUser : response})
+			})
+			.catch(error => { throw error })
+	};
+
 
 	getAllDatesBetweenStartAndEndDate(start, end) {
 		let dateArray = [];
 		let currentDate = moment(start);
 		let endDate = moment(end);
 		while (currentDate <= endDate) {
-			dateArray.push(moment(currentDate).format('YYYY-MM-DD') )
+			dateArray.push(moment(currentDate).format('YYYY-MM-DD') );
 			currentDate = moment(currentDate).add(1, 'days');
 		}
 		return dateArray;
@@ -110,7 +143,7 @@ class Property extends Component {
 	onCalendarDateChange = (date) => {
 		this.setState({
 			checkIn: moment(date[0]).format('YYYY-MM-DD'),
-			checkOut: moment(date[1]).format('YYYY-MM-DD'),
+			checkOut: moment(date[1]).format('YYYY-MM-DD')
 		});
 	};
 
@@ -123,6 +156,7 @@ class Property extends Component {
 		formData.append('checkIn', this.state.checkIn);
 		formData.append('checkOut', this.state.checkOut);
 		formData.append('propertyId', this.props.match.params.id);
+		formData.append('currentUserId', this.state.currentUserId);
 		fetch('http://localhost:8080/api/property-availability', {
 			method: "POST",
 			body: formData
@@ -134,6 +168,7 @@ class Property extends Component {
 						message: 'Success! You have successfully booked since '
 							+ this.state.checkIn + ' until ' + this.state.checkOut
 					});
+					this.loadPropertyBookDatesOfUser();
 				} else {
 					this.setState({
 						messageType: 'danger',
@@ -142,13 +177,26 @@ class Property extends Component {
 				}
 				return response.json()
 			})
-
+			.then(() => this.loadPropertyAvailability())
 			.catch(error => { throw error } )
+	};
+
+	unbookPeriod = (id) => {
+		fetch(`http://localhost:8080/api/property-availability/${id}`,{
+			method: 'DELETE'
+		})
+			.then(() => {
+				this.setState({
+					message: "",
+					messageType: ""
+				});
+				this.loadPropertyBookDatesOfUser()
+			})
+			.then(() => this.loadPropertyAvailability())
 	};
 
 
 	render() {
-
 		return (
 			<div className="container">
 				<div id="carouselExampleIndicators" className="carousel slide" data-interval="false"
@@ -201,27 +249,49 @@ class Property extends Component {
 					<div className="col-6 text-black">
 						<p>{this.state.description}</p>
 					</div>
-					<div className="col-4 text-black text-center">
+					<div className="col-5 text-black text-center">
+						{
+							this.state.currentUserId !== null &&
+								this.state.propertyBookDatesOfUser.map((period, index) =>
+									<div key={index}>
+										<div className="row alert alert-secondary">
+											<div className="col-8">
+												You have booked this property rent since {period.bookedSince} until {period.bookedUntil}
+											</div>
+											<div className="col-2">
+												<button className="btn btn-danger btn-lg"
+												        onClick={() => this.unbookPeriod(period.id)}>Unbook</button>
+											</div>
+										</div>
+									</div>
+								)
+						}
 						{
 							this.state.messageType !== "" &&
 							<div className={"alert alert-" + this.state.messageType}>
 								{this.state.message}
 							</div>
 						}
-						<Calendar
-							onChange={this.onCalendarDateChange}
-							selectRange={true}
-							tileDisabled={({date, view}) =>
-								(view === 'month') &&
-								this.state.propertyBookedDates.some((disabledDateString) => {
-										const disabledDate = new Date(disabledDateString);
-										return date.getFullYear() === disabledDate.getFullYear() &&
-										date.getMonth() === disabledDate.getMonth() &&
-										date.getDate() === disabledDate.getDate()
-									}
-								)}
-						/>
-						<button onClick={this.onBookButtonClick} type="button" className="btn btn-primary mt-2 mb-2">Book</button>
+						<div className="d-flex justify-content-center">
+							<Calendar
+								onChange={this.onCalendarDateChange}
+								selectRange={true}
+								tileDisabled={({date, view}) =>
+									(view === 'month') &&
+									this.state.propertyBookedDates.some((disabledDateString) => {
+											const disabledDate = new Date(disabledDateString);
+											return date.getFullYear() === disabledDate.getFullYear() &&
+												date.getMonth() === disabledDate.getMonth() &&
+												date.getDate() === disabledDate.getDate()
+										}
+									)}
+							/>
+						</div>
+						{
+							this.state.currentUserId !== null &&
+								<button onClick={this.onBookButtonClick} type="button"
+								        className="btn btn-primary mt-2 mb-2">Book</button>
+						}
 					</div>
 				</div>
 			</div>

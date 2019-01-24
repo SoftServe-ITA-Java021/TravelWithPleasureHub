@@ -46,7 +46,7 @@ public abstract class RepositoryBaseDomain {
         Property property = Property.builder()
                 .title("Flat1")
                 .propertyType(propertyType)
-                .userTable(user)
+                .owner(user)
                 .locality("locality")
                 .address("Address")
                 .description("new description")

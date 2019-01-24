@@ -30,7 +30,7 @@ public class PropertyRepositoryTest extends RepositoryBaseDomain {
         Property property = Property.builder()
                 .title("Flat2")
                 .propertyType(propertyTypeRepository.findAll().get(0))
-                .userTable(userRepository.findAll().get(0))
+                .owner(userRepository.findAll().get(0))
                 .locality("locality2")
                 .address("Adress2")
                 .description("description2")
@@ -46,7 +46,7 @@ public class PropertyRepositoryTest extends RepositoryBaseDomain {
         Property property = Property.builder()
                 .title("Flat3")
                 .propertyType(propertyTypeRepository.findAll().get(0))
-                .userTable(userRepository.findAll().get(0))
+                .owner(userRepository.findAll().get(0))
                 .locality("locality3")
                 .address("Adress3")
                 .description("description3")
@@ -96,11 +96,11 @@ public class PropertyRepositoryTest extends RepositoryBaseDomain {
         assertThat(propertyRepository.findByLocality("locality").isPresent()).isTrue();
     }
 
-  /*  @Test
+    @Test
     @Transactional
     public void findByAddress() {
-        assertThat(propertyRepository.findByAddress("Address").isPresent()).isTrue();
-    }*/
+        assertThat(propertyRepository.findByAddressContaining("Address").isPresent()).isTrue();
+    }
 
     @Test
     @Transactional

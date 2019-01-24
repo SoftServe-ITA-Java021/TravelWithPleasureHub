@@ -18,7 +18,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin
 @RequestMapping("/api/meetings")
 public class MeetingController {
 

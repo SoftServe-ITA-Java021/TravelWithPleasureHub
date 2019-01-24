@@ -22,6 +22,7 @@ import MeetingUpdate from "./components/meetings/MeetingUpdate";
 import AnotherProfile from "./components/signup/AnotherProfile";
 import SignUp from "./components/SignUp";
 import NotFound from "./components/NotFound";
+import RentedProperties from "./components/property-rent/RentedProperties";
 
 class App extends Component {
     constructor(props){
@@ -61,6 +62,7 @@ class App extends Component {
 									<Route exact path="/upload/property" component={PropertyUpload} />
 									<Route exact path="/properties/:id" component={Property} />
 									<Route exact path="/properties/" component={PropertyList} />
+									<Route exact path="/rented-properties" component={RentedProperties} />
 
 									<Route exact path="/meetings/show-all-meetings/" component={AllMeetings}/>
 									<Route exact path="/meetings/find-meetings/" component={MeetingsFind}/>

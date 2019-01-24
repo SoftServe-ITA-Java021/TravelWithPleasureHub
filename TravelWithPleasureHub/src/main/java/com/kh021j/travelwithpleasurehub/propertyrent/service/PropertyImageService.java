@@ -15,6 +15,9 @@ public class PropertyImageService {
     @Autowired
     private PropertyImageRepository propertyImageRepository;
 
+    @Autowired
+    private PropertyService propertyService;
+
 
     public Iterable<PropertyImage> findAll(){
         return propertyImageRepository.findAll();
@@ -25,7 +28,9 @@ public class PropertyImageService {
     }
 
     public Iterable<PropertyImage> findByPropertyId(Integer propertyId) {
-        return propertyImageRepository.findByPropertyId(propertyId).orElse(new ArrayList<>());
+        return propertyImageRepository.findByPropertyId(propertyId).orElse(new ArrayList<PropertyImage>() {{
+            add(new PropertyImage("https://i.imgur.com/kYPEv3D.png", propertyService.findById(propertyId)));
+        }});
     }
 
     public PropertyImage findFirstByPropertyId(Integer propertyId) {

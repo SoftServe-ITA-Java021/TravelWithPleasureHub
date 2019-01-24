@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 
@@ -39,6 +40,8 @@ public class User {
 
     private String pathToPhoto;
 
+
+    @Nullable
     private boolean status;
 
     @Enumerated(EnumType.STRING)

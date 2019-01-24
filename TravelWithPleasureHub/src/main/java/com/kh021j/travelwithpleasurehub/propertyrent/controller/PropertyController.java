@@ -1,9 +1,7 @@
 package com.kh021j.travelwithpleasurehub.propertyrent.controller;
 
 import com.kh021j.travelwithpleasurehub.propertyrent.model.Property;
-import com.kh021j.travelwithpleasurehub.propertyrent.model.PropertyImage;
-import com.kh021j.travelwithpleasurehub.propertyrent.service.*;
-import com.kh021j.travelwithpleasurehub.service.UserService;
+import com.kh021j.travelwithpleasurehub.propertyrent.service.PropertyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,24 +16,10 @@ public class PropertyController {
     @Autowired
     private PropertyService propertyService;
 
-    @Autowired
-    private PropertyTypeService propertyTypeService;
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private ImgurAPIService imgurAPIService;
-
-    @Autowired
-    private HEREMapsGeocoderAPIService hereMapsGeocoderAPIService;
-
-    @Autowired
-    private PropertyImageService propertyImageService;
 
     @GetMapping
     public @ResponseBody Iterable<Property> getAllProperties(){
-        return propertyService.findAll();
+        return propertyService.findAllByOrderByPrice("asc");
     }
 
     @GetMapping("/5km")
@@ -53,14 +37,10 @@ public class PropertyController {
     }
 
     @PostMapping
-    public @ResponseBody Property addProperty(@RequestParam String title,
-                                              @RequestParam String locality,
-                                              @RequestParam String address,
-                                              @RequestParam Integer price,
-                                              @RequestParam String description,
+    public @ResponseBody Property addProperty(@ModelAttribute Property property,
                                               @RequestParam MultipartFile[] photos
     ) {
-        return propertyService.add(title, locality, address, price, description, photos);
+        return propertyService.add(property, photos);
     }
 
     @PutMapping
