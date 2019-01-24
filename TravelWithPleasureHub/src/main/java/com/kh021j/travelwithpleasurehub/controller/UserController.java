@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/users")
 public class UserController {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(   UserControllerRaise.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
     private UserService userService;
@@ -31,7 +31,7 @@ public class UserController {
     @GetMapping(path = "/{id}")
     public ResponseEntity<UserDTO> getById(@PathVariable Integer id) {
         Optional<User> user = userService.getById(id);
-        return user.map(body -> ResponseEntity.ok(ConverterUserDTO.toUserDTO(body))).orElseGet(()->ResponseEntity.notFound().build());
+        return user.map(body -> ResponseEntity.ok(ConverterUserDTO.toUserDTO(body))).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @GetMapping(path = "/username/{username}")
@@ -45,7 +45,7 @@ public class UserController {
 
     @PostMapping(path = "")
     @ResponseBody
-    public UserDTO createUser (@RequestBody UserDTO userDTO){
+    public UserDTO createUser(@RequestBody UserDTO userDTO) {
         LOGGER.debug("REST request to save User : {}", userDTO);
         return ConverterUserDTO.toUserDTO(userService.create(ConverterUserDTO.fromUserDTO(userDTO)));
     }
