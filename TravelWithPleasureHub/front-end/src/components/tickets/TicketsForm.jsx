@@ -44,24 +44,31 @@ class TicketsForm extends Component {
     }
 
     onLoad = () => {
-        let data = new FormData();
-        data.append('country', this.state.country);
-        data.append('currency', this.state.currency);
-        data.append('locale', this.state.locale);
-        data.append('originPlace', this.state.originPlace);
-        data.append('destinationPlace', this.state.destinationPlace);
-        data.append('outboundDate', this.state.outboundDate);
-        data.append('adults', this.state.adults);
-        data.append('cabinClass', this.state.cabinType);
-        data.append('children', this.state.children);
-        data.append('infants', this.state.infants);
+        let info = {
+            country: this.state.country,
+            currency: this.state.currency,
+            locale: this.state.locale,
+            originPlace: this.state.originPlace,
+            destinationPlace: this.state.destinationPlace,
+            outboundDate: this.state.outboundDate,
+            adults: this.state.adults,
+            cabinClass: this.state.cabinClass,
+            children: this.state.children,
+            infants: this.state.infants
+        };
 
-        fetch("http://localhost:3000/api/flights/", {
+        fetch("http://localhost:8080/api/flights/one-way", {
             method: "POST",
-            body: data
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(info)
         })
-            .then(response => response.json())
-            .then(result => this.setState({result: result}))
+            .then(res => res.json())
+            .then(response => {
+                this.setState({result: response})
+            })
+            .catch(error => console.error('Error: ', error))
     };
 
     onHandle = (event) => {
@@ -77,22 +84,6 @@ class TicketsForm extends Component {
                         <div className="row">
                             <div className="booking-form">
                                 <form>
-                                    <div className="form-group row">
-                                        <div className="form-checkbox">
-                                            <label htmlFor="roundtrip">
-                                                <input type="radio" id="roundtrip" value={this.state.tripType}
-                                                       onChange={this.onTripTypeChange}
-                                                       name="flight-type"/>
-                                                <span/>Roundtrip
-                                            </label>
-                                            <label htmlFor="one-way">
-                                                <input type="radio" id="one-way" value={this.state.tripType}
-                                                       onChange={this.onTripTypeChange}
-                                                       name="flight-type"/>
-                                                <span/>One-way
-                                            </label>
-                                        </div>
-                                    </div>
                                     <div className="row">
                                         <div className="col-md-6">
                                             <div className="form-group">
@@ -143,7 +134,7 @@ class TicketsForm extends Component {
                                                 <select className="form-control"
                                                         name="adults"
                                                         value={this.state.adults}
-                                                        onChange={this.onAdultsOptionChange}>
+                                                        onChange={this.onInputChange}>
                                                     <option>1</option>
                                                     <option>2</option>
                                                     <option>3</option>
@@ -157,7 +148,7 @@ class TicketsForm extends Component {
                                                 <select className="form-control"
                                                         name="children"
                                                         value={this.state.children}
-                                                        onChange={this.onChildrenOptionChange}>
+                                                        onChange={this.onInputChange}>
                                                     <option>0</option>
                                                     <option>1</option>
                                                     <option>2</option>
@@ -171,7 +162,7 @@ class TicketsForm extends Component {
                                                 <select className="form-control"
                                                         name="infants"
                                                         value={this.state.infants}
-                                                        onChange={this.onInfantsOptionChange}>
+                                                        onChange={this.onInputChange}>
                                                     <option>0</option>
                                                     <option>1</option>
                                                     <option>2</option>
@@ -188,7 +179,7 @@ class TicketsForm extends Component {
                                                         id="travel-class"
                                                         name="cabinClass"
                                                         value={this.state.cabinType}
-                                                        onChange={this.onTravelClassChange}>
+                                                        onChange={this.onInputChange}>
                                                     <option>Business class</option>
                                                     <option>Economy class</option>
                                                 </select>
