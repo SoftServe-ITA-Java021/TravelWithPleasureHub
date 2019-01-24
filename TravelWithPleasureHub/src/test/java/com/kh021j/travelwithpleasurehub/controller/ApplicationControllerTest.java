@@ -64,7 +64,7 @@ public class ApplicationControllerTest {
             .description("descr")
             .locality("locality")
             .title("title")
-            .userTable(user)
+            .owner(user)
             .propertyType(PropertyType.builder().id(16).title("new").build())
             .build();
 

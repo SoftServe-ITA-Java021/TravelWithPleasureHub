@@ -1,6 +1,7 @@
 package com.kh021j.travelwithpleasurehub.propertyrent.service;
 
 import com.kh021j.travelwithpleasurehub.controller.enumeration.SortType;
+import com.kh021j.travelwithpleasurehub.model.User;
 import com.kh021j.travelwithpleasurehub.propertyrent.model.Property;
 import com.kh021j.travelwithpleasurehub.propertyrent.model.PropertyImage;
 import com.kh021j.travelwithpleasurehub.propertyrent.repository.PropertyRepository;
@@ -21,13 +22,7 @@ public class PropertyService {
     private PropertyRepository propertyRepository;
 
     @Autowired
-    private PropertyService propertyService;
-
-    @Autowired
     private PropertyTypeService propertyTypeService;
-
-    @Autowired
-    private UserService userService;
 
     @Autowired
     private ImgurAPIService imgurAPIService;
@@ -43,15 +38,13 @@ public class PropertyService {
         return propertyRepository.findAll();
     }
 
-    public Property add(String title, String locality, String address, Integer price,
-                        String description, MultipartFile[] photos
-    ) {
-        String fullAddress = address + " " + locality;
+    public Property add(Property property, MultipartFile[] photos) {
+        String fullAddress = property.getAddress() + " " + property.getLocality();
         List<Double> coordinates = hereMapsGeocoderAPIService.getCoordinatesByAddress(fullAddress);
 
-        Property property = new Property(title, description,
-                propertyTypeService.findById(1), userService.getById(1).get(),
-                    locality, address, price, coordinates.get(0), coordinates.get(1));
+        property.setPropertyType(propertyTypeService.findById(1));
+        property.setLatitude(coordinates.get(0));
+        property.setLongitude(coordinates.get(1));
 
         Property savedProperty = propertyRepository.save(property);
         for(MultipartFile photo : photos) {
@@ -104,15 +97,16 @@ public class PropertyService {
     public List<Property> findAllByOrderByPrice(String sortByPrice) {
         switch (SortType.valueOf(sortByPrice.toUpperCase())) {
             case ASC:
-                return propertyRepository.findAllByOrderByPriceAsc().orElse(null);
+                return propertyRepository.findAllByOrderByPriceAsc().orElse(new ArrayList<>());
             case DESC:
-                return propertyRepository.findAllByOrderByPriceDesc().orElse(null);
+                return propertyRepository.findAllByOrderByPriceDesc().orElse(new ArrayList<>());
             default:
                 return propertyRepository.findAll();
         }
     }
 
-    public List<Property> filterProperties(String locality, String address, String checkIn, String checkOut) {
+    public Iterable<Property> filterProperties(String locality, String address, String checkIn, String checkOut) {
+
         if(!locality.equals("") && address.equals("") && checkIn.equals("") && checkOut.equals("")) {
             return propertyRepository.findByLocality(locality).orElse(new ArrayList<>());
         } else if(locality.equals("") && !address.equals("") && checkIn.equals("") && checkOut.equals("")) {
@@ -127,8 +121,10 @@ public class PropertyService {
         } else if(!locality.equals("") && !address.equals("") && !checkIn.equals("") && !checkOut.equals("")) {
             LocalDate checkInDate = LocalDate.parse(checkIn);
             LocalDate checkOutDate = LocalDate.parse(checkOut);
-            return propertyRepository.findByAvailabilityInPeriodAndLocalityAndAddress(
-                    checkInDate, checkOutDate, locality, address).orElse(new ArrayList<>());
+            if(checkOutDate.isAfter(checkInDate))
+                return propertyRepository.findByAvailabilityInPeriodAndLocalityAndAddress(
+                        checkInDate, checkOutDate, locality, address).orElse(new ArrayList<>());
+            else return new ArrayList<>();
         }
         return propertyRepository.findAll();
     }

@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import '../../property-thumbnail.css';
+import './img.css';
 import {Link} from "react-router-dom";
+import emptyPhoto from '../../pics/empty-photo.jpg';
 
 class PropertyThumbnail extends Component {
 	constructor(props) {
@@ -13,9 +15,14 @@ class PropertyThumbnail extends Component {
 
 	loadThumbnailImageLink = () => {
 		fetch('http://localhost:8080/api/property-image/property/first/' + this.props.id)
-			.then(response => response.json())
-			.then(responseJSON => {
-				this.setState({imageLink: responseJSON.imageLink})
+			.then(response => {
+				const contentType = response.headers.get("content-type");
+				if (contentType && contentType.indexOf("application/json") !== -1) {
+					return response.json()
+						.then(responseJSON => {
+							this.setState({imageLink: responseJSON.imageLink})
+						})
+				}
 			})
 			.catch(error => { throw error } )
 	};
@@ -33,7 +40,12 @@ class PropertyThumbnail extends Component {
 					<div className="thumbnail-info rounded p-2 text-black" id="thumbnail-info">
 						<div>{this.props.title}, ${this.props.price}</div>
 					</div>
-					<img className="img-fluid mt-3 rounded" src={this.state.imageLink}/>
+					{
+						this.state.imageLink !== null ?
+							<img className="property-image mt-3 rounded" src={this.state.imageLink}/>
+							:
+							<img className="property-image mt-3 rounded" src={emptyPhoto}/>
+					}
 				</div>
 			</Link>
 

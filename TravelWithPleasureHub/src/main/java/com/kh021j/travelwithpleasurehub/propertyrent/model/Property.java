@@ -30,7 +30,7 @@ public class Property {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User userTable;
+    private User owner;
 
     private String locality;
 
@@ -51,7 +51,7 @@ public class Property {
         this.title = title;
         this.description = description;
         this.propertyType = propertyType;
-        this.userTable = userTable;
+        this.owner = userTable;
         this.locality = locality;
         this.address = address;
         this.price = price;

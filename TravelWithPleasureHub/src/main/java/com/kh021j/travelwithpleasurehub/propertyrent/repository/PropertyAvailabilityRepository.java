@@ -14,4 +14,10 @@ public interface PropertyAvailabilityRepository extends JpaRepository<PropertyAv
     @Query(value = "select * from property_availability where property_id = ?1", nativeQuery = true)
     Optional<List<PropertyAvailability>> findByPropertyId(Integer propertyId);
 
+    @Query(value = "select * from property_availability where user_id = ?1", nativeQuery = true)
+    Optional<List<PropertyAvailability>> findByUserId(Integer userId);
+
+    @Query(value = "select * from property_availability where user_id = ?1 and property_id = ?2", nativeQuery = true)
+    Optional<List<PropertyAvailability>> findByUserIdAndPropertyId(Integer userId, Integer propertyId);
+
 }
