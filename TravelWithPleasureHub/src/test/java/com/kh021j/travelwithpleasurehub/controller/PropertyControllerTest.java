@@ -1,6 +1,7 @@
 package com.kh021j.travelwithpleasurehub.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kh021j.travelwithpleasurehub.model.enumiration.UserRole;
 import com.kh021j.travelwithpleasurehub.propertyrent.controller.PropertyController;
 import com.kh021j.travelwithpleasurehub.propertyrent.model.Property;
 import com.kh021j.travelwithpleasurehub.propertyrent.model.PropertyType;
@@ -51,10 +52,9 @@ public class PropertyControllerTest {
             .password("easypassword")
             .secondName("sName")
             .firstName("fName")
-            .status("status")
             .phoneNumber("phone number")
             .location("Ukraine")
-            .role("User")
+            .role(UserRole.ROLE_USER)
             .pathToPhoto("path")
             .build();
 
@@ -66,7 +66,7 @@ public class PropertyControllerTest {
             .id(1)
             .title("Flat1")
             .propertyType(propertyType)
-            .userTable(user)
+            .owner(user)
             .locality("locality")
             .address("Address")
             .description("new description")
@@ -77,7 +77,7 @@ public class PropertyControllerTest {
             .id(2)
             .title("Flat2")
             .propertyType(propertyType)
-            .userTable(user)
+            .owner(user)
             .locality("locality2")
             .address("Address2")
             .description("new description2")
@@ -95,7 +95,7 @@ public class PropertyControllerTest {
                 .thenReturn(Optional.of(new ArrayList<>(Arrays.asList(property1, property2))));
         when(propertyRepository.findByLocality("locality"))
                 .thenReturn(Optional.of(Collections.singletonList(property1)));
-        when(propertyRepository.findByAddress("Address"))
+        when(propertyRepository.findByAddressContaining("Address"))
                 .thenReturn(Optional.of(Collections.singletonList(property1)));
         when(propertyRepository.findByAvailabilityInPeriodAndSort(LocalDate.of(2000, 12, 12),
                 LocalDate.of(2020, 12, 12), "desc"))

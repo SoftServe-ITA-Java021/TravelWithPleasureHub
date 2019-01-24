@@ -15,8 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.*;
 import java.util.Arrays;
 
 @RunWith(SpringRunner.class)
@@ -36,7 +35,6 @@ public abstract class RepositoryBaseDomain {
                 .additionalInfo("add info")
                 .email("smart@gmail.com")
                 .username("us name")
-                .status("activ")
                 .build();
         entityManager.persist(user);
 
@@ -48,7 +46,7 @@ public abstract class RepositoryBaseDomain {
         Property property = Property.builder()
                 .title("Flat1")
                 .propertyType(propertyType)
-                .userTable(user)
+                .owner(user)
                 .locality("locality")
                 .address("Address")
                 .description("new description")
@@ -68,7 +66,7 @@ public abstract class RepositoryBaseDomain {
 
         PropertyAvailability propertyAvailability = PropertyAvailability.builder()
                 .property(property)
-                .bookedSince(LocalDate.of(2012,12,12))
+                .bookedSince(LocalDate.of(2012, 12, 12))
                 .bookedUntil(LocalDate.now())
                 .build();
         entityManager.persist(propertyAvailability);
@@ -94,10 +92,10 @@ public abstract class RepositoryBaseDomain {
         Meeting meeting = Meeting.builder()
                 .header("simple")
                 .content("asd")
-                .timeOfAction(LocalDateTime.of(2018,12,12,15,30))
+//                .timeOfAction(OffsetDateTime.of(2018, 12, 12, 15, 30, 0, 0, ZoneOffset.UTC))
                 .location("dqwdwq")
                 .meetingType(MeetingType.CINEMA)
-                .links(Arrays.asList("1","2"))
+                .links(Arrays.asList("1", "2"))
                 .owner(user)
                 .build();
         entityManager.persist(meeting);

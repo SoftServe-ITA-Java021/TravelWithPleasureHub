@@ -1,10 +1,14 @@
 package com.kh021j.travelwithpleasurehub.model;
 
 import com.kh021j.travelwithpleasurehub.model.enumiration.MeetingType;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @AllArgsConstructor
@@ -31,13 +35,12 @@ public class Meeting {
     @Column(name = "location", nullable = false)
     private String location;
 
-
-   @ElementCollection
-   @CollectionTable(name = "link",joinColumns = @JoinColumn(name = "meeting_id"))
+    @ElementCollection
+    @CollectionTable(name = "link", joinColumns = @JoinColumn(name = "meeting_id"))
     private List<String> links;
 
     @Column(name = "date_time", nullable = false)
-    private LocalDateTime timeOfAction;
+    private ZonedDateTime timeOfAction;
 
     @OneToOne
     @JoinColumn(name = "owner_id")

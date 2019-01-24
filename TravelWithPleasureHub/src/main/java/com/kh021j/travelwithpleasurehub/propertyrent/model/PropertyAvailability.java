@@ -1,6 +1,7 @@
 package com.kh021j.travelwithpleasurehub.propertyrent.model;
 
 
+import com.kh021j.travelwithpleasurehub.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,9 +29,15 @@ public class PropertyAvailability {
     @JoinColumn(name = "property_id")
     private Property property;
 
-    public PropertyAvailability(LocalDate bookedSince, LocalDate bookedUntil, Property property) {
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User userTable;
+
+    public PropertyAvailability(LocalDate bookedSince, LocalDate bookedUntil, Property property, User userTable) {
         this.bookedSince = bookedSince;
         this.bookedUntil = bookedUntil;
         this.property = property;
+        this.userTable = userTable;
     }
 }

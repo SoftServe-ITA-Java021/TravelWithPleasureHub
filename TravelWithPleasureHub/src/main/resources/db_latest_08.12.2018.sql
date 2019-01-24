@@ -131,13 +131,13 @@ alter table property_availability owner to postgres;
 
   header varchar(40) not null,
 
-  meeting_type varchar(30) not null,
+  meeting_type integer not null,
 
   content varchar not null,
 
   location varchar not null,
 
-  date_time timestamp not null,
+  date_time timestamptz AT TIME ZONE 'UTC' not null,
 
   owner_id serial not null
     constraint owner_id
@@ -145,6 +145,8 @@ alter table property_availability owner to postgres;
 
 );
 alter table meeting OWNER to postgres;
+
+SET timezone TO 'UTC';
 
   create table if not exists link
 (

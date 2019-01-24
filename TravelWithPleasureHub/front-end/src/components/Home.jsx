@@ -15,7 +15,6 @@ class Home extends Component {
 							<img className="card-img-top" src={ticketPic} alt="Card image cap"/>
 							<div className="card-body">
 								<h5 className="card-title">Ticket search</h5>
-								<p className="card-text">Description here</p>
 							</div>
 						</Link>
 					</div>
@@ -24,7 +23,6 @@ class Home extends Component {
 							<img className="card-img-top" src={rentPic} alt="Card image cap"/>
 							<div className="card-body">
 								<h5 className="card-title">Rental property</h5>
-								<p className="card-text">Description here</p>
 							</div>
 						</Link>
 					</div>
@@ -33,7 +31,6 @@ class Home extends Component {
 							<img className="card-img-top" src={meetingsPic} alt="Card image cap"/>
 							<div className="card-body">
 								<h5 className="card-title">Arrange a meeting</h5>
-								<p className="card-text">Description here</p>
 							</div>
 						</Link>
 					</div>

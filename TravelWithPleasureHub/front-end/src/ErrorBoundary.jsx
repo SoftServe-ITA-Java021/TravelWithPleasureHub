@@ -9,9 +9,8 @@ class ErrorBoundary extends Component {
 		};
 	}
 
+
 	componentDidCatch(error, info) {
-		console.log(error);
-		console.log('err');
 		this.setState({
 			hasError: true,
 			error: error
@@ -20,11 +19,14 @@ class ErrorBoundary extends Component {
 
 	render() {
 		if (this.state.hasError) {
-			return <div className="container text-center">
-						<h1 className="text-black">Oopsie! Client-side error!</h1>
-						<p>This might me helpful!</p>
-						<p>{this.state.error}</p>
-					</div>;
+			return (
+				<div className="container text-center">
+					<h1 className="text-black">Oops! Error!</h1>
+					<div>
+						{this.state.error instanceof String && this.state.error}
+					</div>
+				</div>
+			);
 		}
 		return this.props.children;
 	}

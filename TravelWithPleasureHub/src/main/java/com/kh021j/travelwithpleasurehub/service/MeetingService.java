@@ -6,6 +6,8 @@ import com.kh021j.travelwithpleasurehub.model.enumiration.MeetingType;
 import com.kh021j.travelwithpleasurehub.repository.MeetingRepository;
 import com.kh021j.travelwithpleasurehub.repository.UserRepository;
 import com.kh021j.travelwithpleasurehub.service.dto.MeetingDTO;
+import com.kh021j.travelwithpleasurehub.service.dto.UserDTO;
+import com.kh021j.travelwithpleasurehub.utils.ConverterUserDTO;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -17,7 +19,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
+import java.time.*;
+import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -45,7 +48,7 @@ public class MeetingService {
                 .location(meetingDTO.getLocation())
                 .links(meetingDTO.getLinks())
                 .meetingType(MeetingType.valueOf(meetingDTO.getMeetingType().toUpperCase()))
-                .timeOfAction(LocalDateTime.parse(meetingDTO.getTimeOfAction()))
+                .timeOfAction(ZonedDateTime.of(LocalDateTime.parse(meetingDTO.getTimeOfAction()), ZoneId.systemDefault()))
                 .owner(meetingDTO.getOwnerId() != null ?
                         userRepository.findById(meetingDTO.getOwnerId()).get()
                         : null)
@@ -70,7 +73,7 @@ public class MeetingService {
                 .location(meeting.getLocation())
                 .meetingType(meeting.getMeetingType().toString())
                 .timeOfAction(meeting.getTimeOfAction().toString())
-                .ownerId(Objects.nonNull(meeting.getOwner()) ? meeting.getId() : null)
+                .ownerId(Objects.nonNull(meeting.getOwner()) ? meeting.getOwner().getId() : null)
                 .confirmedUserIds(Objects.nonNull(meeting.getConfirmedUsers()) ?
                         meeting.getConfirmedUsers().stream()
                                 .filter(Objects::nonNull)
@@ -97,8 +100,11 @@ public class MeetingService {
     }
 
     @Transactional
-    public MeetingDTO update(MeetingDTO meetingDTO) {
+    public MeetingDTO update(MeetingDTO meetingDTO) throws IOException {
         log.debug("Request to update Meeting : {}", meetingDTO);
+        meetingDTO = meetingDTO.toBuilder()
+                .links(findLinksForMeeting(meetingDTO))
+                .build();
         if (meetingRepository.existsById(meetingDTO.getId())) {
             Meeting meeting = fromDTO(meetingDTO);
             return toDTO(meetingRepository.saveAndFlush(meeting));
@@ -116,38 +122,58 @@ public class MeetingService {
         }
         User user = userRepository.findById(userId).get();
         Meeting meeting = meetingRepository.findById(meetingId).get();
+        if (!meeting.getConfirmedUsers().contains(user)) {
+            meeting = meeting.toBuilder()
+                    .wishingUsers(addUserInWishingList(user, meeting))
+                    .build();
+        }
+        return toDTO(meetingRepository.saveAndFlush(meeting));
+    }
+
+    @Transactional
+    public MeetingDTO confirmUserForMeeting(Integer meetingId, Integer wishingUserId) {
+        log.debug("Request to confirm for Meeting with id : {} , and wishing user id : {}", meetingId, wishingUserId);
+        if (!meetingRepository.existsById(meetingId) || !userRepository.existsById(wishingUserId)) {
+            log.error("Request to confirm for Meeting with id : {}, and wishing user id : {} was failed", meetingId, wishingUserId);
+            return null;
+        }
+        Meeting meeting = meetingRepository.findById(meetingId).get();
+        User confirmedUser = userRepository.findById(wishingUserId).get();
         meeting = meeting.toBuilder()
-                .wishingUsers(addUserInList(user, meeting))
+                .confirmedUsers(addUserInConfirmedList(confirmedUser, meeting))
+                .wishingUsers(removeUserFromWishingList(confirmedUser, meeting))
                 .build();
         return toDTO(meetingRepository.saveAndFlush(meeting));
     }
 
     @Transactional
-    public MeetingDTO confirmUserForMeeting(Integer ownerId, Integer meetingId, Integer wishingUserId) {
-        log.debug("Request to confirm for Meeting with id : {} ,owner id : {} , and wishing user id : {}", meetingId, ownerId, wishingUserId);
-        if (!meetingRepository.existsById(meetingId) || !userRepository.existsById(wishingUserId)
-                || !userRepository.existsById(ownerId)) {
-            log.error("Request to confirm for Meeting with id : {} ,owner id : {} , and wishing user id : {} was failed", meetingId, ownerId, wishingUserId);
+    public MeetingDTO rejectRequestForMeeting(Integer meetingId, Integer wishingUserId) {
+        log.debug("Request to reject for Meeting with id : {} , and wishing user id : {}", meetingId, wishingUserId);
+        if (!meetingRepository.existsById(meetingId) || !userRepository.existsById(wishingUserId)) {
+            log.error("Request to reject for Meeting with id : {}, and wishing user id : {} was failed", meetingId, wishingUserId);
             return null;
         }
-        User owner = userRepository.findById(ownerId).get();
         Meeting meeting = meetingRepository.findById(meetingId).get();
-        if (owner.getId().equals(meeting.getId())) {
-            User confirmedUser = userRepository.findById(wishingUserId).get();
-            meeting = meeting.toBuilder()
-                    .confirmedUsers(addUserInList(confirmedUser, meeting))
-                    .wishingUsers(removeUserFromList(confirmedUser, meeting))
-                    .build();
-            return toDTO(meetingRepository.saveAndFlush(meeting));
-        }
-        log.error("Request to confirm for Meeting with id : {} ,owner id : {} , and wishing user id : {} was failed", meetingId, ownerId, wishingUserId);
-        return null;
+        User confirmedUser = userRepository.findById(wishingUserId).get();
+        meeting = meeting.toBuilder()
+                .wishingUsers(removeUserFromWishingList(confirmedUser, meeting))
+                .build();
+        return toDTO(meetingRepository.saveAndFlush(meeting));
     }
 
-    public List<MeetingDTO> findHistoryOfMeetingsByUserId(Integer id) {
-        log.debug("Request to get history Meetings by user id : {} ", id);
+    public List<MeetingDTO> findConfirmedHistoryOfMeetingsByUserId(Integer id) {
+        log.debug("Request to get confirmed history Meetings by user id : {} ", id);
         User user = userRepository.findById(id).get();
-        return meetingRepository.findAllByConfirmedUsersContainingOrWishingUsersContaining(user, user)
+        return meetingRepository.findAllByConfirmedUsersContaining(user)
+                .stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<MeetingDTO> findWishingHistoryOfMeetingsByUserId(Integer id) {
+        log.debug("Request to get confirmed history Meetings by user id : {} ", id);
+        User user = userRepository.findById(id).get();
+        return meetingRepository.findAllByWishingUsersContaining(user)
                 .stream()
                 .map(this::toDTO)
                 .collect(Collectors.toList());
@@ -190,6 +216,22 @@ public class MeetingService {
 
     }
 
+    public List<UserDTO> findAllWishingUsersInMeeting(Integer id) {
+        log.debug("Request to get all wishing users in meeting with id : {} ", id);
+        Meeting meeting = meetingRepository.findById(id).get();
+        return meeting.getWishingUsers().stream()
+                .map(ConverterUserDTO::toUserDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<UserDTO> findAllConfirmedUsersInMeeting(Integer id) {
+        log.debug("Request to get all wishing users in meeting with id : {} ", id);
+        Meeting meeting = meetingRepository.findById(id).get();
+        return meeting.getConfirmedUsers().stream()
+                .map(ConverterUserDTO::toUserDTO)
+                .collect(Collectors.toList());
+    }
+
     public List<MeetingDTO> findAllByFilter(String headerFilter, String locationFilter, String timeFilter) {
         log.debug("REST request to get Meetings with header : {} ,location : {} ,time : {} ", headerFilter, locationFilter, timeFilter);
         return meetingRepository.findAllByFilter(headerFilter,
@@ -207,14 +249,20 @@ public class MeetingService {
         return users;
     }
 
-    private List<User> addUserInList(User user, Meeting meeting) {
+    private List<User> addUserInConfirmedList(User user, Meeting meeting) {
         List<User> users = new ArrayList<>(meeting.getConfirmedUsers());
         users.add(user);
         return users;
     }
 
-    private List<User> removeUserFromList(User user, Meeting meeting) {
-        List<User> users = new ArrayList<>(meeting.getConfirmedUsers());
+    private List<User> addUserInWishingList(User user, Meeting meeting) {
+        List<User> users = new ArrayList<>(meeting.getWishingUsers());
+        users.add(user);
+        return users;
+    }
+
+    private List<User> removeUserFromWishingList(User user, Meeting meeting) {
+        List<User> users = new ArrayList<>(meeting.getWishingUsers());
         users.remove(user);
         return users;
     }

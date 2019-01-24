@@ -1,10 +1,12 @@
 package com.kh021j.travelwithpleasurehub.model;
 
 
+import com.kh021j.travelwithpleasurehub.model.enumiration.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 
@@ -38,8 +40,11 @@ public class User {
 
     private String pathToPhoto;
 
-    private String status;
 
-    private String role;
+    @Nullable
+    private boolean status;
+
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
 
 }
