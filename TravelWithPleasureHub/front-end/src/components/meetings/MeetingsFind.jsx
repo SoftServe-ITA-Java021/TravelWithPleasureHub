@@ -132,7 +132,10 @@ export default class MeetingsFind extends Component {
                 meetings: json.data,
                 header: header,
                 showAll: true
-            }));
+            }))
+            .catch(error => {
+                throw error
+            });
     }
 
     handleChangeLocation(event) {
@@ -149,7 +152,9 @@ export default class MeetingsFind extends Component {
                 meetings: json.data,
                 location: location,
                 showAll: true
-            }));
+            })).catch(error => {
+            throw error
+        });
     }
 
     handleChangeDatetime(event) {
@@ -167,7 +172,9 @@ export default class MeetingsFind extends Component {
                 meetings: json.data,
                 datetime: date,
                 showAll: true
-            }));
+            })).catch(error => {
+            throw error
+        });
     }
 
     onChangePage(pageOfItems) {

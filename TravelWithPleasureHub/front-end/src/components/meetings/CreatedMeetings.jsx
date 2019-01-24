@@ -28,17 +28,6 @@ export default class CreatedMeetings extends Component {
                 pageOfItems: []
             };
         this.onChangePage = this.onChangePage.bind(this);
-        this.loadUserInfo = this.loadUserInfo.bind(this);
-    }
-    loadUserInfo = () => {
-        fetch('http://localhost:8080/profile')
-            .then(response => response.json())
-            .then(properties => this.setState({user : properties}))
-            .catch(error => { throw error } )
-    };
-
-    componentWillMount() {
-        this.loadUserInfo();
     }
 
     render() {
@@ -48,7 +37,7 @@ export default class CreatedMeetings extends Component {
             <div className="container meetingForm">
                 <div
                     className="alert alert-light bg-light row h-100 justify-content-center align-items-center"> You're
-                    watching meetings where you're organizer {value.user.id}
+                    watching meetings where you're organizer
                 </div>
 
                 {value.meetings.length > 0 && value.meetings[0].id !== -1 && value.pageOfItems.map(item =>
@@ -85,7 +74,10 @@ export default class CreatedMeetings extends Component {
                         owner: this.state.currentUser.id
                     }
                 })
-                .then(json => this.setState({meetings: json.data})));
+                .then(json => this.setState({meetings: json.data})))
+            .catch(error => {
+                throw error
+            });
     }
 
 

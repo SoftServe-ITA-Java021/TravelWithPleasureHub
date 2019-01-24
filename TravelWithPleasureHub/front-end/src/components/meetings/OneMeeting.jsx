@@ -184,7 +184,10 @@ export default class OneMeeting extends Component {
             .then(json => (this.setState({currentUser: json.data})))
 
             .then(() => axios.get(`http://localhost:8080/api/meetings/${this.props.match.params.id}`)
-                .then(json => this.setState({meeting: json.data, changed: true, isDownloaded: true})));
+                .then(json => this.setState({meeting: json.data, changed: true, isDownloaded: true})))
+            .catch(error => {
+                throw error
+            });
     }
 
 
@@ -195,15 +198,16 @@ export default class OneMeeting extends Component {
         formData.append("meetingId", value.meeting.id);
         formData.append("userId", JSON.stringify(this.state.currentUser.id));
 
-        axios.post("http://localhost:8080/api/meetings/request-for-meeting/",
-            formData
-        ).then(() => {
-            this.setState({
-                status: "Success",
-                isSent: true
+        axios.post("http://localhost:8080/api/meetings/request-for-meeting/", formData)
+            .then(() => {
+                this.setState({
+                    status: "Success",
+                    isSent: true
+                })
             })
-
-        })
+            .catch(error => {
+                throw error
+            })
     }
 
     deleteMeeting(e) {
@@ -215,6 +219,9 @@ export default class OneMeeting extends Component {
                     this.setState({
                         isDeleted: true
                     })
+                })
+                .catch(error => {
+                    throw error
                 })
         }
     }

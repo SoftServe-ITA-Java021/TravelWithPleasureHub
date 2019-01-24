@@ -75,13 +75,16 @@ export default class MeetingAdd extends Component {
     }
 
     componentWillMount() {
-        axios.get("http://localhost:8080/profile"
-        ).then(response => {
-                this.setState({
-                    currentUser: response.data
-                });
-            }
-        )
+        axios.get("http://localhost:8080/profile")
+            .then(response => {
+                    this.setState({
+                        currentUser: response.data
+                    });
+                }
+            )
+            .catch(error => {
+                throw error
+            })
     }
 
     sendRequest(e) {
@@ -104,6 +107,9 @@ export default class MeetingAdd extends Component {
                 })
             }
         })
+            .catch(error => {
+                throw error
+            })
     }
 
     headerBody() {

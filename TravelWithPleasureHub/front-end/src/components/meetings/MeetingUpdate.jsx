@@ -78,12 +78,15 @@ export default class MeetingUpdate extends Component {
     }
 
     componentWillMount() {
-        axios.get(`http://localhost:8080/api/meetings/${this.props.match.params.id}`,
-        ).then(response => {
-            this.setState(
-                response.data
-            )
-        })
+        axios.get(`http://localhost:8080/api/meetings/${this.props.match.params.id}`,)
+            .then(response => {
+                this.setState(
+                    response.data
+                )
+            })
+            .catch(error => {
+                throw error
+            })
     }
 
     sendRequest(e) {
@@ -101,15 +104,17 @@ export default class MeetingUpdate extends Component {
         formData.append("confirmedUserIds", value.confirmedUserIds.toString());
         formData.append("wishingUserIds", value.wishingUserIds.toString());
 
-        axios.put("http://localhost:8080/api/meetings",
-            formData
-        ).then(response => {
-            if (response.status === 200) {
-                this.setState({
-                    isUpdated: true
-                })
-            }
-        })
+        axios.put("http://localhost:8080/api/meetings", formData)
+            .then(response => {
+                if (response.status === 200) {
+                    this.setState({
+                        isUpdated: true
+                    })
+                }
+            })
+            .catch(error => {
+                throw error
+            })
     }
 
     headerBody() {

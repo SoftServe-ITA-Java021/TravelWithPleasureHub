@@ -22,7 +22,9 @@ export default class MeetingNavbar extends Component {
                     currentUser: response.data
                 });
             }
-        )
+        ).catch(error => {
+            throw error
+        })
     }
 
     render() {
