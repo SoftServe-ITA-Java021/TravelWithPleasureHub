@@ -1,5 +1,7 @@
 import React, {Component} from 'react'
 import './style/tickets-form-style.css'
+import './style/style.css'
+import img from "./image/kontur-samolyotika.png";
 
 function formatDay() {
     let d = new Date(),
@@ -10,6 +12,48 @@ function formatDay() {
     return [currentYear, currentMonth, currentDay].join('-');
 }
 
+function Flight(props) {
+    return (
+        <div className="container-fluid">
+            <div className="container card">
+                <div className="row text-center justify-content center">
+                    <div className="col border">
+                        <p/>
+                        <img className="img"
+                             src={props.flight.imageCompany}
+                             alt={props.flight.company}/>
+                    </div>
+                    <div className="col border">
+                        <h5 className="text-muted"><p>{props.flight.departureAirport}</p></h5>
+                        <h5><p>{props.flight.departureDateTime}</p></h5>
+                    </div>
+                    <div className="col border">
+                        <h5 className="text-muted">Duration: </h5>
+                        <h5><p>{props.flight.duration}</p></h5>
+                        <img className="img-fluid"
+                             src={img}
+                             alt="Plane"
+                             width={50}
+                             height={120}/>
+                        <p/>
+                    </div>
+                    <div className="col border">
+                        <h5 className="text-muted"><p>{props.flight.arrivalAirport}</p></h5>
+                        <h5><p>{props.flight.arrivalDateTime}</p></h5>
+                    </div>
+                    <div className="col border">
+                        <div className="from text-muted"><h5>From</h5></div>
+                        <h4 className="color">{props.flight.price}</h4>
+                        <a href={props.flight.link}>
+                            <button className="btn btn-info btn-lg">BUY</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    )
+}
+
 class TicketsForm extends Component {
 
     constructor(props) {
@@ -17,15 +61,18 @@ class TicketsForm extends Component {
         this.state = {
             country: "US",
             currency: "USD",
+            locale: "en-US",
             originPlace: "",
             destinationPlace: "",
             outboundDate: formatDay(),
             adults: 1,
             children: 0,
             infants: 0,
-            cabinType: "business",
+            cabinType: "economy",
 
-            result: []
+            result: null,
+
+            loading: true
         };
 
         this.onInputChange = this.onInputChange.bind(this);
@@ -69,6 +116,8 @@ class TicketsForm extends Component {
                 this.setState({result: response})
             })
             .catch(error => console.error('Error: ', error))
+        console.log(this.state.result)
+        this.setState({loading: false})
     };
 
     onHandle = (event) => {
@@ -176,12 +225,12 @@ class TicketsForm extends Component {
                                             <div className="form-group">
                                                 <span className="form-label">Travel class</span>
                                                 <select className="form-control"
-                                                        id="travel-class"
+                                                    /*id="travel-class"*/
                                                         name="cabinClass"
                                                         value={this.state.cabinType}
                                                         onChange={this.onInputChange}>
-                                                    <option>Business class</option>
-                                                    <option>Economy class</option>
+                                                    <option>business</option>
+                                                    <option>economy</option>
                                                 </select>
                                                 <span className="select-arrow"/>
                                             </div>
@@ -194,12 +243,30 @@ class TicketsForm extends Component {
                                         </div>
                                     </div>
                                 </form>
+                                <div>
+                                    {/*{this.state.loading || this.state.result !== null ? <div>loading...</div> :
+                                        <div>Available Tickets</div>}*/}
+                                    <hr/>
+                                    <div>
+                                        {this.renderFlights()}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         )
+    }
+
+    renderFlights() {
+        if (this.state.result !== null)
+            return this.state.result.map(res => {
+                return (
+                    <Flight flight={res}
+                            key={res.name + Math.random()}/>
+                )
+            })
     }
 }
 

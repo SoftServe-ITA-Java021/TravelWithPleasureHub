@@ -4,6 +4,7 @@ package com.kh021j.travelwithpleasurehub.tickets.apiparser.service;
 import com.kh021j.travelwithpleasurehub.tickets.apiparser.model.request.RequestModel;
 import com.kh021j.travelwithpleasurehub.tickets.apiparser.model.response.Flight;
 import com.kh021j.travelwithpleasurehub.tickets.apiparser.model.response.FlightData;
+import com.kh021j.travelwithpleasurehub.tickets.apiparser.model.response.FlightDataResponse;
 import com.kh021j.travelwithpleasurehub.tickets.apiparser.model.response.Ticket;
 import com.kh021j.travelwithpleasurehub.tickets.apiparser.repository.FlightDataRepository;
 import com.kh021j.travelwithpleasurehub.tickets.parser.belavia.model.enums.Currency;
@@ -216,5 +217,44 @@ public class FlightDataService {
     private String minutesToHours(int minutes) {
         int hours = minutes / 60;
         return String.format(("%d:%02d"), hours, minutes % 60);
+    }
+
+    public List<FlightDataResponse> getFlightDataResponse(List<FlightData> listFlightData){
+        List<FlightDataResponse> list = new ArrayList<>();
+        if(listFlightData != null || !listFlightData.isEmpty()) {
+
+            for (FlightData flightData : listFlightData) {
+
+
+
+               FlightDataResponse flightDataResponse = new FlightDataResponse();
+
+               flightDataResponse.setDepartureAirport(flightData.getDepartureAirport());
+               flightDataResponse.setArrivalAirport(flightData.getArrivalAirport());
+               flightDataResponse.setQueryDate(flightData.getQueryDate());
+               flightDataResponse.setCabinType(flightData.getCabinType());
+               flightDataResponse.setCompany(flightData.getCompany());
+               flightDataResponse.setImageCompany(flightData.getImageCompany());
+               flightDataResponse.setCurrency(flightData.getCurrency());
+               flightDataResponse.setAdults(flightData.getAdults());
+               flightDataResponse.setChildren(flightData.getChildren());
+               flightDataResponse.setInfants(flightData.getInfants());
+
+                for (Flight flight : flightData.getFlights()) {
+                    flightDataResponse.setDuration(flight.getDuration());
+                    flightDataResponse.setDepartureTime(flight.getDepartureTime());
+                    flightDataResponse.setArrivalTime(flight.getArrivalTime());
+
+                    for (Ticket ticket : flight.getTickets()) {
+                        flightDataResponse.setLinkForBuying(ticket.getLinkForBuying());
+                        flightDataResponse.setPrice(ticket.getPrice());
+                    }
+                }
+            }
+            list.add(FlightDataResponse.builder().build());
+        }
+
+        logger.info(" " + list);
+        return list;
     }
 }

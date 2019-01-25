@@ -4,7 +4,7 @@ package com.kh021j.travelwithpleasurehub.tickets.parser.belavia.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kh021j.travelwithpleasurehub.tickets.parser.belavia.BelaviaConnection;
-
+import org.springframework.stereotype.Service;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -12,6 +12,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.nio.charset.StandardCharsets;
 
+@Service
 public class JsonService {
 
     private  HttpURLConnection connection;

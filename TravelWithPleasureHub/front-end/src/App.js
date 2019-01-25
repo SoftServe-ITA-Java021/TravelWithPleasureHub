@@ -1,10 +1,9 @@
 import React, {Component, Fragment} from 'react';
-import {BrowserRouter, Route, Switch,Redirect} from "react-router-dom";
+import {BrowserRouter, Route, Switch} from "react-router-dom";
 import NavBar from "./components/NavBar";
 import PropertyList from "./components/property-rent/PropertyList";
 import Property from "./components/property-rent/Property";
 import PropertyUpload from "./components/property-rent/PropertyUpload";
-
 import AllMeetings from "./components/meetings/AllMeetings";
 import MeetingAdd from './components/meetings/MeetingAdd'
 import CreatedMeetings from './components/meetings/CreatedMeetings'
@@ -14,11 +13,11 @@ import MeetingsHistory from "./components/meetings/MeetingsHistory";
 import ErrorBoundary from "./ErrorBoundary";
 import NoMatch from "./components/NoMatch";
 import Home from "./components/Home";
-import TicketsForm from "./components/tickets/TicketsForm";
 import Profile from './components/signup/Profile';
 import WishingUsers from "./components/meetings/WishingUsers";
 import ConfirmedUsers from "./components/meetings/ConfirmedUsers";
 import MeetingUpdate from "./components/meetings/MeetingUpdate";
+import TicketsForm from "./components/tickets/TicketsForm";
 
 class App extends Component {
 	render() {
